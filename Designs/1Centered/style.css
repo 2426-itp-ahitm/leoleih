@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Passion+One:wght@400;700;900&display=swap');
+:root{
+    color-scheme: dark;
+}
+.flexbox{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+main{
+    margin-top: 20vh;
+    font-family: "Passion One", sans-serif;
+}
+h1{
+    font-size: 60px;
+    user-select: none;
+}
+#searchbar{
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    background-color: rgb(50, 50, 50);
+
+    border-radius: 30px;
+    border: 0px solid rgba(0, 0, 0, 0);
+
+    width: 25%;
+    transition: all 0.2s ease-out;
+
+}
+#searchbar:focus {
+    width: 45%;
+    border: 3px solid rgba(255, 255, 255, 0.545);
+    box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.053);
+
+}
+#cathegorys{
+    margin-top: 30px;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 200px);
+    gap: 30px;
+    cursor: pointer;
+}
+.cathegory{
+    width: 200px;
+    height: 200px;
+    background-color: aqua;
+}
+
+@media screen and (max-width: 968px) {
+    #cathegorys{
+        grid-template-columns: repeat(2, 200px);
+
+    }
+}
+
+@media screen and (max-width: 568px) {
+    #searchbar{
+        width: 40%;
+    }
+    #searchbar:focus {
+        width: 60%;
+    }
+    #cathegorys{
+        grid-template-columns: repeat(1, 200px);
+    }
+    .cathegory{
+        height: 100px;
+    }
+}
