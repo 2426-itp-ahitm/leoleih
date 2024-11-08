@@ -1,0 +1,28 @@
+
+:root{
+    --medtBlue:#6cb6dd;
+    --standardFont:"Manrope-Regular", sans-serif;
+}
+body{
+    margin: 0%;
+    padding: 0%;
+    font-family: var(--standardFont);
+}
+nav{
+    display: grid;
+    grid-template-columns: 15% 15% 50% 20%;
+}
+#searchBar{
+    margin-top:2%;
+}
+#currentDevicesBox img{
+    height: 20vh;
+}
+.overviewGrid{
+    display: grid;
+    grid-template-columns: 23% 23% 23% 23% 25%;
+    overflow-x: scroll;
+}
+.Overview img{
+    height: 25vh;
+}
