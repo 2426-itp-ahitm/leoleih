@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Design3</title>
     <link rel="stylesheet" href="index.css" >
+    <script src="js.js" defer></script>
 </head>
 <body>
     <h1>LeoLeih</h1>
     <div class="search">
         <div class="dropdown">
-            <p class="menu">...</p>
-            <div class="dropdown-content">
+            <div id="menu" onclick="showDropdown()"><p style="color: black;"> Auswählen</p></div>
+            <div id="dropdown-content">
                 <button>Kamera</button>
                 <button>Videokamera</button>
                 <button>Audiogerät</button>
