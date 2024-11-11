@@ -2,27 +2,42 @@
 :root{
     color-scheme: dark;
 }
+
 .flexbox{
     display: flex;
     justify-items: center;
     align-items: center;
 }
-main{
+
+header{
     text-align: center;
     margin-top: 20vh;
     font-family: "Passion One", sans-serif;
+    position: sticky;
 }
+
+main{
+    align-items: center;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 200px);
+    gap: 20px;
+    margin-top: 3vw;
+}
+
 h1{
     font-size: 60px;
     user-select: none;
+    color: #6cb6dd;
 }
+
 #searchbar{
     padding-left: 20px;
     padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
 
-    background-color: rgb(50, 50, 50);
+    background-color: rgb(51, 77, 100);
 
     border-radius: 30px;
     border: 0px solid rgba(0, 0, 0, 0);
@@ -31,12 +46,14 @@ h1{
     transition: all 0.2s ease-out;
 
 }
+
 #searchbar:focus {
     width: 45%;
     border: 3px solid rgba(255, 255, 255, 0.545);
     box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.053);
 
 }
+
 #cathegorys{
     margin-top: 30px;
     justify-content: center;
@@ -44,17 +61,62 @@ h1{
     grid-template-columns: repeat(4, 200px);
     gap: 30px;
     cursor: pointer;
+    transition: all 0.3s ease-out;
 }
 .cathegory{
     width: 200px;
     height: 200px;
-    background-color: aqua;
+    background-color: rgb(26, 38, 49);
+    border-radius: 10px;
+    box-shadow: 0px 4px 40px 5px rgba(42, 57, 65, 0.405);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-out;
 }
+
+.cathegory:hover{
+    box-shadow: 0px 20px 40px 7px rgba(42, 57, 65, 0.405);
+    transform: scale(1.04);
+}
+
+.cathegory {
+    width: 200px;
+    height: 200px;
+    background-color: rgb(26, 38, 49);
+    border-radius: 10px;
+    box-shadow: 0px 4px 40px 5px rgba(42, 57, 65, 0.405);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-out;
+}
+
+.categoryIcon{
+    transition: all 0.3s ease-out;
+    transform: scale(3);
+}
+
+.resultBox{
+    width: 200px;
+    height: 200px;
+    background-color: rgb(26, 38, 49);
+    border-radius: 10px;
+    box-shadow: 0px 4px 40px 5px rgba(42, 57, 65, 0.405);
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-out;
+}
+
 
 @media screen and (max-width: 968px) {
     #cathegorys{
         grid-template-columns: repeat(2, 200px);
 
+    }
+    main{
+        grid-template-columns: repeat(2, 200px);
     }
 }
 
@@ -70,5 +132,11 @@ h1{
     }
     .cathegory{
         height: 100px;
+    }
+    header {
+        margin-top: 7vh;
+    }
+    main{
+        grid-template-columns: repeat(1, 200px);
     }
 }
