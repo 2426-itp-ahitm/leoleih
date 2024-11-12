@@ -109,6 +109,9 @@ h1{
     transition: all 0.3s ease-out;
 }
 
+a {
+    text-decoration: none;
+}
 
 @media screen and (max-width: 968px) {
     #cathegorys{
