@@ -1,13 +1,11 @@
 import { html, render } from "lit-html"
-import { style } from "./css_searchbar"
+import { style } from "./css_searchButton"
 
+const htmlName = "search-button"
 const content = html`
     ${style}
-    <script>
-console.log("dsdf")
-    </script>
-    <input onchange="generateEntries()" type="text" id="searchbar" placeholder="Search">
-`
+        <p>😀</p>
+    `
 
 class Module extends HTMLElement {
     constructor(){
@@ -18,4 +16,4 @@ class Module extends HTMLElement {
         render(content, this.shadowRoot)
     }
 }
-customElements.define("search-bar", Module)
+customElements.define(htmlName, Module)

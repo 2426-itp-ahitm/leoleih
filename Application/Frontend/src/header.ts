@@ -1,10 +1,12 @@
 import "./components/searchbar"
-import { html, render } from "lit-html"
+import "./components/cathegoryBox"
+import "./components/searchButton"
 
+import { html, render } from "lit-html"
 const content = html`
     <a href="#"><h1 id="title">LeoLei</h1></a>
     <search-bar></search-bar>
-    
+
     <style>
         #title{
             font-size: 60px;
@@ -14,9 +16,9 @@ const content = html`
     </style>
 `
 
-class Header extends HTMLElement {
+class Module extends HTMLElement {
     connectedCallback() {
         render(content, this)
     }
 }
-customElements.define("custom-header", Header)
+customElements.define("custom-header", Module)

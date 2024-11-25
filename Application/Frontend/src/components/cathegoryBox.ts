@@ -4,7 +4,7 @@ let content = html`
 
 `
 
-class CathegoryBox extends HTMLElement {
+class Module extends HTMLElement {
 
     constructor (svgString: string) {
         super()
@@ -16,4 +16,4 @@ class CathegoryBox extends HTMLElement {
         render(content, this)
     }
 }
-customElements.define("cathegory-box", CathegoryBox)
+customElements.define("cathegory-box", Module)

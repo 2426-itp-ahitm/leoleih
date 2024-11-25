@@ -1,13 +1,11 @@
 import { html, render } from "lit-html"
-import { style } from "./css_searchbar"
+import { style } from "./css_module"
 
+const htmlName = "module-custom"//must contain - because webpack
 const content = html`
     ${style}
-    <script>
-console.log("dsdf")
-    </script>
-    <input onchange="generateEntries()" type="text" id="searchbar" placeholder="Search">
-`
+        <p>Test Module</p>
+    `
 
 class Module extends HTMLElement {
     constructor(){
@@ -18,4 +16,4 @@ class Module extends HTMLElement {
         render(content, this.shadowRoot)
     }
 }
-customElements.define("search-bar", Module)
+customElements.define(htmlName, Module)

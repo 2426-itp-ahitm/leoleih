@@ -4,9 +4,9 @@ const content = html`
     <h1>main</h1>
 `
 
-class Main extends HTMLElement {
+class Module extends HTMLElement {
     connectedCallback() {
         render(content, this)
     }
 }
-customElements.define("custom-main", Main)
+customElements.define("custom-main", Module)
