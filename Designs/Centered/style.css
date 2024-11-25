@@ -25,11 +25,7 @@ main{
     margin-top: 3vw;
 }
 
-h1{
-    font-size: 60px;
-    user-select: none;
-    color: #6cb6dd;
-}
+
 
 #searchbar{
     padding-left: 20px;
