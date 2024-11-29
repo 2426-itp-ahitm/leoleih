@@ -1,3 +1,2 @@
-import "./app-component"
-
-
+import "./header"
+import "./main"

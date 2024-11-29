@@ -1,12 +1,12 @@
 import { html, render } from "lit-html"
 
 const content = html`
-    <p>HelloWorld</p>
+    <h1>main</h1>
 `
 
-class AppComponent extends HTMLElement {
+class Module extends HTMLElement {
     connectedCallback() {
         render(content, this)
     }
 }
-customElements.define("app-component", AppComponent)
+customElements.define("custom-main", Module)
