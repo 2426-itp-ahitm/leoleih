@@ -1,7 +1,7 @@
 import { html, render } from "lit-html"
 import { style } from "./css_module"
 
-const htmlName = "module-custom"//must contain - because webpack
+const htmlName = "custom-module"//must contain - because webpack
 
 class Module extends HTMLElement {
     constructor(){
