@@ -1,12 +1,13 @@
 import { html, render } from "lit-html"
 
-const content = html`
-    <h1>main</h1>
-`
-
 class Module extends HTMLElement {
     connectedCallback() {
-        render(content, this)
+        render(this.content(), this)
+    }
+    content(){
+        return html`
+            <h1>main</h1>
+        `
     }
 }
 customElements.define("custom-main", Module)
