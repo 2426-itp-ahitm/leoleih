@@ -1,5 +1,5 @@
 import { style } from "./css_header"
-import "./components/searchbar"
+import "./searchbar/searchbar"
 
 import { html, render } from "lit-html"
 
