@@ -55,8 +55,7 @@ If you want to learn more about building native executables, please consult <htt
 
 ## Related Guides
 
-- Hibernate ORM ([guide](https://quarkus.io/guides/hibernate-orm)): Define your persistent model with Hibernate ORM and
-  Jakarta Persistence
+- Hibernate ORM ([guide](https://quarkus.io/guides/hibernate-orm)): Define your persistent model with Hibernate ORM and Jakarta Persistence
 - JDBC Driver - MariaDB ([guide](https://quarkus.io/guides/datasource)): Connect to the MariaDB database via JDBC
 
 ## Provided Code
@@ -66,6 +65,8 @@ If you want to learn more about building native executables, please consult <htt
 Create your first JPA entity
 
 [Related guide section...](https://quarkus.io/guides/hibernate-orm)
+
+
 
 ### RESTEasy JAX-RS
 
