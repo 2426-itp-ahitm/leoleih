@@ -50,3 +50,56 @@ create table audio_device(
     usb_cable number(1,0),
     SD_card varchar2(255)
 );
+
+drop table if exists item;
+create table item (
+    item_set varchar(225),
+    item_category int,
+    item_type varchar(255),
+    serial_nr varchar(255),
+    lent_from varchar(255),
+    return_date TIMESTAMP,
+    notes varchar(255)
+    );
+drop table if exists f_videoequipment;
+create table f_videoequipment (
+    item_set varchar(255),
+    asset_number varchar(255)
+);
+drop table if exists  f_professional_videosystem;
+create table f_professional_video_system(
+    item_set varchar(255),
+    description varchar(255)
+);
+drop table if exists  photo_camera;
+create table photo_camera(
+    item_set varchar(255),
+    asset_number varchar(255),
+    charger tinyint(1),
+    second_charger tinyint(1),
+    flash_id varchar(255),
+    usb_cable tinyint(1),
+    SD_card varchar(255)   
+);
+drop table if exists video_camera;
+create table video_camera(
+    item_set varchar(255),
+    asset_number varchar(255),
+    charger tinyint(1),
+    second_charger tinyint(1),
+    flash_shoe tinyint(1),
+    usb_cable tinyint(1),
+    SD_card tinyint(1),
+    HDMI_cable tinyint(1)
+);
+drop table if exists  audio_device;
+create table audio_device(
+    item_set varchar(255),
+    charger tinyint(1),
+    handle tinyint(1),
+    small3leg_tripod tinyint(1),
+    cable tinyint(1),
+    cinch_cable tinyint(1),
+    usb_cable tinyint(1),
+    SD_card varchar(255)
+);
