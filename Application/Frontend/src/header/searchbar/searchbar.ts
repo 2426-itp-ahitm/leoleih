@@ -9,7 +9,7 @@ class Module extends HTMLElement {
     content(){
         return html`
             ${style}
-            <input @keyup=${()=> this.updateSearch()} type="text" id="searchbar" placeholder="Search">
+            <input @keyup=${()=> this.updateSearch()} type="text" placeholder="Search">
         `
     }
     updateSearch(){

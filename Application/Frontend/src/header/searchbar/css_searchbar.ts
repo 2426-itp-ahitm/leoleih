@@ -2,7 +2,7 @@ import { html } from "lit-html"
 
 const style = html`
     <style>
-        #searchbar {
+        input{
             padding-left: 20px;
             padding-right: 20px;
             padding-top: 10px;
@@ -15,14 +15,11 @@ const style = html`
 
             width: 25%;
             transition: all 0.2s ease-out;
-
         }
-
-        #searchbar:focus {
+        input:focus{
             width: 45%;
             border: 3px solid rgba(255, 255, 255, 0.545);
             box-shadow: 0px 10px 10px rgba(255, 255, 255, 0.053);
-
         }
     </style>
 `

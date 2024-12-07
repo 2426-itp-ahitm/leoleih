@@ -4,21 +4,30 @@ import "./cathegorys/cathegorys"
 
 import { html, render } from "lit-html"
 
+const htmlName = "custom-header"//must contain - because webpack
+
 class Module extends HTMLElement {
+    constructor(){
+        super()
+        this.attachShadow({mode: "open"})
+    }
     content(){
         return html`
         ${style}
-            <a href="#"><h1 id="title">LeoLei</h1></a>
-            
+        <div>
+            <a href="#"><h1 id="title">LeoLeih</h1></a>
+                
             <search-bar @searchUpdated=${(event: CustomEvent)=>{
                 console.log("ja");
             }}></search-bar>
 
             <custom-cathegorys></custom-cathegorys>
+        </div>
+
         `
     }
     connectedCallback() {
-        render(this.content(), this)
+        render(this.content(), this.shadowRoot)
     }
 }
-customElements.define("custom-header", Module)
+customElements.define(htmlName, Module)
