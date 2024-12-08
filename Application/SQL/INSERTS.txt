@@ -1,0 +1,27 @@
+delete from item where item_description = 'photo_camera';
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('F01',1,'Nikon D60, 18-15mm + Blitz','photo_camera','6045864','+2. Objektiv 55mm - 200mm');
+insert into photo_camera(item_set, asset_number, charger,battery,second_battery,flash_id, usb_cable, sd_card)
+values ('F01','3120004027030000',1,1,0,1,1,'1 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('F02',1,'Nikon D5000, 18-200mm + Blitz','photo_camera','6552916','Blitz ist b. Gerd');
+insert into photo_camera(item_set, asset_number, charger,battery,second_battery,flash_id, usb_cable, sd_card)
+values ('F02','3120004037680000',1,1,0,2,1,'4 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('F03',1,'Nikon D5100, 18-105mm + Blitz','photo_camera','6069276','');
+insert into photo_camera(item_set, asset_number, charger,battery,second_battery,flash_id, usb_cable, sd_card)
+values ('F03','3120028592590000',1,1,0,3,1,'8 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('F04',1,'Nikon D5100, 18-105mm','photo_camera','6398280','');
+insert into photo_camera(item_set, asset_number, charger,battery,second_battery,flash_id, usb_cable, sd_card)
+values ('F04','3120004039640000',1,1,0,0,1,'8 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('F05',1,'Nikon D5100, 18-105mm','photo_camera','6639166','Nicht im Schulinventar');
+insert into photo_camera(item_set, asset_number, charger,battery,second_battery,flash_id, usb_cable, sd_card)
+values ('F05','',1,1,0,0,1,'16 GB');
+

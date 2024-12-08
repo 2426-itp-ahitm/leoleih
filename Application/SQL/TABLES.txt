@@ -1,0 +1,102 @@
+-- `drop all tables and constraints`
+SET FOREIGN_KEY_CHECKS = 0;
+drop table if exists item;
+drop table if exists audio_device;
+drop table if exists f_professional_video_system;
+drop table if exists f_videoequipment;
+drop table if exists photo_camera;
+drop table if exists video_camera;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- `mariadb-leoleih-dev`.item definition
+
+CREATE TABLE `item` (
+                        `item_set` varchar(199) NOT NULL,
+                        `item_category` int(11) DEFAULT NULL,
+                        `item_description` varchar(100) DEFAULT NULL,
+                        `item_type` varchar(100) DEFAULT NULL,
+                        `serial_nr` varchar(100) DEFAULT NULL,
+                        `lent_from` varchar(100) DEFAULT NULL,
+                        `return_date` timestamp NULL DEFAULT NULL,
+                        `notes` varchar(255) DEFAULT NULL,
+                        PRIMARY KEY (`item_set`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+-- `mariadb-leoleih-dev`.audio_device definition
+
+CREATE TABLE `audio_device` (
+                                `item_set` varchar(255) DEFAULT NULL,
+                                `charger` tinyint(1) DEFAULT NULL,
+                                `handle` tinyint(1) DEFAULT NULL,
+                                `small3leg_tripod` tinyint(1) DEFAULT NULL,
+                                `cable` tinyint(1) DEFAULT NULL,
+                                `cinch_cable` tinyint(1) DEFAULT NULL,
+                                `usb_cable` tinyint(1) DEFAULT NULL,
+                                `SD_card` varchar(255) DEFAULT NULL,
+                                KEY `audio_device_item_FK` (`item_set`),
+                                CONSTRAINT `audio_device_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
+                                	ON DELETE CASCADE
+       					ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+-- `mariadb-leoleih-dev`.f_professional_video_system definition
+
+CREATE TABLE `f_professional_video_system` (
+                                               `item_set` varchar(255) DEFAULT NULL,
+                                               `description` varchar(255) DEFAULT NULL,
+                                               KEY `f_professional_video_system_item_FK` (`item_set`),
+                                               CONSTRAINT `f_professional_video_system_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
+                                	ON DELETE CASCADE
+       					ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+-- `mariadb-leoleih-dev`.f_videoequipment definition
+
+CREATE TABLE `f_videoequipment` (
+                                    `item_set` varchar(255) DEFAULT NULL,
+                                    `asset_number` varchar(255) DEFAULT NULL,
+                                    KEY `f_videoequipment_item_FK` (`item_set`),
+                                    CONSTRAINT `f_videoequipment_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
+                                	ON DELETE CASCADE
+       					ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+-- `mariadb-leoleih-dev`.photo_camera definition
+
+CREATE TABLE `photo_camera` (
+                                `item_set` varchar(255) DEFAULT NULL,
+                                `asset_number` varchar(255) DEFAULT NULL,
+                                `charger` tinyint(1) DEFAULT NULL,
+                                `battery` tinyint(1) DEFAULT NULL,
+                                `second_battery` tinyint(1) DEFAULT NULL,
+                                `flash_id` varchar(255) DEFAULT NULL,
+                                `usb_cable` tinyint(1) DEFAULT NULL,
+                                `SD_card` varchar(255) DEFAULT NULL,
+                                KEY `photo_camera_item_FK` (`item_set`),
+                                CONSTRAINT `photo_camera_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
+                                	ON DELETE CASCADE
+       					ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
+
+
+-- `mariadb-leoleih-dev`.video_camera definition
+
+CREATE TABLE `video_camera` (
+                                `item_set` varchar(255) DEFAULT NULL,
+                                `asset_number` varchar(255) DEFAULT NULL,
+                                `charger` tinyint(1) DEFAULT NULL,
+                                `battery` tinyint(1) DEFAULT NULL,
+                                `second_battery` tinyint(1) DEFAULT NULL,
+                                `flash_shoe` tinyint(1) DEFAULT NULL,
+                                `usb_cable` tinyint(1) DEFAULT NULL,
+                                `SD_card` tinyint(1) DEFAULT NULL,
+                                `HDMI_cable` tinyint(1) DEFAULT NULL,
+                                KEY `video_camera_item_FK` (`item_set`),
+                                CONSTRAINT `video_camera_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
+                                	ON DELETE CASCADE
+       					ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
