@@ -4,22 +4,31 @@ import at.htl.leonding.leih.model.FotoCam;
 import at.htl.leonding.leih.model.Item;
 import at.htl.leonding.leih.model.Micro;
 import at.htl.leonding.leih.model.VideoCam;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
-public class Repository{
+@ApplicationScoped
+public class Repository {
+    @Inject
+    EntityManager entityManager;
 
-    public List<FotoCam> getAllPhotoCameras(){
-        return null;
-    }
-    public List<VideoCam> getAllVideoCameras(){
-        return null;
-    }
-    public List<Micro> getAllAudioDevices(){
-        return null;
-    }
-    public List<Item> getAllItems(){
-        return null;
+    public List<FotoCam> getAllPhotoCameras() {
+        return this.entityManager.createNamedQuery(FotoCam.QUERY_FIND_ALL, FotoCam.class).getResultList();
     }
 
+    public List<VideoCam> getAllVideoCameras() {
+
+        return this.entityManager.createNamedQuery(VideoCam.QUERY_FIND_ALL, VideoCam.class).getResultList();
+    }
+
+    public List<Micro> getAllAudioDevices() {
+        return this.entityManager.createNamedQuery(Micro.QUERY_FIND_ALL, Micro.class).getResultList();
+    }
+
+    public List<Item> getAllItems() {
+        return this.entityManager.createNamedQuery(Item.QUERY_FIND_ALL, Item.class).getResultList();
+    }
 }

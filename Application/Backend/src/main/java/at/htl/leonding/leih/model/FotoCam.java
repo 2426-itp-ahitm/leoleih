@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FotoCam extends Item{
+    public static String QUERY_FIND_ALL = "select * from item where item_description = photo_camera";
     public FotoCam(){
         super();
     }

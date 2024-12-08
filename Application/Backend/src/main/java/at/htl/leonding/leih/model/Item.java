@@ -1,6 +1,7 @@
 package at.htl.leonding.leih.model;
 
 public class Item {
+    public static String QUERY_FIND_ALL = "select * from item";
     private int id;
     private String name;
 
