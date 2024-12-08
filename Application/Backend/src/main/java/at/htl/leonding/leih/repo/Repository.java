@@ -1,6 +1,4 @@
-import at.htl.leonding.leih.model.FotoCam;
-
-new Class Repository{
+public Class Repository{
 
     public List<FotoCam> getAllPhotoCameras(){
         return null;
