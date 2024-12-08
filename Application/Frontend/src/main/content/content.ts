@@ -13,9 +13,7 @@ class Module extends HTMLElement {
         super()
         this.attachShadow({mode: "open"})
     }
-    content(){
-        console.log(this.contenthtml);
-        
+    content(){        
         return html`
         ${style}
             <div>
@@ -27,9 +25,7 @@ class Module extends HTMLElement {
         render(this.content(), this.shadowRoot)
     }
     attributeChangedCallback(_name, _oldValue, newValue) {
-        this.contenthtml = newValue
-        console.log(newValue);
-        
+        this.contenthtml = newValue        
         this.connectedCallback()
     }
 }

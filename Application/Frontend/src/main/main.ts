@@ -1,6 +1,7 @@
 import { html, render } from "lit-html"
 import { style } from "./css_main"
 import "./content/content"
+import {global} from "../global"
 
 const htmlName = "custom-main"//must contain - because webpack
 
@@ -16,12 +17,15 @@ class Module extends HTMLElement {
         return content
 
     }
-    getContent(){
-        let content = ["ding","dfs"]
-        return content
-    }
+
     connectedCallback() {
-        let content = this.getContent()
+        let content = getContent()
+        console.log(content.length);
+        if (content.length != 0){
+            global.navState = 1
+        }else{
+            global.navState = 0
+        }
         content.forEach(element => {
             this.shadowRoot.innerHTML+=`
             <custom-content contenthtml="${element}"></custom-content>
@@ -31,3 +35,8 @@ class Module extends HTMLElement {
     }
 }
 customElements.define(htmlName, Module)
+
+function getContent(){
+    let content = ["ding","dfs"]
+    return content
+}

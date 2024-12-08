@@ -1,5 +1,6 @@
 import { html, render } from "lit-html"
 import { style } from "./css_module"
+import {global} from "../global"
 
 const htmlName = "custom-module"//must contain - because webpack
 

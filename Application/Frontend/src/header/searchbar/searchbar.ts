@@ -9,11 +9,11 @@ class Module extends HTMLElement {
     content(){
         return html`
             ${style}
-            <input @keyup=${()=> this.updateSearch()} type="text" placeholder="Search">
+            <input @keyup=${()=> this.updateSearch()} type="text" id="input" placeholder="Search">
         `
     }
     updateSearch(){
-        const event = new CustomEvent("searchUpdated", {detail:{}})
+        const event = new CustomEvent("searchUpdated", {detail:{"value":"nothing"}})
         this.dispatchEvent(event)        
     }
     connectedCallback() {

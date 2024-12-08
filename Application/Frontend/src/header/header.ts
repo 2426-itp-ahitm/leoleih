@@ -1,6 +1,7 @@
 import { style } from "./css_header"
 import "./searchbar/searchbar"
 import "./cathegorys/cathegorys"
+import {global} from "../global"
 
 import { html, render } from "lit-html"
 
@@ -18,7 +19,10 @@ class Module extends HTMLElement {
             <a href="#"><h1 id="title">LeoLeih</h1></a>
                 
             <search-bar @searchUpdated=${(event: CustomEvent)=>{
-                console.log("ja");
+                console.log("updated searchbars");
+                console.log(event.detail);
+                
+                this.connectedCallback()
             }}></search-bar>
 
             <custom-cathegorys></custom-cathegorys>
