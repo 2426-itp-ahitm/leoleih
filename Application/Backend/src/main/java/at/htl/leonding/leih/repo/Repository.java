@@ -17,6 +17,7 @@ public class Repository {
 
     public List<Item> getAllPhotoCameras() {
 
+        //todo
         return this.entityManager.createNamedQuery(FotoCam.QUERY_FIND_ALL, Item.class).getResultList();
     }
 
