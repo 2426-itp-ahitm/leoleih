@@ -14,6 +14,9 @@ const style = html`
             font-family: "Passion One", sans-serif;
             position: sticky;
         }
+        a {
+            text-decoration: none;
+        }   
     </style>
 `
 export {style}

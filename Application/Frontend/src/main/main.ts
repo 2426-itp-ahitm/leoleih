@@ -1,13 +1,33 @@
 import { html, render } from "lit-html"
+import { style } from "./css_main"
+import "./content/content"
+
+const htmlName = "custom-main"//must contain - because webpack
 
 class Module extends HTMLElement {
-    connectedCallback() {
-        render(this.content(), this)
+    constructor(){
+        super()
+        this.attachShadow({mode: "open"})
     }
     content(){
-        return html`
-            <h1>main</h1>
+        let content = html`
+            ${style}
         `
+        return content
+
+    }
+    getContent(){
+        let content = ["ding","dfs"]
+        return content
+    }
+    connectedCallback() {
+        let content = this.getContent()
+        content.forEach(element => {
+            this.shadowRoot.innerHTML+=`
+            <custom-content contenthtml="${element}"></custom-content>
+        `
+        });
+        render(this.content(), this.shadowRoot)
     }
 }
-customElements.define("custom-main", Module)
+customElements.define(htmlName, Module)
