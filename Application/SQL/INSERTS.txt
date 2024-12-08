@@ -25,3 +25,30 @@ values ('F05',1,'Nikon D5100, 18-105mm','photo_camera','6639166','Nicht im Schul
 insert into photo_camera(item_set, asset_number, charger,battery,second_battery,flash_id, usb_cable, sd_card)
 values ('F05','',1,1,0,0,1,'16 GB');
 
+delete from item where item_description = 'video_camera';
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('VK01',2,'Panasonic SD 66 (schwarz)','video_camera','COHL01316','');
+insert into video_camera(item_set, asset_number, charger,battery,second_battery,flash_shoe, usb_cable, sd_card,hdmi_cable)
+values ('VK01','',1,1,0,0,1,'16 GB',0);
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('VK02',2,'Panasonic SD 66','video_camera','JOHL00658','+ Fernbedienung');
+insert into video_camera(item_set, asset_number, charger,battery,second_battery,flash_shoe, usb_cable, sd_card,hdmi_cable)
+values ('VK02','',1,1,0,0,1,'16 GB',0);
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('VK03',2,'Panasonic SD 99 (schwarz)','video_camera','INV. 563/2011/1','');
+insert into video_camera(item_set, asset_number, charger,battery,second_battery,flash_shoe, usb_cable, sd_card,hdmi_cable)
+values ('VK03','',1,1,0,0,1,'16 GB',0);
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('VK04',2,'Panasonic SD 99','video_camera','C1HR00931','');
+insert into video_camera(item_set, asset_number, charger,battery,second_battery,flash_shoe, usb_cable, sd_card,hdmi_cable)
+values ('VK04','',1,1,0,0,1,'16 GB',0);
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('VK05',2,'Panasonic SD 707','video_camera','GOHX00065','');
+insert into video_camera(item_set, asset_number, charger,battery,second_battery,flash_shoe, usb_cable, sd_card,hdmi_cable)
+values ('VK05','',1,1,0,0,1,'16 GB',0);
+
