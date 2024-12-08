@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Micro extends Item{
-    public static String QUERY_FIND_ALL = "select * from item where item_description = audio_device";
+    public static String QUERY_FIND_ALL = "select i from item i where i.item_description = audio_device";
     public Micro(){
         super();
     }

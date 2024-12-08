@@ -1,9 +1,8 @@
 package at.htl.leonding.leih;
 
-import at.htl.leonding.leih.model.FotoCam;
-import at.htl.leonding.leih.model.Micro;
-import at.htl.leonding.leih.model.Room;
-import at.htl.leonding.leih.model.VideoCam;
+import at.htl.leonding.leih.model.*;
+import at.htl.leonding.leih.repo.Repository;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -14,32 +13,36 @@ import java.util.List;
 @Path("/getAll")
 public class ExampleResource {
 
+    @Inject
+    Repository repo;
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/fotoCams")
-    public List<FotoCam> returnAllFotoCams() {
-        return FotoCam.getallFotosCams();
+    public List<Item> returnAllFotoCams() {
+        return repo.getAllPhotoCameras();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/videoCams")
     public List<VideoCam> returnAllVideoCams() {
-        return VideoCam.getallVideoCams();
+        return repo.getAllVideoCameras();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/micros")
     public List<Micro> returnAllMicros() {
-        return Micro.getallMicros();
+        return repo.getAllAudioDevices();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/rooms")
     public List<Room> returnAllRooms() {
-        return Room.getallRooms();
+        return null;
+        //TODO add rooms to database
     }
 
 

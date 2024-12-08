@@ -15,8 +15,9 @@ public class Repository {
     @Inject
     EntityManager entityManager;
 
-    public List<FotoCam> getAllPhotoCameras() {
-        return this.entityManager.createNamedQuery(FotoCam.QUERY_FIND_ALL, FotoCam.class).getResultList();
+    public List<Item> getAllPhotoCameras() {
+
+        return this.entityManager.createNamedQuery(FotoCam.QUERY_FIND_ALL, Item.class).getResultList();
     }
 
     public List<VideoCam> getAllVideoCameras() {
