@@ -52,3 +52,33 @@ values ('VK05',2,'Panasonic SD 707','video_camera','GOHX00065','');
 insert into video_camera(item_set, asset_number, charger,battery,second_battery,flash_shoe, usb_cable, sd_card,hdmi_cable)
 values ('VK05','',1,1,0,0,1,'16 GB',0);
 
+delete from item where item_description = 'audio_device';
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('A01',3,'Zoom H4','audio_device','124884','Windschutz 2x');
+insert into audio_device(item_set, charger,handle,small3leg_tripod,cable, cinch_cable,usb_cable,sd_card)
+values ('A01',1,1,0,1,0,1,'2 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('A02',3,'Zoom H2','audio_device','27614','Windschutz');
+insert into audio_device(item_set, charger,handle,small3leg_tripod,cable, cinch_cable,usb_cable,sd_card)
+values ('A02',1,1,1,1,1,1,'2 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('A03',3,'Zoom H2','audio_device','480495','Windschutz');
+insert into audio_device(item_set, charger,handle,small3leg_tripod,cable, cinch_cable,usb_cable,sd_card)
+values ('A03',1,1,1,1,1,1,'2 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('A04',3,'Zoom H2','audio_device','480500','Windschutz');
+insert into audio_device(item_set, charger,handle,small3leg_tripod,cable, cinch_cable,usb_cable,sd_card)
+values ('A04',1,1,1,1,1,1,'2 GB');
+
+insert into item (item_set, item_category,item_description, item_type,serial_nr,notes)
+values ('A05',3,'Zoom H2','audio_device','446515','Windschutz');
+insert into audio_device(item_set, charger,handle,small3leg_tripod,cable, cinch_cable,usb_cable,sd_card)
+values ('A05',1,1,0,0,0,1,'512MB');
+
+
+
+
