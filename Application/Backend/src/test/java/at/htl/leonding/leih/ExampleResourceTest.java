@@ -1,4 +1,4 @@
-package at.htl.leonding.shopping;
+package at.htl.leonding.leih;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

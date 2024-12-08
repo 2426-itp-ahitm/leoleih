@@ -2,4 +2,11 @@
 GET https://examples.http-client.intellij.net/get
     ?generated-in=IntelliJ IDEA
 
-### HALLO
+###
+
+GET http://localhost:8080/getAll/fotoCams
+Content-Type: application/json
+
+###
+
+
