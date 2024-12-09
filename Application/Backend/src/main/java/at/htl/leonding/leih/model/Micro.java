@@ -1,9 +1,12 @@
 package at.htl.leonding.leih.model;
 
+import at.htl.leonding.leih.features.item.Item;
+import at.htl.leonding.leih.features.item.ItemDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Micro extends Item{
+public class Micro extends Item {
     public static String QUERY_FIND_ALL = "select i from item i where i.item_description = audio_device";
     public Micro(){
         super();

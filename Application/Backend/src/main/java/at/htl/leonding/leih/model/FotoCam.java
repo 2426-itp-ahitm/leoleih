@@ -1,6 +1,7 @@
 package at.htl.leonding.leih.model;
 
-import jakarta.persistence.NamedQuery;
+import at.htl.leonding.leih.features.item.Item;
+import at.htl.leonding.leih.features.item.ItemDTO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -4,8 +4,22 @@ GET https://examples.http-client.intellij.net/get
 
 ###
 
-GET http://localhost:8080/getAll/fotoCams
+GET http://localhost:8080/items/
 
+###
+POST http://localhost:8080/items/
+Content-Type: application/json
+
+{
+    "item_set": "F02",
+    "item_description": "photo_camera",
+    "item_type": "Parasonic",
+    "item_category": 1,
+    "serial_nr": "12345678",
+    "lent_from": null,
+    "return_date": null,
+    "notes": ""
+}
 ###
 
 

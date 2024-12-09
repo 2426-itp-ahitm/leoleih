@@ -1,7 +1,7 @@
 package at.htl.leonding.leih;
 
 import at.htl.leonding.leih.model.*;
-import at.htl.leonding.leih.repo.Repository;
+import at.htl.leonding.leih.features.item.ItemRepository;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -14,20 +14,7 @@ import java.util.List;
 @Path("/getAll")
 public class ExampleResource {
 
-    @Inject
-    Repository repo;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/fotoCams")
-    public Response returnAllFotoCams() {
-        List<Item> list = this.repo.getAllPhotoCameras();
-
-
-        return Response.ok()
-                .entity(list)
-                .build();
-    }
 /*
     @GET
     @Produces(MediaType.APPLICATION_JSON)

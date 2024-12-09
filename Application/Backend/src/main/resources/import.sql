@@ -4,3 +4,6 @@
 -- insert into myentity (id, field) values(2, 'field-2');
 -- insert into myentity (id, field) values(3, 'field-3');
 -- alter sequence myentity_seq restart with 4;
+
+insert into Item (item_category, return_date, item_description, item_set, item_type, lent_from, notes, serial_nr)
+values (1,null,'photo_camera','F01','Parasonic',null,'','123456');

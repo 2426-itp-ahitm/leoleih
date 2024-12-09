@@ -1,9 +1,12 @@
 package at.htl.leonding.leih.model;
 
+import at.htl.leonding.leih.features.item.Item;
+import at.htl.leonding.leih.features.item.ItemDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room extends Item{
+public class Room extends Item {
     public Room() {
         super();
     }
