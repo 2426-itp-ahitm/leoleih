@@ -1,10 +1,10 @@
 import { html, render } from "lit-html"
 import { style } from "./css_content"
-
-const htmlName = "custom-content"//must contain - because webpack
-
+import { Item } from "Model/item";
+//TODO:Use content.ts and model
+const HTML_NAME = "custom-content"//must contain - because webpack
 class Module extends HTMLElement {
-    contenthtml: string = 'empty';
+    itemId: string = 'empty';
 
     static get observedAttributes() {
         return ['contenthtml'];
@@ -17,7 +17,7 @@ class Module extends HTMLElement {
         return html`
         ${style}
             <div>
-                ${this.contenthtml}
+                
             </div>
         `
     }
@@ -25,8 +25,8 @@ class Module extends HTMLElement {
         render(this.content(), this.shadowRoot)
     }
     attributeChangedCallback(_name, _oldValue, newValue) {
-        this.contenthtml = newValue        
+        //this.contenthtml = newValue        
         this.connectedCallback()
     }
 }
-customElements.define(htmlName, Module)
+customElements.define(HTML_NAME, Module)
