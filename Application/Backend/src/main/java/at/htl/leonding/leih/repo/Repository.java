@@ -16,11 +16,11 @@ public class Repository {
     EntityManager entityManager;
 
     public List<Item> getAllPhotoCameras() {
-
         //todo
-        return this.entityManager.createNamedQuery(FotoCam.QUERY_FIND_ALL, Item.class).getResultList();
+        List<Item> list = this.entityManager.createNamedQuery("Item.findAll", Item.class).getResultList();
+        return list;
     }
-
+/*
     public List<VideoCam> getAllVideoCameras() {
 
         return this.entityManager.createNamedQuery(VideoCam.QUERY_FIND_ALL, VideoCam.class).getResultList();
@@ -32,5 +32,5 @@ public class Repository {
 
     public List<Item> getAllItems() {
         return this.entityManager.createNamedQuery(Item.QUERY_FIND_ALL, Item.class).getResultList();
-    }
+    }*/
 }

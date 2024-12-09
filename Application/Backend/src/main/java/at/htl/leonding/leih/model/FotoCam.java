@@ -7,7 +7,6 @@ import java.util.List;
 //@NamedQuery(name=FotoCam.QUERY_FIND_ALL, query="SELECT i FROM Item i where i.item_description = 'photo_camera'")
 
 public class FotoCam extends Item{
-    public final static String QUERY_FIND_ALL = "FotoCam.findAll";
     public FotoCam(){
         super();
     }

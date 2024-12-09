@@ -1,6 +1,6 @@
 -- `drop all tables and constraints`
 SET FOREIGN_KEY_CHECKS = 0;
-drop table if exists item;
+drop table if exists Item;
 drop table if exists audio_device;
 drop table if exists f_professional_video_system;
 drop table if exists f_videoequipment;
@@ -10,7 +10,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- `mariadb-leoleih-dev`.item definition
 
-CREATE TABLE `item` (
+CREATE TABLE `Item` (
                         `item_set` varchar(199) NOT NULL,
                         `item_category` int(11) DEFAULT NULL,
                         `item_description` varchar(100) DEFAULT NULL,
@@ -35,9 +35,9 @@ CREATE TABLE `audio_device` (
                                 `usb_cable` tinyint(1) DEFAULT NULL,
                                 `SD_card` varchar(255) DEFAULT NULL,
                                 KEY `audio_device_item_FK` (`item_set`),
-                                CONSTRAINT `audio_device_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
-                                	ON DELETE CASCADE
-       					ON UPDATE CASCADE
+                                CONSTRAINT `audio_device_item_FK` FOREIGN KEY (`item_set`) REFERENCES `Item` (`item_set`)
+                                    ON DELETE CASCADE
+                                    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
@@ -47,9 +47,9 @@ CREATE TABLE `f_professional_video_system` (
                                                `item_set` varchar(255) DEFAULT NULL,
                                                `description` varchar(255) DEFAULT NULL,
                                                KEY `f_professional_video_system_item_FK` (`item_set`),
-                                               CONSTRAINT `f_professional_video_system_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
-                                	ON DELETE CASCADE
-       					ON UPDATE CASCADE
+                                               CONSTRAINT `f_professional_video_system_item_FK` FOREIGN KEY (`item_set`) REFERENCES `Item` (`item_set`)
+                                                   ON DELETE CASCADE
+                                                   ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
@@ -59,9 +59,9 @@ CREATE TABLE `f_videoequipment` (
                                     `item_set` varchar(255) DEFAULT NULL,
                                     `asset_number` varchar(255) DEFAULT NULL,
                                     KEY `f_videoequipment_item_FK` (`item_set`),
-                                    CONSTRAINT `f_videoequipment_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
-                                	ON DELETE CASCADE
-       					ON UPDATE CASCADE
+                                    CONSTRAINT `f_videoequipment_item_FK` FOREIGN KEY (`item_set`) REFERENCES `Item` (`item_set`)
+                                        ON DELETE CASCADE
+                                        ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
@@ -77,9 +77,9 @@ CREATE TABLE `photo_camera` (
                                 `usb_cable` tinyint(1) DEFAULT NULL,
                                 `SD_card` varchar(255) DEFAULT NULL,
                                 KEY `photo_camera_item_FK` (`item_set`),
-                                CONSTRAINT `photo_camera_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
-                                	ON DELETE CASCADE
-       					ON UPDATE CASCADE
+                                CONSTRAINT `photo_camera_item_FK` FOREIGN KEY (`item_set`) REFERENCES `Item` (`item_set`)
+                                    ON DELETE CASCADE
+                                    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
@@ -96,7 +96,7 @@ CREATE TABLE `video_camera` (
                                 `SD_card` varchar(10) DEFAULT NULL,
                                 `HDMI_cable` tinyint(1) DEFAULT NULL,
                                 KEY `video_camera_item_FK` (`item_set`),
-                                CONSTRAINT `video_camera_item_FK` FOREIGN KEY (`item_set`) REFERENCES `item` (`item_set`)
-                                	ON DELETE CASCADE
-       					ON UPDATE CASCADE
+                                CONSTRAINT `video_camera_item_FK` FOREIGN KEY (`item_set`) REFERENCES `Item` (`item_set`)
+                                    ON DELETE CASCADE
+                                    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;

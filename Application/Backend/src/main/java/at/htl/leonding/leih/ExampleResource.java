@@ -22,7 +22,7 @@ public class ExampleResource {
     public List<Item> returnAllFotoCams() {
         return repo.getAllPhotoCameras();
     }
-
+/*
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/videoCams")
@@ -44,6 +44,6 @@ public class ExampleResource {
         return null;
         //TODO add rooms to database
     }
-
+*/
 
 }
