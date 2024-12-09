@@ -18,15 +18,15 @@ class Module extends HTMLElement {
 
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         let content = getContent()
-        console.log(content.length);
-        if (content.length != 0){
+        console.log((await content).length);
+        if ((await content).length != 0){
             global.navState = 1
         }else{
             global.navState = 0
         }
-        content.forEach(element => {
+        (await content).forEach(element => {
             this.shadowRoot.innerHTML+=`
             <custom-content contenthtml="${element}"></custom-content>
         `
@@ -36,7 +36,16 @@ class Module extends HTMLElement {
 }
 customElements.define(htmlName, Module)
 
-function getContent(){
-    let content = ["Nikon D5600","Nikon D3500", "Nikon D3400", "Nikon D3400", "Nikon D3400"]
+async function getContent(){
+    let content = []
+
+    await fetch("http://localhost:8080/getAll/fotoCams")
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(element => {
+                content.push(element.item_description)
+            });
+        });
+    
     return content
 }
