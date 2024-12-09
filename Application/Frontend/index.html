@@ -11,15 +11,34 @@
     <style>
         :root{
             color-scheme: dark;
-        }
-        a {
-            text-decoration: none;
-        }        
+        }     
         custom-header {
             text-align: center;
             margin-top: 20vh;
             font-family: "Passion One", sans-serif;
             position: sticky;
+        }
+        custom-main {
+            align-items: center;
+            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            gap: 20px;
+            margin-top: 3vw;
+        }
+        @media screen and (max-width: 968px) {
+            custom-main{
+                grid-template-columns: repeat(2, 200px);
+            }
+        }
+        
+        @media screen and (max-width: 568px) {
+            custom-header {
+                margin-top: 7vh;
+            }
+            custom-main{
+                grid-template-columns: repeat(1, 200px);
+            }
         }
     </style>
 </html>
