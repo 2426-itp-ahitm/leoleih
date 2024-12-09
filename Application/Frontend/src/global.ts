@@ -1,3 +1,7 @@
+export enum NavSizeType {
+    SMALL,
+    BIG
+}
 export let global = {
-    "navState":0
+    navState: NavSizeType.BIG
 }
