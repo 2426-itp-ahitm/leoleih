@@ -23,7 +23,7 @@ public class Repository {
             Item.addItem(newItem);
         }
 
-        return Item.getallItems();
+        return list;
     }
 /*
     public List<VideoCam> getAllVideoCameras() {

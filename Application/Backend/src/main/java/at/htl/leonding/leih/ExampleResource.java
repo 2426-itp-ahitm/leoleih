@@ -23,6 +23,7 @@ public class ExampleResource {
     public Response returnAllFotoCams() {
         List<Item> list = this.repo.getAllPhotoCameras();
 
+
         return Response.ok()
                 .entity(list)
                 .build();
