@@ -1,0 +1,81 @@
+DELETE FROM Item WHERE item_description = 'photo_camera';
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('F01', 1, 'Nikon D60, 18-15mm + Blitz', 'photo_camera', '6045864', '+2. Objektiv 55mm - 200mm');
+INSERT INTO photo_camera (item_set, asset_number, charger, battery, second_battery, flash_id, usb_cable, sd_card)
+VALUES ('F01', '3120004027030000', 1, 1, 0, 1, 1, '1 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('F02', 1, 'Nikon D5000, 18-200mm + Blitz', 'photo_camera', '6552916', 'Blitz ist b. Gerd');
+INSERT INTO photo_camera (item_set, asset_number, charger, battery, second_battery, flash_id, usb_cable, sd_card)
+VALUES ('F02', '3120004037680000', 1, 1, 0, 2, 1, '4 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('F03', 1, 'Nikon D5100, 18-105mm + Blitz', 'photo_camera', '6069276', '');
+INSERT INTO photo_camera (item_set, asset_number, charger, battery, second_battery, flash_id, usb_cable, sd_card)
+VALUES ('F03', '3120028592590000', 1, 1, 0, 3, 1, '8 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('F04', 1, 'Nikon D5100, 18-105mm', 'photo_camera', '6398280', '');
+INSERT INTO photo_camera (item_set, asset_number, charger, battery, second_battery, flash_id, usb_cable, sd_card)
+VALUES ('F04', '3120004039640000', 1, 1, 0, 0, 1, '8 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('F05', 1, 'Nikon D5100, 18-105mm', 'photo_camera', '6639166', 'Nicht im Schulinventar');
+INSERT INTO photo_camera (item_set, asset_number, charger, battery, second_battery, flash_id, usb_cable, sd_card)
+VALUES ('F05', '', 1, 1, 0, 0, 1, '16 GB');
+
+DELETE FROM Item WHERE item_description = 'video_camera';
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('VK01', 2, 'Panasonic SD 66 (schwarz)', 'video_camera', 'COHL01316', '');
+INSERT INTO video_camera (item_set, asset_number, charger, battery, second_battery, flash_shoe, usb_cable, sd_card, hdmi_cable)
+VALUES ('VK01', '', 1, 1, 0, 0, 1, '16 GB', 0);
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('VK02', 2, 'Panasonic SD 66', 'video_camera', 'JOHL00658', '+ Fernbedienung');
+INSERT INTO video_camera (item_set, asset_number, charger, battery, second_battery, flash_shoe, usb_cable, sd_card, hdmi_cable)
+VALUES ('VK02', '', 1, 1, 0, 0, 1, '16 GB', 0);
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('VK03', 2, 'Panasonic SD 99 (schwarz)', 'video_camera', 'INV. 563/2011/1', '');
+INSERT INTO video_camera (item_set, asset_number, charger, battery, second_battery, flash_shoe, usb_cable, sd_card, hdmi_cable)
+VALUES ('VK03', '', 1, 1, 0, 0, 1, '16 GB', 0);
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('VK04', 2, 'Panasonic SD 99', 'video_camera', 'C1HR00931', '');
+INSERT INTO video_camera (item_set, asset_number, charger, battery, second_battery, flash_shoe, usb_cable, sd_card, hdmi_cable)
+VALUES ('VK04', '', 1, 1, 0, 0, 1, '16 GB', 0);
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('VK05', 2, 'Panasonic SD 707', 'video_camera', 'GOHX00065', '');
+INSERT INTO video_camera (item_set, asset_number, charger, battery, second_battery, flash_shoe, usb_cable, sd_card, hdmi_cable)
+VALUES ('VK05', '', 1, 1, 0, 0, 1, '16 GB', 0);
+
+DELETE FROM Item WHERE item_description = 'audio_device';
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('A01', 3, 'Zoom H4', 'audio_device', '124884', 'Windschutz 2x');
+INSERT INTO audio_device (item_set, charger, handle, small3leg_tripod, cable, cinch_cable, usb_cable, sd_card)
+VALUES ('A01', 1, 1, 0, 1, 0, 1, '2 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('A02', 3, 'Zoom H2', 'audio_device', '27614', 'Windschutz');
+INSERT INTO audio_device (item_set, charger, handle, small3leg_tripod, cable, cinch_cable, usb_cable, sd_card)
+VALUES ('A02', 1, 1, 1, 1, 1, 1, '2 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('A03', 3, 'Zoom H2', 'audio_device', '480495', 'Windschutz');
+INSERT INTO audio_device (item_set, charger, handle, small3leg_tripod, cable, cinch_cable, usb_cable, sd_card)
+VALUES ('A03', 1, 1, 1, 1, 1, 1, '2 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('A04', 3, 'Zoom H2', 'audio_device', '480500', 'Windschutz');
+INSERT INTO audio_device (item_set, charger, handle, small3leg_tripod, cable, cinch_cable, usb_cable, sd_card)
+VALUES ('A04', 1, 1, 1, 1, 1, 1, '2 GB');
+
+INSERT INTO Item (item_set, item_category, item_description, item_type, serial_nr, notes)
+VALUES ('A05', 3, 'Zoom H2', 'audio_device', '446515', 'Windschutz');
+INSERT INTO audio_device (item_set, charger, handle, small3leg_tripod, cable, cinch_cable, usb_cable, sd_card)
+VALUES ('A05', 1, 1, 0, 0, 0, 1, '512MB');
+

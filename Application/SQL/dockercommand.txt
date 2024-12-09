@@ -1,0 +1,1 @@
+docker run --detach --name mariadb-leoleih-dev --env MARIADB_ROOT_PASSWORD=leoleih -e MARIADB_DATABASE=mariadb-leoleih-dev -p 3306:3306 mariadb:latest
