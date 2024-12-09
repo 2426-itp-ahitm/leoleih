@@ -37,6 +37,6 @@ class Module extends HTMLElement {
 customElements.define(htmlName, Module)
 
 function getContent(){
-    let content = ["ding","dfs"]
+    let content = ["Nikon D5600","Nikon D3500", "Nikon D3400", "Nikon D3400", "Nikon D3400"]
     return content
 }
