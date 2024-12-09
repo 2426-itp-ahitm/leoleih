@@ -3,6 +3,8 @@ package at.htl.leonding.leih.model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
@@ -29,8 +31,15 @@ public class Item {
         this.return_date = return_date;
         this.notes = notes;
     }
+    public Item() {}
 
-    public Item() {
+    public static List<Item> allItems = new ArrayList<>();
 
+    public static List<Item> getallItems(){
+        return allItems;
+    }
+
+    public static void addItem(Item item){
+        allItems.add(item);
     }
 }

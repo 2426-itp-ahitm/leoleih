@@ -18,7 +18,12 @@ public class Repository {
     public List<Item> getAllPhotoCameras() {
         //todo
         List<Item> list = this.entityManager.createNamedQuery("Item.findAll", Item.class).getResultList();
-        return list;
+        for (Item object : list) {
+            Item newItem = object;
+            Item.addItem(newItem);
+        }
+
+        return Item.getallItems();
     }
 /*
     public List<VideoCam> getAllVideoCameras() {

@@ -7,6 +7,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -19,8 +20,12 @@ public class ExampleResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/fotoCams")
-    public List<Item> returnAllFotoCams() {
-        return repo.getAllPhotoCameras();
+    public Response returnAllFotoCams() {
+        List<Item> list = this.repo.getAllPhotoCameras();
+
+        return Response.ok()
+                .entity(list)
+                .build();
     }
 /*
     @GET
