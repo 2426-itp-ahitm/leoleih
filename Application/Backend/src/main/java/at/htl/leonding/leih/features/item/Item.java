@@ -5,7 +5,11 @@ import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@NamedQuery(name="Item.findAll", query="SELECT i FROM Item i")
+@NamedQueries({
+        @NamedQuery(name="Item.findAll", query="SELECT i FROM Item i"),
+        @NamedQuery(name="Item.findById", query="SELECT i FROM Item i WHERE id = :filter_id"),
+        @NamedQuery(name="item.findByCategory",query="SELECT i FROM Item i WHERE item_category = :filter")
+})
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
