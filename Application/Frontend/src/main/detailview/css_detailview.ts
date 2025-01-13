@@ -15,6 +15,8 @@ const style = html`
             border: 3px solid rgba(41, 47, 57, 0.70);
             background-color:rgba(41, 47, 57, 0.76);
             backdrop-filter: blur(8px);
+
+            cursor: auto;
         }
     </style>
 `
