@@ -3,15 +3,13 @@ import { style } from "./css_main"
 import "./content/content"
 import { loadItems } from "../model/item-service"
 import { Item } from "../model/item"
+import "./detailview/detailview"
+import "./item/itemelem"
 
 const HTML_NAME = "custom-main"//must contain - because webpack
-function itemTemplate(item: Item){
+function itemTemplate(id){
     return html`
-        <div>
-            ${item.item_description}
-            <br>
-            ${item.item_type}
-        </div>
+        <custom-item id="${id}"></custom-item>
     `
 }
 class Module extends HTMLElement {
@@ -19,10 +17,14 @@ class Module extends HTMLElement {
         super()
         this.attachShadow({mode: "open"})
     }
-    //<custom-content contenthtml="${item}"></custom-content>
     async content(){
         const items = await loadItems()
-        const elements = items.map(itemTemplate)
+        const elements = []
+
+        for(let i = 0;i<items.length;i++){
+            elements.push(itemTemplate(i+1))
+        }
+
         let content = html`
             ${style}
             ${elements}
@@ -32,6 +34,15 @@ class Module extends HTMLElement {
 
     async connectedCallback() {
         const content = await this.content()
+        this.shadowRoot.addEventListener('click', (event)=>{
+            const target = event.target as HTMLElement
+            //console.log("detailview"+target.classList[0].split("item")[1]);
+            
+            //console.log(this.shadowRoot);
+
+            //this.shadowRoot.querySelector("detailview"+target.classList[0].split("item")[1])
+            
+        });
         render(content, this.shadowRoot)
     }
 }
