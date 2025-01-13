@@ -24,7 +24,7 @@ class Module extends HTMLElement {
         
         return html`
         ${style}
-        <div style="border: 1px solid red" class="item${this.viewid}">
+        <div class="item${this.viewid}">
             ${item.item_description}
             <br>
             ${item.item_type}
