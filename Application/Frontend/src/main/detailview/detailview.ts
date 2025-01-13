@@ -1,7 +1,7 @@
 import { html, render } from "lit-html"
 import { style } from "./css_detailview"
 import {global} from "../../global"
-import {loadItem} from "./detailview-service"
+import {loadItem} from "../../model/item-service"
 const HTML_NAME = "custom-detailview"//must contain - because webpack
 
 class Module extends HTMLElement {
@@ -20,21 +20,20 @@ class Module extends HTMLElement {
     }
     async content(){
         const item = await loadItem(this.detailsForId)
-
+        
         try{            
             return html`
             ${style}
-                <dialog id="detailDialog${this.id}"}>
+                <dialog id="detailDialog${this.id}">
                     <p>description:${item.item_description}</p>
                     <p>category:${item.item_category}</p>
                     <p>set:${item.item_set}</p>
                     <p>type:${item.item_type}</p>
-    
                     <button>Close</button>
                 </dialog>
             `
         }catch(e){
-            console.log(e);
+            //console.log(e);
         }
 
     }
@@ -48,20 +47,21 @@ class Module extends HTMLElement {
         }
     }
     attributeChangedCallback(name, _oldValue, newValue) {
-        
         switch(name){
-            case "id":
-                this.detailsForId = newValue 
+            case "id":                              
+                this.detailsForId = parseInt(newValue)
                 break;
             case "open":
                 console.log(newValue);
                 
-                if (newValue){
+                if (newValue === "true"){
                     try{
+                        console.log(this.shadowRoot.children);
+                        
                         this.shadowRoot.querySelector("dialog").show()
+
                     }catch(e){
                         console.log(e);
-                        
                     }
                 }
                 break;
