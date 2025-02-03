@@ -1,7 +1,7 @@
 import { style } from "./css_header"
 import "./searchbar/searchbar"
 import "./category-container/category-container"
-
+import { logo_svg } from "./logo_svg"
 import { html, render } from "lit-html"
 
 const HTML_NAME = "custom-header" //must contain - because webpack
@@ -15,7 +15,7 @@ class Module extends HTMLElement {
     return html`
       ${style}
       <div>
-        <a href="#"><h1 id="title">LeoLeih</h1></a>
+        <a href="#">${logo_svg}</h1></a>
 
         <search-bar
           @searchUpdated=${(event: CustomEvent) => {

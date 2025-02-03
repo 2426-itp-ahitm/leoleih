@@ -2,12 +2,13 @@ import { html } from "lit-html";
 
 const style = html`
   <style>
-    #title {
-      font-size: 60px;
+    svg{
       user-select: none;
-      color: #6cb6dd;
+      width: 300px;
+    margin-bottom: 2em;
     }
     div {
+      display: grid;
       text-align: center;
       margin-top: 20vh;
       font-family: "Passion One", sans-serif;
