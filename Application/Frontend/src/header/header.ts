@@ -17,12 +17,7 @@ class Module extends HTMLElement {
       <div>
         <a href="#">${logo_svg}</h1></a>
 
-        <search-bar
-          @searchUpdated=${(event: CustomEvent) => {
-            console.log("updated searchbars: ", event.detail)
-            this.renderElement()
-          }}
-        ></search-bar>
+        <search-bar></search-bar>
 
         <category-container></category-container>
       </div>

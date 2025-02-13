@@ -1,5 +1,4 @@
 import { html } from "lit-html"
-
 const style = html`
     <style>
         div{

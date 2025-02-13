@@ -1,6 +1,5 @@
 import { html, render } from "lit-html"
 import { style } from "./css_item"
-import {global} from "../../global"
 import { Item } from "../../model/item"
 import { loadItem } from "../../model/item-service"
 
@@ -14,19 +13,15 @@ class Module extends HTMLElement {
     constructor(){
         super()
         this.attachShadow({mode: "open"})
-
         this.shadowRoot.addEventListener('click', (event) => {
             this.shadowRoot.querySelector(".detailview").setAttribute("open","true")
         });
     }
     async content(){
-        const item: Item = await loadItem(this.viewid)
-        
+        const item: Item = await loadItem(this.viewid);
         return html`
         ${style}
         <div class="item${this.viewid}">
-            ${item.item_description}
-            <br>
             ${item.item_type}
             <custom-detailview class="detailview" open="false" id="${this.viewid}"></custom-detailview>
         </div>

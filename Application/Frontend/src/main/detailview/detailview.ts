@@ -1,6 +1,5 @@
 import { html, render } from "lit-html";
 import { style } from "./css_detailview";
-import { global } from "../../global";
 import { loadItem } from "../../model/item-service";
 const HTML_NAME = "custom-detailview"; //must contain - because webpack
 
@@ -49,7 +48,7 @@ class Module extends HTMLElement {
 
         if (newValue === "true") {
           try {
-            this.shadowRoot.querySelector("dialog").show();
+            this.shadowRoot.querySelector("dialog").showModal();
           } catch (e) {
             console.log(e);
           }
