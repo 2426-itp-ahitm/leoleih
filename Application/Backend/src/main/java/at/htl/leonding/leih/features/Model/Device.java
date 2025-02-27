@@ -1,4 +1,4 @@
-package at.htl.leonding.leih.features.item;
+package at.htl.leonding.leih.features.Model;
 
 import jakarta.persistence.*;
 
@@ -6,9 +6,9 @@ import java.sql.Timestamp;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name="Device.findAll", query="SELECT i FROM Device i"),
-        @NamedQuery(name="Device.findById", query="SELECT i FROM Device i WHERE id = :filter_id"),
-        @NamedQuery(name="Device.findByCategory",query="SELECT i FROM Device i WHERE dev_category = :filter")
+    @NamedQuery(name="Device.findAll", query="SELECT i FROM Device i"),
+    @NamedQuery(name="Device.findById", query="SELECT i FROM Device i WHERE id = :filter_id"),
+    @NamedQuery(name="Device.findByCategory",query="SELECT i FROM Device i WHERE dev_category = :filter")
 })
 public class Device {
     @Id
