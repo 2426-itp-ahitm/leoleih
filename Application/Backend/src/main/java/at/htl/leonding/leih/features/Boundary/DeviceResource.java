@@ -1,5 +1,8 @@
-package at.htl.leonding.leih.features.item;
+package at.htl.leonding.leih.features.Boundary;
 
+import at.htl.leonding.leih.features.DTO.DeviceDTO;
+import at.htl.leonding.leih.features.Model.Device;
+import at.htl.leonding.leih.features.Repo.DeviceRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
@@ -12,20 +15,17 @@ public class DeviceResource {
     @Inject
     DeviceRepository repo;
 
-    @Inject
-    DeviceMapper mapper;
-
     @GET
     public Response all() {
-        var list = repo.listAll().stream().map(mapper::toResource);
-        return Response.ok(list)
+       // var list = repo.listAll().stream().map(mapper::toResource);
+        return Response.ok().entity(repo.findAll())
                 .build();
     }
 
     @POST
     @Transactional
     public Response create(DeviceDTO deviceDTO) {
-        repo.persistAndFlush(mapper.fromResource(deviceDTO));
+        repo.createNew(deviceDTO);
         return Response.ok(deviceDTO).build();
     }
 
@@ -33,8 +33,8 @@ public class DeviceResource {
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
         Device device= repo.findById(id);
-        DeviceDTO dto = mapper.toResource(device);
-        return Response.ok(dto)
+        //DeviceDTO dto = mapper.toResource(device);
+        return Response.ok().entity(device)
                 .build();
     }
 }
