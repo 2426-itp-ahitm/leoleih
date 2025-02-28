@@ -6,16 +6,14 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.Map;
-
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/items")
-public class ItemResource {
+@Path("/devices")
+public class DeviceResource {
     @Inject
-    ItemRepository repo;
+    DeviceRepository repo;
 
     @Inject
-    ItemMapper mapper;
+    DeviceMapper mapper;
 
     @GET
     public Response all() {
@@ -26,16 +24,16 @@ public class ItemResource {
 
     @POST
     @Transactional
-    public Response create(ItemDTO item) {
-        repo.persistAndFlush(mapper.fromResource(item));
-        return Response.ok(item).build();
+    public Response create(DeviceDTO deviceDTO) {
+        repo.persistAndFlush(mapper.fromResource(deviceDTO));
+        return Response.ok(deviceDTO).build();
     }
 
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") Long id) {
-        Item item = repo.findById(id);
-        ItemDTO dto = mapper.toResource(item);
+        Device device= repo.findById(id);
+        DeviceDTO dto = mapper.toResource(device);
         return Response.ok(dto)
                 .build();
     }
