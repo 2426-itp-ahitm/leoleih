@@ -4,55 +4,43 @@ GET https://examples.http-client.intellij.net/get
 
 ###
 
-GET http://localhost:8080/items/
+GET http://localhost:8080/devices/
 
 ###
 
-GET http://localhost:8080/items/3
+GET http://localhost:8080/devices/3
 
 ###
-POST http://localhost:8080/items/
+POST http://localhost:8080/devices/
 Content-Type: application/json
 
 {
-    "item_set": "F02",
-    "item_description": "photo_camera",
-    "item_type": "Parasonic",
-    "item_category": 1,
-    "serial_nr": "12345678",
+    "dev_id": 90,
+    "dev_set": "F02",
+    "dev_type": "Parasonic",
+    "dev_category": 1,
+    "dev_serial_nr": "12345678",
+    "dev_asset_nr": "12345678",
     "lent_from": null,
     "return_date": null,
     "notes": ""
 }
 ###
-###
-POST http://localhost:8080/items/
-Content-Type: application/json
 
-{
-  "item_set": "F03",
-  "item_description": "photo_camera",
-  "item_type": "Parasonic",
-  "item_category": 1,
-  "serial_nr": "12345678",
-  "lent_from": null,
-  "return_date": null,
-  "notes": ""
-}
-###
-###
-POST http://localhost:8080/items/
-Content-Type: application/json
+GET http://localhost:8080/teacher
 
-{
-  "item_set": "F04",
-  "item_description": "photo_camera",
-  "item_type": "Parasonic",
-  "item_category": 1,
-  "serial_nr": "12345678",
-  "lent_from": null,
-  "return_date": null,
-  "notes": ""
-}
 ###
 
+GET http://localhost:8080/student
+Content-Type: */*
+
+###
+
+GET http://localhost:8080/room
+Content-Type: */*
+
+###
+
+GET http://localhost:8080/eq
+
+##

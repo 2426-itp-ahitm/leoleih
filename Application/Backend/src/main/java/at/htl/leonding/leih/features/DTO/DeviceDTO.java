@@ -1,4 +1,4 @@
-package at.htl.leonding.leih.features.item;
+package at.htl.leonding.leih.features.DTO;
 
 import java.sql.Timestamp;
 

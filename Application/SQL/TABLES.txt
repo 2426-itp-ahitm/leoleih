@@ -1,75 +1,75 @@
--- `drop all tables and constraints`
+-- drop all tables and constraints
 SET FOREIGN_KEY_CHECKS = 0;
 
 drop table if exists Device;
 drop table if exists Equipment;
 drop table if exists Room;
 drop table if exists Student;
-drop table if exists Teacher;
+drop table if exists Teacher;a
 
--- `mariadb-leoleih-dev`.Room definition
+-- mariadb-leoleih-dev.Room definition
 
-CREATE TABLE `Room` (
-  `room_id` int(11) NOT NULL,
-  `room_category` int(11) DEFAULT NULL,
-  `return_date` timestamp NULL DEFAULT NULL,
-  `lent_from` int(11) DEFAULT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`room_id`)
+CREATE TABLE Room (
+  room_id int(11) NOT NULL,
+  room_category int(11) DEFAULT NULL,
+  return_date timestamp NULL DEFAULT NULL,
+  lent_from int(11) DEFAULT NULL,
+  notes varchar(255) DEFAULT NULL,
+  PRIMARY KEY (room_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
--- `mariadb-leoleih-dev`.Student definition
+-- mariadb-leoleih-dev.Student definition
 
-CREATE TABLE `Student` (
-  `stud_id` int(11) NOT NULL,
-  `stud_first_name` varchar(100) NOT NULL,
-  `stud_last_name` varchar(100) NOT NULL,
-  `stud_email` varchar(100) NOT NULL,
-  `stud_class` varchar(10) DEFAULT NULL,
-  PRIMARY KEY (`stud_id`)
+CREATE TABLE Student (
+  stud_id int(11) NOT NULL,
+  stud_first_name varchar(100) NOT NULL,
+  stud_last_name varchar(100) NOT NULL,
+  stud_email varchar(100) NOT NULL,
+  stud_class varchar(10) DEFAULT NULL,
+  PRIMARY KEY (stud_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
--- `mariadb-leoleih-dev`.Teacher definition
+-- mariadb-leoleih-dev.Teacher definition
 
-CREATE TABLE `Teacher` (
-  `teacher_id` int(11) NOT NULL,
-  `teacher_first_name` varchar(100) NOT NULL,
-  `teacher_last_name` varchar(100) NOT NULL,
-  `teacher_email` varchar(100) NOT NULL,
-  PRIMARY KEY (`teacher_id`)
+CREATE TABLE Teacher (
+  teacher_id int(11) NOT NULL,
+  teacher_first_name varchar(100) NOT NULL,
+  teacher_last_name varchar(100) NOT NULL,
+  teacher_email varchar(100) NOT NULL,
+  PRIMARY KEY (teacher_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
--- `mariadb-leoleih-dev`.Device definition
+-- mariadb-leoleih-dev.Device definition
 
-CREATE TABLE `Device` (
-  `dev_id` int(11) NOT NULL,
-  `dev_category` int(11) DEFAULT NULL,
-  `dev_set` varchar(100) DEFAULT NULL,
-  `dev_type` varchar(100) DEFAULT NULL,
-  `dev_serial_nr` varchar(100) DEFAULT NULL,
-  `dev_asset_nr` varchar(100) DEFAULT NULL,
-  `return_date` timestamp NULL DEFAULT NULL,
-  `lent_from` int(11) DEFAULT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`dev_id`),
-  KEY `Device_Student_FK` (`lent_from`),
-  CONSTRAINT `Device_Student_FK` FOREIGN KEY (`lent_from`) REFERENCES `Student` (`stud_id`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE Device (
+  dev_id int(11) NOT NULL,
+  dev_category int(11) DEFAULT NULL,
+  dev_set varchar(100) DEFAULT NULL,
+  dev_type varchar(100) DEFAULT NULL,
+  dev_serial_nr varchar(100) DEFAULT NULL,
+  dev_asset_nr varchar(100) DEFAULT NULL,
+  return_date timestamp NULL DEFAULT NULL,
+  lent_from int(11) DEFAULT NULL,
+  notes varchar(255) DEFAULT NULL,
+  PRIMARY KEY (dev_id),
+  KEY Device_Student_FK (lent_from),
+  CONSTRAINT Device_Student_FK FOREIGN KEY (lent_from) REFERENCES Student (stud_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 
--- `mariadb-leoleih-dev`.Equipment definition
+-- mariadb-leoleih-dev.Equipment definition
 
-CREATE TABLE `Equipment` (
-  `equ_id` int(11) NOT NULL,
-  `equ_category` int(11) NOT NULL,
-  `equ_type` varchar(100) NOT NULL,
-  `return_date` timestamp NULL DEFAULT NULL,
-  `lent_from` int(11) DEFAULT NULL,
-  `notes` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`equ_id`),
-  KEY `Equipment_Student_FK` (`lent_from`),
-  CONSTRAINT `Equipment_Student_FK` FOREIGN KEY (`lent_from`) REFERENCES `Student` (`stud_id`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE Equipment (
+  equ_id int(11) NOT NULL,														             equ_set varchar(10) NOT NULL,
+  equ_category int(11) NOT NULL,
+  equ_type varchar(100) NOT NULL,
+  return_date timestamp NULL DEFAULT NULL,
+  lent_from int(11) DEFAULT NULL,
+  notes varchar(255) DEFAULT NULL,
+  PRIMARY KEY (equ_id),
+  KEY Equipment_Student_FK (lent_from),
+  CONSTRAINT Equipment_Student_FK FOREIGN KEY (lent_from) REFERENCES Student (stud_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
