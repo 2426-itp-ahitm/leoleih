@@ -15,7 +15,15 @@ const style = html`
             cursor: pointer;
         }
         div:hover{
-            box-shadow: 0px 4px 40px 5px rgba(71, 96, 110, 0.6);
+            box-shadow: 0 4px 40px 5px rgba(71, 96, 110, 0.6);
+        }
+        svg{
+            margin-right: 10px;
+        }
+        #box{
+            width: 10vw;
+            height: 9vh;
+            padding: 30px;
         }
     </style>
 `

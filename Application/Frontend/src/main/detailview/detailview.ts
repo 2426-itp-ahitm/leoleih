@@ -26,18 +26,16 @@ class Module extends HTMLElement {
       console.error("error", e);
       return;
     }
+    if(item == undefined){
+      return html``;
+    }
     return html`
       ${style}
       <dialog id="detailDialog${this.id}">
-        <p>dev_id:${item.dev_id}</p>
-        <p>dev_type:${item.dev_type}</p>
-        <p>dev_category:${item.dev_category}</p>
-        <p>dev_serial_nr:${item.dev_serial_nr}</p>
-        <p>dev_asset_nr:${item.dev_asset_nr}</p>
-        <p>lent_from:${item.lent_from}</p>
-        <p>return_date:${item.return_date}</p>
-        <p>notes:${item.notes}</p>
-        <p>dev_set:${item.dev_set}</p>
+        <h2>${item.dev_type}</h2>
+        <p>Lent From: ${item.lent_from}</p>
+        <p>Return Date: ${item.return_date}</p>
+        <p>Notes: ${item.notes}</p>
         <button @click=${() => this.closeDialog()}>
           Close
         </button>

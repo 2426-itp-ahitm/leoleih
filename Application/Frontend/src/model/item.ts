@@ -1,7 +1,9 @@
+import {IconType} from "../model/icon";
+
 export interface Item {
     dev_id: number;
     dev_type: string;
-    dev_category: number;
+    dev_category: IconType;
     dev_serial_nr: string;
     dev_asset_nr: string;
     lent_from: number;
