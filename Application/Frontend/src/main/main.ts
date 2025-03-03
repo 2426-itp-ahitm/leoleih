@@ -30,7 +30,6 @@ class Module extends HTMLElement {
             ${style}
             <div style="opacity: ${elements.length === 0 ? 0 : 1}">
                 ${elements}
-                ${items.length === 0 ? "Keine Gegenstände gefunden :/":""}
             </div>
         `;
     }
