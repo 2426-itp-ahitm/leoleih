@@ -1,4 +1,4 @@
-import { html } from "lit-html"
+import { html } from "lit-html";
 
 const style = html`
     <style>
@@ -48,5 +48,5 @@ const styleSmall = html`
         }
     </style>
 `
-export {style}
-export {styleSmall}
+export {style};
+export {styleSmall};

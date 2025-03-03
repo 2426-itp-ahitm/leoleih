@@ -35,11 +35,9 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'index.html',
             hash: true,
-            scriptLoading: "module"
+            scriptLoading: "module",
+            favicon: "./src/assets/favicon.svg"
         }),
-
-        // Add your plugins here
-        // Learn more about plugins from https://webpack.js.org/configuration/plugins/
     ],
     module: {
         rules: [

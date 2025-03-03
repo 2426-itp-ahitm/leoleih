@@ -1,42 +1,43 @@
 import { html, render } from "lit-html"
 import { style } from "./css_item"
-import {global} from "../../global"
 import { Item } from "../../model/item"
-import { loadItem } from "../../model/item-service"
 
 const HTML_NAME = "custom-item"//must contain - because webpack
 
 class Module extends HTMLElement {
-    viewid: number
-    static get observedAttributes() {
-        return ['id'];
+    get item() {
+        const item: Item = {
+            dev_id:  parseInt(this.getAttribute("dev_id")),
+            dev_type: this.getAttribute("dev_type"),
+            dev_category: parseInt(this.getAttribute("dev_category")),
+            dev_serial_nr: this.getAttribute("dev_serial_nr"),
+            dev_asset_nr: this.getAttribute("dev_asset_nr"),
+            lent_from: parseInt(this.getAttribute("lent_from")),
+            return_date: new Date(this.getAttribute("return_date")),
+            notes: this.getAttribute("notes"),
+            dev_set: this.getAttribute("dev_set"),
+        }
+        return item;
     }
-    constructor(){
+    constructor() {
         super()
         this.attachShadow({mode: "open"})
-
         this.shadowRoot.addEventListener('click', (event) => {
-            this.shadowRoot.querySelector(".detailview").setAttribute("open","true")
+            this.shadowRoot.querySelector(".detailview").setAttribute("open", "true")
         });
     }
     async content(){
-        const item: Item = await loadItem(this.viewid)
-        
+        const item: Item = this.item
         return html`
         ${style}
-        <div style="border: 1px solid red" class="item${this.viewid}"
-            ${item.item_description}
-            <br>
-            ${item.item_type}
-            <custom-detailview class="detailview" open="false" id="${this.viewid}"></custom-detailview>
+        <div class="item${item.dev_id}">
+            ${item.dev_serial_nr}
+            <custom-detailview class="detailview" open="false" id="${item.dev_id}"></custom-detailview>
         </div>
         `
     }
     async connectedCallback() {
         render(await this.content(), this.shadowRoot)
-    }
-    attributeChangedCallback(name, _oldValue, newValue) {
-        this.viewid = newValue
     }
 }
 customElements.define(HTML_NAME, Module)

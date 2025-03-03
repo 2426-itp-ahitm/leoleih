@@ -1,5 +1,6 @@
 import { html, render } from "lit-html"
 import { style } from "./css_searchbar"
+import {model} from "../../model";
 
 class Module extends HTMLElement {
     constructor(){
@@ -13,8 +14,7 @@ class Module extends HTMLElement {
         `
     }
     updateSearch(){
-        const event = new CustomEvent("searchUpdated", {detail:{"value":"nothing"}})
-        this.dispatchEvent(event)        
+        model.searchText = this.shadowRoot.querySelector("input").value;
     }
     connectedCallback() {
         render(this.content(), this.shadowRoot)

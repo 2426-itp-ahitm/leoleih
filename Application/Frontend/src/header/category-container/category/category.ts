@@ -1,31 +1,31 @@
 import { html, render } from "lit-html"
 import { style, styleSmall } from "./css_category"
-import { global, NavSizeType } from "../../../global"
+import {model, subscribe} from "../../../model";
 
-const HTML_NAME = "custom-category" //must contain - because webpack
-
+const HTML_NAME = "custom-category";
 class Module extends HTMLElement {
+
   constructor() {
-    super()
+    super();
     this.attachShadow({ mode: "open" })
   }
   get svg() {
-    return this.getAttribute("svg")
+    return this.getAttribute("svg");
+  }
+  get category(){
+    return this.getAttribute("category");
   }
   getCurrentStyle() {
-    switch (global.navState) {
-      case NavSizeType.BIG:
-        return style
-      case NavSizeType.SMALL:
-        return styleSmall
-      default:
-        return html` <p>Error loading style</p> `
+    if (model.searchText == "") {
+      return style;
+    } else {
+      return styleSmall;
     }
   }
   content() {
     return html`
       ${this.getCurrentStyle()}
-      <div>
+      <div @click=${()=>this.set_category_to_search()} >
         <svg
           class="categoryIcon"
           xmlns="http://www.w3.org/2000/svg"
@@ -39,10 +39,18 @@ class Module extends HTMLElement {
       </div>
     `;
   }
-  connectedCallback() {
-    this.renderElement()
+  set_category_to_search(){
+    console.log("cathegory type clicked and set to search:",this.category)
+    model.searchText = this.category;
   }
-  renderElement() {
+
+  connectedCallback() {
+    subscribe(model=>{
+      this.renderHTML();
+    })
+    this.renderHTML()
+  }
+  renderHTML() {
     render(this.content(), this.shadowRoot)
   }
 }
