@@ -1,28 +1,43 @@
 import { html, render } from "lit-html";
 import { style } from "./css_detailview";
-import { loadItem } from "../../model/item-service";
+import { loadDetail } from "../../model/item-service";
+import { Item } from "Model/item";
+
 const HTML_NAME = "custom-detailview"; //must contain - because webpack
 
 class Module extends HTMLElement {
   detailsForId = 0;
   open = true;
+
   static get observedAttributes() {
     return ["id", "open"];
   }
+
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({mode: "open"});
   }
-  async content() {
-    const item = await loadItem(this.detailsForId);
 
+  async content() {
+    let item: Item
+    try{
+      item = await loadDetail(this.detailsForId);
+    }catch (e){
+      console.error("error", e);
+      return;
+    }
     return html`
       ${style}
       <dialog id="detailDialog${this.id}">
-        <p>description:${item.item_description}</p>
-        <p>category:${item.item_category}</p>
-        <p>set:${item.item_set}</p>
-        <p>type:${item.item_type}</p>
+        <p>dev_id:${item.dev_id}</p>
+        <p>dev_type:${item.dev_type}</p>
+        <p>dev_category:${item.dev_category}</p>
+        <p>dev_serial_nr:${item.dev_serial_nr}</p>
+        <p>dev_asset_nr:${item.dev_asset_nr}</p>
+        <p>lent_from:${item.lent_from}</p>
+        <p>return_date:${item.return_date}</p>
+        <p>notes:${item.notes}</p>
+        <p>dev_set:${item.dev_set}</p>
         <button @click=${() => this.closeDialog()}>
           Close
         </button>
@@ -44,8 +59,6 @@ class Module extends HTMLElement {
         this.detailsForId = parseInt(newValue);
         break;
       case "open":
-        console.log('att change open:',newValue);
-
         if (newValue === "true") {
           try {
             this.shadowRoot.querySelector("dialog").showModal();

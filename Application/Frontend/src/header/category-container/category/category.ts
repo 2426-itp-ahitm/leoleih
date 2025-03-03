@@ -12,8 +12,8 @@ class Module extends HTMLElement {
   get svg() {
     return this.getAttribute("svg");
   }
-  get categoryType(){
-    return this.getAttribute("categoryType");
+  get category(){
+    return this.getAttribute("category");
   }
   getCurrentStyle() {
     if (model.searchText == "") {
@@ -25,7 +25,7 @@ class Module extends HTMLElement {
   content() {
     return html`
       ${this.getCurrentStyle()}
-      <div @click=${this.set_category_to_search} >
+      <div @click=${()=>this.set_category_to_search()} >
         <svg
           class="categoryIcon"
           xmlns="http://www.w3.org/2000/svg"
@@ -40,9 +40,10 @@ class Module extends HTMLElement {
     `;
   }
   set_category_to_search(){
-    console.log(this.categoryType)
-    model.searchText = this.categoryType;
+    console.log("cathegory type clicked and set to search:",this.category)
+    model.searchText = this.category;
   }
+
   connectedCallback() {
     subscribe(model=>{
       this.renderHTML();
