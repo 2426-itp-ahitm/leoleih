@@ -15,10 +15,19 @@ public class Equipment {
     @GeneratedValue
     Long equ_id;
     String equ_type;
+    String equ_set;
     Date return_date;
     Long lent_from;
     String notes;
     Long equ_category;
+
+    public String getEqu_set() {
+        return equ_set;
+    }
+
+    public void setEqu_set(String equ_set) {
+        this.equ_set = equ_set;
+    }
 
     public Long getEqu_category() {
         return equ_category;
