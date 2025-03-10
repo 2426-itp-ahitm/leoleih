@@ -1,8 +1,13 @@
+import {Item} from "./model/item";
+
 interface Model {
-    searchText: String
+    searchText?: string,
+    items: Item[],
+    selectedId?: number
 }
 const state: Model = {
     searchText: "",
+    items: []
 }
 
 type Subscription = (model:Model) => void

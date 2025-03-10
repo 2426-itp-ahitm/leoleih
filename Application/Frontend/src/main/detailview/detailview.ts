@@ -6,12 +6,6 @@ import { Item } from "Model/item";
 const HTML_NAME = "custom-detailview"; //must contain - because webpack
 
 class Module extends HTMLElement {
-  detailsForId = 0;
-  open = true;
-
-  static get observedAttributes() {
-    return ["id", "open"];
-  }
 
   constructor() {
     super();
@@ -21,7 +15,7 @@ class Module extends HTMLElement {
   async content() {
     let item: Item
     try{
-      item = await loadDetail(this.detailsForId);
+      //item = await loadDetail(this.detailsForId);
     }catch (e){
       console.error("error", e);
       return;
@@ -50,24 +44,6 @@ class Module extends HTMLElement {
       this.setAttribute("open", "false");
       dialog.close();
     }, 10);
-  }
-  attributeChangedCallback(name: "id" | "open", _: string, newValue: string) {
-    switch (name) {
-      case "id":
-        this.detailsForId = parseInt(newValue);
-        break;
-      case "open":
-        if (newValue === "true") {
-          try {
-            this.shadowRoot.querySelector("dialog").showModal();
-          } catch (e) {
-            console.log(e);
-          }
-        }
-        break;
-    }
-
-    this.connectedCallback();
   }
   async connectedCallback() {
     render(await this.content(), this.shadowRoot);

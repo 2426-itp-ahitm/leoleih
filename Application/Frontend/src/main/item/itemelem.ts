@@ -3,6 +3,7 @@ import {style} from "./css_item"
 import {Item} from "../../model/item"
 import {getIcon} from "../../model/icon-service";
 import {IconType} from "../../model/icon";
+import {model} from "../../model";
 
 const HTML_NAME = "custom-item"//must contain - because webpack
 
@@ -39,7 +40,7 @@ class Module extends HTMLElement {
         super()
         this.attachShadow({mode: "open"})
         this.shadowRoot.addEventListener('click', (event) => {
-            this.shadowRoot.querySelector(".detailview").setAttribute("open", "true")
+            model.selectedId = this.item.dev_id;
         });
     }
     async content(){
@@ -75,7 +76,6 @@ class Module extends HTMLElement {
                 </svg>
                 <h4>${item.dev_type}</h4>
             </div>
-            <custom-detailview class="detailview" open="false" id="${item.dev_id}"></custom-detailview>
         </div>
         `
     }

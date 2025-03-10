@@ -2,16 +2,21 @@ import {Item} from "./item";
 import {model} from "../model";
 import {IconType} from "../model/icon";
 
-export async function loadItems(){
-    if (model.searchText != ""){
+export async function loadItems(searchText?: string) : Promise<Item[]> {
+    if (searchText){
         const response = await fetch("http://localhost:8080/devices");
         const data = await response.json();
         let items = [];
         console.log(data)
-        switch (model.searchText){
+        switch (searchText.toLowerCase()){
+            case "kamera":
+            case "kammera":
             case "photo_camera":
                 items = data.filter(item => item.dev_category == 1);
                 break;
+            case "video kamera":
+            case "video kammera":
+            case "video":
             case "video_camera":
                 items = data.filter(item => item.dev_category == 2);
                 break;
