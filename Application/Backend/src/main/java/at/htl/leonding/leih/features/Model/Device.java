@@ -1,5 +1,6 @@
 package at.htl.leonding.leih.features.Model;
-
+import jakarta.persistence.*;
+import org.jboss.resteasy.spi.touri.MappedBy;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -20,9 +21,11 @@ public class Device {
     int dev_category;
     String dev_serial_nr;
     String dev_asset_nr;
-    Long lent_from;
     Timestamp return_date;
     String notes;
+    @ManyToOne
+    @JoinColumn(name = "lent_from")
+    private Student lent_from;
 
     public Long getDev_id() {
         return dev_id;
@@ -64,13 +67,6 @@ public class Device {
         this.dev_asset_nr = dev_asset_nr;
     }
 
-    public Long getLent_from() {
-        return lent_from;
-    }
-
-    public void setLent_from(Long lent_from) {
-        this.lent_from = lent_from;
-    }
 
     public Timestamp getReturn_date() {
         return return_date;
@@ -97,4 +93,12 @@ public class Device {
     }
 
     String dev_set;
+
+    public Student getLent_from() {
+        return lent_from;
+    }
+
+    public void setLent_from(Student lent_from) {
+        this.lent_from = lent_from;
+    }
 }
