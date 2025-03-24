@@ -1,6 +1,5 @@
 import { html, render } from "lit-html";
 import { style } from "./css_detailview";
-import { loadDetail } from "../../model/item-service";
 import { Item } from "Model/item";
 
 const HTML_NAME = "custom-detailview"; //must contain - because webpack

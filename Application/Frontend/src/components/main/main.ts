@@ -1,8 +1,10 @@
 import {html, render} from "lit-html";
 import {style} from "./css_main";
-import {model, subscribe} from "../model";
+import {store} from "../../store";
 import "./detailview/detailview";
 import "./item/itemelem";
+import {distinctUntilChanged, map} from "rxjs";
+import {Item} from "Model/item";
 
 const HTML_NAME = "custom-main";
 
@@ -24,29 +26,32 @@ class Module extends HTMLElement {
         this.attachShadow({mode: "open"});
     }
 
-    async content() {
+    content(items: Item[]) {
         const elements = [];
-        for (let i = 0; i < model.items.length; i++) {
-            elements.push(itemTemplate(model.items[i]));
+        for (let i = 0; i < items.length; i++) {
+            elements.push(itemTemplate(items[i]));
         }
         return html`
             ${style}
             <div style="opacity: ${elements.length === 0 ? 0 : 1}">
                 ${elements}
             </div>
-        `;//custom-detailview
+        `;//TODO:custom-detailview
     }
 
     connectedCallback() {
-        subscribe(model => {
-            this.renderHTML();
+        store
+            .pipe(
+                map(module=>module.items),
+                distinctUntilChanged()
+            )
+            .subscribe(items => {
+            this.renderHTML(items);
         })
-        this.renderHTML();
     }
 
-    async renderHTML() {
-        const content = await this.content();
-        render(content, this.shadowRoot);
+    async renderHTML(items: Item[]) {
+        render(this.content(items), this.shadowRoot);
     }
 }
 

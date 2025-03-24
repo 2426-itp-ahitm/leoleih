@@ -60,6 +60,7 @@ const config = {
         ],
     },  
     resolve: {
+        alias: {Model: path.resolve(__dirname, 'src/model')},
         extensions: ['.tsx', '.ts', '.jsx', '.js', '...'],
     },
 };

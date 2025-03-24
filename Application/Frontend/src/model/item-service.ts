@@ -1,22 +1,21 @@
 import {Item} from "./item";
-import {model} from "../model";
-import {IconType} from "../model/icon";
+import {Category} from "../model";
+import {produce} from "immer";
+import {store} from "../store";
 
-export async function loadItems(searchText?: string) : Promise<Item[]> {
+async function loadItems(searchText: string, category: Category) : Promise<Item[]> {
+    if(!searchText) {
+        console.log("Search text not found.");
+    }
     if (searchText){
         const response = await fetch("http://localhost:8080/devices");
         const data = await response.json();
         let items = [];
         console.log(data)
-        switch (searchText.toLowerCase()){
-            case "kamera":
-            case "kammera":
+        switch (category){
             case "photo_camera":
                 items = data.filter(item => item.dev_category == 1);
                 break;
-            case "video kamera":
-            case "video kammera":
-            case "video":
             case "video_camera":
                 items = data.filter(item => item.dev_category == 2);
                 break;
@@ -27,18 +26,31 @@ export async function loadItems(searchText?: string) : Promise<Item[]> {
                 items = data.filter(item => item.dev_category	== 4);
                 break;
             default:
-                console.log(model.searchText)
                 items = data;
                 break;
         }
         console.log("items: ",items);
+
+        //updates category view state
+        const newState = produce(store.getValue(),draft=>{
+            draft.categoryBig = items.length == 0;
+        })
+        store.next(newState);
+
         return items;
-    }else{
+    }else {
+        //updates category view state
+        const newState = produce(store.getValue(),draft=>{
+            draft.categoryBig = true;
+        })
+        store.next(newState);
         return [];
     }
 }
-export async function loadDetail(id){
+async function loadDetail(id){
     const response = await fetch("http://localhost:8080/devices/"+id);
     const data = await response.json();
     return await data as Item;
 }
+
+export {loadItems, loadDetail};

@@ -1,9 +1,10 @@
 import {html, render} from "lit-html"
 import {style} from "./css_item"
-import {Item} from "../../model/item"
-import {getIcon} from "../../model/icon-service";
-import {IconType} from "../../model/icon";
-import {model} from "../../model";
+import {Item} from "Model/item"
+import {getIcon} from "Model/icon-service";
+import {IconType} from "Model/icon";
+import {store} from "../../../store";
+import {produce} from "immer";
 
 const HTML_NAME = "custom-item"//must contain - because webpack
 
@@ -40,7 +41,9 @@ class Module extends HTMLElement {
         super()
         this.attachShadow({mode: "open"})
         this.shadowRoot.addEventListener('click', (event) => {
-            model.selectedId = this.item.dev_id;
+            const newState = produce(store.getValue, draft=>{
+                draft.selectedId = this.item.dev_id;
+            });
         });
     }
     async content(){

@@ -1,7 +1,7 @@
 import { html, render } from "lit-html"
 import { style } from "./css_searchbar"
-import {model} from "../../model";
-import {loadItems} from "Model/item-service";
+import {store} from "../../../store";
+import {produce} from "immer";
 
 class Module extends HTMLElement {
     constructor(){
@@ -15,7 +15,11 @@ class Module extends HTMLElement {
         `
     }
     async updateSearch(){
-        model.searchText = this.shadowRoot.querySelector("input").value;
+        const newState = produce(store.getValue(),draft=>{
+            draft.category = "all";
+            draft.searchText = this.shadowRoot.querySelector("input").value;
+        })
+        store.next(newState);
     }
     connectedCallback() {
         render(this.content(), this.shadowRoot)

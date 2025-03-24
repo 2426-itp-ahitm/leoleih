@@ -43,4 +43,14 @@ Content-Type: */*
 
 GET http://localhost:8080/eq
 
-##
+###
+POST http://localhost:8080/excel-to-csv
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="deviceListAll.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< deviceListAll.xlsx
+--WebAppBoundary--
+###
