@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 public class Room {
     @Id
     @GeneratedValue
-    Long room_id;
-    Integer room_category;
-    Timestamp return_date;
-    Long lent_from;
+    private Long room_id;
+    private Integer room_category;
+    private Timestamp return_date;
+    private Long lent_from;
 
     public Long getRoom_id() {
         return room_id;

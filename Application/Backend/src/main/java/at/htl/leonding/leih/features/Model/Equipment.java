@@ -13,13 +13,13 @@ import java.util.Date;
 public class Equipment {
     @Id
     @GeneratedValue
-    Long equ_id;
-    String equ_type;
-    String equ_set;
-    Date return_date;
-    Long lent_from;
-    String notes;
-    Long equ_category;
+    private Long equ_id;
+    private String equ_type;
+    private String equ_set;
+    private Date return_date;
+    private Long lent_from;
+    private String notes;
+    private Long equ_category;
 
     public String getEqu_set() {
         return equ_set;

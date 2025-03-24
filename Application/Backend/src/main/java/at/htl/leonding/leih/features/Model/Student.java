@@ -12,11 +12,11 @@ import java.util.List;
 public class Student {
     @Id
     @GeneratedValue
-    Long stud_id;
-    String stud_first_name;
-    String stud_last_name;
-    String stud_email;
-    String stud_class;
+    private Long stud_id;
+    private String stud_first_name;
+    private String stud_last_name;
+    private String stud_email;
+    private String stud_class;
     @OneToMany(mappedBy = "lent_from")
     private List<Device> devices;
 

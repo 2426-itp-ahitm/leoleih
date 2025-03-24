@@ -16,13 +16,13 @@ import java.sql.Timestamp;
 public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long dev_id;
-    String dev_type;
-    int dev_category;
-    String dev_serial_nr;
-    String dev_asset_nr;
-    Timestamp return_date;
-    String notes;
+    private Long dev_id;
+    private String dev_type;
+    private int dev_category;
+    private String dev_serial_nr;
+    private String dev_asset_nr;
+    private Timestamp return_date;
+    private String notes;
     @ManyToOne
     @JoinColumn(name = "lent_from")
     private Student lent_from;
