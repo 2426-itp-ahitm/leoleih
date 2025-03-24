@@ -40,7 +40,7 @@ public class ExcelToCsvResource {
             List<String> headers = List.of("Set", "Typ", "Serien-Nr", "Anlagen-Nr", "Anmerkungen");
 
             // Prepare the CSV file
-            String csvFilePath = "output.csv";
+            String csvFilePath = "src/main/java/at/htl/leonding/leih/features/output.csv";
             FileWriter out = new FileWriter(csvFilePath);
             CSVPrinter csvPrinter = new CSVPrinter(out, CSVFormat.DEFAULT.withHeader(headers.toArray(new String[0])));
 
