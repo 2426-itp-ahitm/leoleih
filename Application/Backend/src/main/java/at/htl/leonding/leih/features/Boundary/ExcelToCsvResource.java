@@ -9,12 +9,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-import org.apache.poi.ss.usermodel.Cell;
 
 
 import java.io.FileInputStream;
@@ -51,8 +48,12 @@ public class ExcelToCsvResource {
             for (Row row : sheet) {
                 List<String> rowData = new ArrayList<>();
                 for (int i = 0; i < headers.size(); i++) {
-                    Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                    rowData.add(cell.toString());
+                    Cell cell = row.getCell(i, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+                    if (cell == null || cell.getCellType() == CellType.BLANK) {
+
+                    } else {
+                        rowData.add(cell.toString());
+                    }
                 }
                 csvPrinter.printRecord(rowData);
             }
