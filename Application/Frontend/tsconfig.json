@@ -16,9 +16,6 @@
       "Model/*": ["src/model/*"]
     }
   },
-  "exclude": [
-    "test/**/*",
-    "unused/**/*"],
-  "include": [
-    "src/**/*"]
+  "exclude": ["test/**/*", "unused/**/*"],
+  "include": ["src/**/*", "assets"]
 }
