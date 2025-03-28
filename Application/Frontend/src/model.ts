@@ -1,33 +1,13 @@
 import {Item} from "./model/item";
 
 interface Model {
-    searchText?: string,
-    items: Item[],
-    selectedId?: number
-}
-const state: Model = {
-    searchText: "",
-    items: []
+    readonly searchText?: string,
+    readonly items: Item[],
+    readonly selectedId?: number,
+    readonly category: Category,
+    readonly categoryBig: boolean
 }
 
-type Subscription = (model:Model) => void
+type Category = "all"|"photo_camera"|"video_camera"|"audio_device"|"room_reservation";
 
-const followers: Subscription[] = []
-
-function subscribe(subscription: Subscription) {
-    followers.push(subscription)
-}
-const handler: ProxyHandler<Model> = {
-    get(target, prop, receiver) {
-        return Reflect.get(target, prop, receiver);
-    },
-    set(model: Model, p: string | symbol, newValue: any, receiver: any) {
-        const success = Reflect.set(model, p, newValue, receiver)
-        followers.forEach(follower => follower(model))
-        return success
-    }
-}
-
-const model = new Proxy(state, handler)
-
-export { model, Model, subscribe }
+export {Model, Category};

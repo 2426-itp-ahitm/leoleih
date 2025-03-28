@@ -1,9 +1,10 @@
 import {html, render} from "lit-html";
 import {style, styleSmall} from "./css_category-container";
-import {model, subscribe} from "../../model";
+import {store} from "../../../store";
 import "./category/category";
-import {getIcon} from "../../model/icon-service";
-import {IconType} from "../../model/icon";
+import {getIcon} from "Model/icon-service";
+import {IconType} from "Model/icon";
+import {distinctUntilChanged, map} from "rxjs";
 
 const HTML_NAME = "category-container";
 
@@ -12,16 +13,16 @@ class Module extends HTMLElement {
         super();
         this.attachShadow({mode: "open"});
     }
-    getCurrentStyle(){
-        if(model.searchText == ""){
+    getCurrentStyle(searchText: string){
+        if(searchText == ""){
             return style;
         }else{
             return styleSmall;
         }
     }
-    content(){
+    content(searchText: string){
         return html`
-        ${this.getCurrentStyle()}
+        ${this.getCurrentStyle(searchText)}
             <div>
                 <custom-category category="photo_camera" svg="${getIcon(IconType.foto)}"></custom-category>
                 <custom-category category="video_camera" svg="${getIcon(IconType.video)}"></custom-category>
@@ -30,14 +31,18 @@ class Module extends HTMLElement {
             </div>
         `
     }
-    renderHTML(){
-        render(this.content(), this.shadowRoot);
+    renderHTML(searchText: string){
+        render(this.content(searchText), this.shadowRoot);
     }
     connectedCallback() {
-        subscribe(model=>{
-            this.renderHTML();
+        store
+            .pipe(
+                map(model=>model.searchText),
+                distinctUntilChanged()
+            )
+            .subscribe(searchText=>{
+            this.renderHTML(searchText);
         })
-        this.renderHTML();
     }
 }
 customElements.define(HTML_NAME, Module);

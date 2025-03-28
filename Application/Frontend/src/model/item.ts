@@ -1,13 +1,13 @@
 import {IconType} from "../model/icon";
 
 export interface Item {
-    dev_id: number;
-    dev_type: string;
-    dev_category: IconType;
-    dev_serial_nr: string;
-    dev_asset_nr: string;
-    lent_from: number;
-    return_date: Date;
-    notes: string;
-    dev_set: string;
+    readonly dev_id: number;
+    readonly dev_type: string;
+    readonly dev_category: IconType;
+    readonly dev_serial_nr: string;
+    readonly dev_asset_nr: string;
+    readonly lent_from: number;
+    readonly return_date: Date;
+    readonly notes: string;
+    readonly dev_set: string;
 }
