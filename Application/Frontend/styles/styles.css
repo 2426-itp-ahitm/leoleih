@@ -1,22 +1,13 @@
-:root {
-  color-scheme: dark;
-}
-custom-header {
+body{
   text-align: center;
-  margin-top: 20vh;
+}
+svg{
+  user-select: none;
+}
+
+div{
+  display: grid;
+  text-align: center;
   font-family: "Passion One", sans-serif;
   position: sticky;
-}
-@media screen and (max-width: 968px) {
-  custom-main {
-    grid-template-columns: repeat(2, 200px);
-  }
-}
-@media screen and (max-width: 568px) {
-  custom-header {
-    margin-top: 7vh;
-  }
-  custom-main {
-    grid-template-columns: repeat(1, 200px);
-  }
 }
