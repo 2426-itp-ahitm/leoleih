@@ -1,16 +1,18 @@
-import {BehaviorSubject} from "rxjs";
-import {Model} from "./model";
+import { BehaviorSubject } from "rxjs";
+import { Model } from "./model";
 
 const initialModelState: Model = {
-    searchText: "",
-    items: [],
-    category: "all",
-    categoryBig: true,
-}
+  searchText: "",
+  items: [],
+  category: "all",
+  categoryBig: true,
+  detailView: false,
+  detailItem: null,
+};
 
 const store = new BehaviorSubject<Model>(initialModelState);
 
 function set(recipe: (model: Model) => void) {
-    recipe(store.value)
+  recipe(store.value);
 }
-export { store, set }
+export { store, set };

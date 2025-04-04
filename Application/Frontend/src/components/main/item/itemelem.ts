@@ -68,7 +68,16 @@ class Module extends HTMLElement {
     }
     return html`
       ${style}
-      <div class="item${item.dev_id}">
+      <div
+        class="item${item.dev_id}"
+        @click=${() => {
+          const newState = produce(store.getValue(), (draft) => {
+            draft.detailItem = this.item;
+            draft.detailView = true;
+          });
+          store.next(newState);
+        }}
+      >
         <div id="box">
           <svg
             class="categoryIcon"
