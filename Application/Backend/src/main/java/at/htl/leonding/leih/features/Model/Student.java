@@ -17,6 +17,8 @@ public class Student {
     private String stud_last_name;
     private String stud_email;
     private String stud_class;
+    @OneToOne(mappedBy = "student")
+    private Cart cart;
     @OneToMany(mappedBy = "lent_from")
     private List<Device> devices;
 
