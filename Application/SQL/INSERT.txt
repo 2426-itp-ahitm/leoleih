@@ -346,3 +346,9 @@ VALUES
     (156, 'VZ 32', 8, 'Ersatzakku für Blackmagic Cinema Pocket', NULL, NULL, ''),
     (157, 'VZ 33', 8, 'Ersatzakku für Panasonic GH4', NULL, NULL, '');
 
+    INSERT INTO `Student` (`stud_id`, `stud_first_name`, `stud_last_name`, `stud_email`, `stud_class`)
+VALUES(1, 'Christian','Aberger','c.aberger@htl-leonding','4AHITM');
+
+INSERT INTO `Cart` (`cart_id`, `student_id`)
+VALUES(1, 1);
+
