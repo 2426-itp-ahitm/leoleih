@@ -1,13 +1,19 @@
-import {Item} from "./model/item";
+import { Item } from "./model/item";
 
 interface Model {
-    readonly searchText?: string,
-    readonly items: Item[],
-    readonly selectedId?: number,
-    readonly category: Category,
-    readonly categoryBig: boolean
+  readonly searchText?: string;
+  readonly items: Item[];
+  readonly selectedId?: number;
+  readonly category: Category;
+  readonly categoryBig: boolean;
+  readonly detailItem: Item | null;
 }
 
-type Category = "all"|"photo_camera"|"video_camera"|"audio_device"|"room_reservation";
+type Category =
+  | "all"
+  | "photo_camera"
+  | "video_camera"
+  | "audio_device"
+  | "room_reservation";
 
-export {Model, Category};
+export { Model, Category };

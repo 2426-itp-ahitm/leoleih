@@ -1,10 +1,10 @@
 import { html, render } from "lit-html";
 import { style } from "./css_main";
 import { store } from "../../store";
-import "./detailview/detailview";
 import "./item/itemelem";
 import { distinctUntilChanged, map } from "rxjs";
 import { Item } from "Model/item";
+import { produce } from "immer";
 
 const HTML_NAME = "custom-main";
 
@@ -23,31 +23,51 @@ class Module extends HTMLElement {
     this.attachShadow({ mode: "open" });
   }
 
-  content(items: Item[]) {
+  content(items: Item[], detailItem: Item | undefined) {
     const elements = [];
     for (let i = 0; i < items.length; i++) {
       elements.push(itemTemplate(items[i]));
     }
+    console.log(detailItem);
     return html`
       ${style}
       <div style="opacity: ${elements.length === 0 ? 0 : 1}">${elements}</div>
-      <custom-detailview></custom-detailview>
+      ${detailItem != undefined
+        ? html`
+            <dialog id="detailDialog" open>
+              <h2>${detailItem.dev_type}</h2>
+              <p>Notes: ${detailItem.notes}</p>
+              <button @click=${() => this.closeDetailDialog()}>Close</button>
+            </dialog>
+          `
+        : html``}
     `;
   }
-
+  closeDetailDialog() {
+    const newState = produce(store.getValue(), (draft) => {
+      draft.detailItem = undefined;
+    });
+    store.next(newState);
+  }
   connectedCallback() {
     store
       .pipe(
-        map((module) => module.items),
-        distinctUntilChanged(),
+        map((module) => ({
+          items: module.items,
+          detailItem: module.detailItem,
+        })),
+        distinctUntilChanged(
+          (prev, curr) =>
+            prev.items === curr.items && prev.detailItem === curr.detailItem,
+        ),
       )
-      .subscribe((items) => {
-        this.renderHTML(items);
+      .subscribe(({ items, detailItem }) => {
+        this.renderHTML(items, detailItem);
       });
   }
 
-  async renderHTML(items: Item[]) {
-    render(this.content(items), this.shadowRoot);
+  async renderHTML(items: Item[], detailItem: Item | undefined) {
+    render(this.content(items, detailItem), this.shadowRoot);
   }
 }
 
