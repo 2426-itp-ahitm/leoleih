@@ -140,6 +140,13 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-maven-plugin</artifactId>
+                <configuration>
+                    <jvmArgs>-Dnet.bytebuddy.experimental=true</jvmArgs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
