@@ -1,7 +1,11 @@
 -- drop all tables and constraints
 SET FOREIGN_KEY_CHECKS = 0;
 
-
+drop table if exists Device;
+drop table if exists Equipment;
+drop table if exists Room;
+drop table if exists Student;
+drop table if exists Teacher;
 -- mariadb-leoleih-dev.Room definition
 
 CREATE TABLE Room (
@@ -68,26 +72,6 @@ CREATE TABLE Equipment (
                            KEY Equipment_Student_FK (lent_from),
                            CONSTRAINT Equipment_Student_FK FOREIGN KEY (lent_from) REFERENCES Student (stud_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
--- mariadb-leoleih-dev.Cart definition
-
-CREATE TABLE Cart(
-                     cart_id int(11) NOT NULL,
-                     student_id int(11) NOT NULL,
-                     PRIMARY KEY (cart_id),
-                     KEY cart_student_FK (student_id),
-                     CONSTRAINT cart_student_FK FOREIGN KEY (student_id) REFERENCES Student (stud_id) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
-
--- mariadb-leoleih-dev.Cart_Item definition
-CREATE TABLE DeviceCart(
-                          cart_id int(11) NOT NULL,
-                          dev_id int(11) NOT NULL,
-                          KEY cart_id_FK (cart_id),
-                          CONSTRAINT cart_id_FK FOREIGN KEY (cart_id) REFERENCES Cart (cart_id) ON DELETE CASCADE ON UPDATE CASCADE,
-                          KEY dev_id_FK (dev_id),
-                          CONSTRAINT dev_id_FK FOREIGN KEY (dev_id) REFERENCES Device (dev_id) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_ai_ci;
 
 INSERT INTO `Device` (`dev_id`, `dev_category`, `dev_set`, `dev_type`, `dev_serial_nr`, `dev_asset_nr`, `return_date`, `lent_from`, `notes`)
 VALUES
@@ -436,9 +420,9 @@ VALUES
     (156, 'VZ 32', 8, 'Ersatzakku für Blackmagic Cinema Pocket', NULL, NULL, ''),
     (157, 'VZ 33', 8, 'Ersatzakku für Panasonic GH4', NULL, NULL, '');
 
-INSERT INTO `Student` (`stud_id`, `stud_first_name`, `stud_last_name`, `stud_email`, `stud_class`)
-VALUES(1, 'Christian','Aberger','c.aberger@htl-leonding','4AHITM');
-
-INSERT INTO `Cart` (`cart_id`, `student_id`)
-VALUES(1, 1);
-
+INSERT INTO `DeviceCart`(`cart_Id`,`dev_id`)
+VALUES
+    (1,1),
+    (1,3),
+    (1,111),
+    (1,27);
