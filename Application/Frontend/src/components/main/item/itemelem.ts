@@ -73,7 +73,6 @@ class Module extends HTMLElement {
         @click=${() => {
           const newState = produce(store.getValue(), (draft) => {
             draft.detailItem = this.item;
-            draft.detailView = true;
           });
           store.next(newState);
         }}

@@ -6,7 +6,6 @@ interface Model {
   readonly selectedId?: number;
   readonly category: Category;
   readonly categoryBig: boolean;
-  readonly detailView: boolean;
   readonly detailItem: Item | null;
 }
 

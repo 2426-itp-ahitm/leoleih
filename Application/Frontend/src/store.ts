@@ -6,7 +6,6 @@ const initialModelState: Model = {
   items: [],
   category: "all",
   categoryBig: true,
-  detailView: false,
   detailItem: null,
 };
 
