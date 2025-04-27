@@ -15,14 +15,7 @@ public class Cart {
     @JoinColumn(name = "stud_id", referencedColumnName = "stud_id")
     private Student student;
 
-    @OneToOne(mappedBy = "cart")
-    private DeviceCart deviceCart;
 
-    public Cart(Long cart_Id, Student student, DeviceCart deviceCart) {
-        this.cart_Id = cart_Id;
-        this.student = student;
-        this.deviceCart = deviceCart;
-    }
 
     public Long getCartId() {
         return cart_Id;
@@ -38,13 +31,5 @@ public class Cart {
 
     public void setStudent(Student student) {
         this.student = student;
-    }
-
-    public DeviceCart getDeviceCart() {
-        return deviceCart;
-    }
-
-    public void setDeviceCart(DeviceCart deviceCart) {
-        this.deviceCart = deviceCart;
     }
 }

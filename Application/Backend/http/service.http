@@ -55,6 +55,18 @@ Content-Type: */*
 GET http://localhost:8080/eq
 
 ###
+
+GET http://localhost:8080/cart
+
+###
+
+POST http://localhost:8080/cart/998/997
+
+###
+
+GET http://localhost:8080/cart/998
+
+###
 POST http://localhost:8080/excel-to-csv
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 

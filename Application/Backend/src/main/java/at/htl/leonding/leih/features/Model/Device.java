@@ -24,9 +24,6 @@ public class Device {
     private Timestamp return_date;
     private String notes;
     @ManyToOne
-    @JoinColumn(name = "devices")
-    private DeviceCart device_cart;
-    @ManyToOne
     @JoinColumn(name = "lent_from")
     private Student lent_from;
 
@@ -36,14 +33,6 @@ public class Device {
 
     public void setDev_id(Long dev_id) {
         this.dev_id = dev_id;
-    }
-
-    public DeviceCart getDevice_cart() {
-        return device_cart;
-    }
-
-    public void setDevice_cart(DeviceCart device_cart) {
-        this.device_cart = device_cart;
     }
 
     public String getDev_type() {
