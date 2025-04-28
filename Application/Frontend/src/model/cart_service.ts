@@ -1,4 +1,6 @@
 import { Item } from "./item";
+import { produce } from "immer";
+import { store } from "../store";
 
 export function addItemToBasket(itemId: number) {
   fetch("http://localhost:8080/cart/1/" + itemId, {
@@ -17,4 +19,12 @@ export async function getCartItems(id: number) {
   const response = await fetch("http://localhost:8080/cart/" + id);
   const data = await response.json();
   return (await data) as Item[];
+}
+
+export async function updateCartItems() {
+  const cartItems = await getCartItems(1);
+  const newState = produce(store.getValue(), (draft) => {
+    draft.cartItems = cartItems;
+  });
+  store.next(newState);
 }

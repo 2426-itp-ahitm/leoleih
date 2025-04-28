@@ -60,7 +60,7 @@ GET http://localhost:8080/cart
 
 ###
 
-POST http://localhost:8080/cart/1/997
+POST http://localhost:8080/cart/1/178
 
 ###
 

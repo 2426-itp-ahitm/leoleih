@@ -6,7 +6,8 @@ import { distinctUntilChanged, map } from "rxjs";
 import { Item } from "Model/item";
 import { produce } from "immer";
 import "./cart_dialog/cart_dialog";
-import { addItemToBasket } from "../../model/cart_service";
+import { addItemToBasket, updateCartItems } from "../../model/cart_service";
+
 const HTML_NAME = "custom-main";
 
 function itemTemplate(item: Item) {
@@ -29,6 +30,7 @@ class Module extends HTMLElement {
     for (let i = 0; i < items.length; i++) {
       elements.push(itemTemplate(items[i]));
     }
+    updateCartItems();
     console.log("Detail Item Selected", detailItem);
     return html`
       ${style}
