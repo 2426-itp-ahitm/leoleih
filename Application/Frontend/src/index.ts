@@ -15,22 +15,20 @@ let oldSearchText: string = undefined;
 
 store
   .pipe(
-    map((model) => {
-      //returns a SearchPrompt
-      return {
-        searchText: model.searchText,
-        category: model.category,
-      };
-    }),
-    distinctUntilChanged(),
+    map((model) => ({
+      searchText: model.searchText,
+      category: model.category,
+    })),
+    distinctUntilChanged(
+      (prev, curr) =>
+        prev.searchText === curr.searchText &&
+        prev.category === curr.category
+    ),
   )
-  .subscribe(async (searchPrompt) => {
+  .subscribe(async (searchPrompt, category) => {
     if (searchPrompt.searchText != oldSearchText) {
       oldSearchText = searchPrompt.searchText;
-      const items = await loadItems(
-        searchPrompt.searchText,
-        searchPrompt.category,
-      );
+      const items = await loadItems(searchPrompt.searchText);
       const newState = produce(store.getValue(), (draft) => {
         draft.items = items;
       });
