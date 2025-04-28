@@ -7,6 +7,7 @@ interface Model {
   readonly category: Category;
   readonly categoryBig: boolean;
   readonly detailItem: Item | null;
+  readonly cartOpen: boolean;
 }
 
 type Category =

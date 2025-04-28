@@ -7,6 +7,7 @@ const initialModelState: Model = {
   category: "all",
   categoryBig: true,
   detailItem: null,
+  cartOpen: false,
 };
 
 const store = new BehaviorSubject<Model>(initialModelState);
