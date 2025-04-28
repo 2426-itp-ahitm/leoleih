@@ -32,6 +32,7 @@ class Module extends HTMLElement {
     return html`
       ${style}
       <div style="opacity: ${elements.length === 0 ? 0 : 1}">${elements}</div>
+      <div id="basket"></div>
       ${detailItem != undefined
         ? html`
             <dialog id="detailDialog" open>
@@ -41,11 +42,26 @@ class Module extends HTMLElement {
             </dialog>
           `
         : html``}
+      ${store.getValue().basketOpen
+        ? html`
+            <dialog id="basketDialog" open>
+              <h2>Basket</h2>
+              <p>Items in basket</p>
+              <button @click=${() => this.closeBasketDialog()}>Close</button>
+            </dialog>
+          `
+        : html``}
     `;
   }
   closeDetailDialog() {
     const newState = produce(store.getValue(), (draft) => {
       draft.detailItem = undefined;
+    });
+    store.next(newState);
+  }
+  closeBasketDialog() {
+    const newState = produce(store.getValue(), (draft) => {
+      draft.basketOpen = false;
     });
     store.next(newState);
   }

@@ -64,7 +64,7 @@ POST http://localhost:8080/cart/998/997
 
 ###
 
-GET http://localhost:8080/cart/998
+GET http://localhost:8080/cart/1
 
 ###
 POST http://localhost:8080/excel-to-csv
