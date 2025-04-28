@@ -11,7 +11,6 @@ import java.util.Set;
 @Table(name = "CART_ITEM")
 public class DeviceCart{
     @Id
-    @GeneratedValue
     private Long id;
 
     private Long cart_id;
@@ -23,7 +22,8 @@ public class DeviceCart{
     public DeviceCart() {
     }
 
-    public DeviceCart(Long cart_id, Long dev_id) {
+    public DeviceCart(Long id, Long cart_id, Long dev_id) {
+        this.id = id;
         this.cart_id = cart_id;
         this.dev_id = dev_id;
     }

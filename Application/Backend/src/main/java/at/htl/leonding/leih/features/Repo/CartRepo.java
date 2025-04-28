@@ -20,7 +20,10 @@ public class CartRepo {
         return em.createNamedQuery("DeviceCart.findAll", DeviceCart.class).getResultList();
     }
     public void reserveDevice(Long userId, Long deviceId) {
-        DeviceCart cart = new DeviceCart(userId, deviceId);
+        Long id = (long) getAllCarts().size();
+        id++;
+
+        DeviceCart cart = new DeviceCart(id, userId, deviceId);
         em.persist(cart);
     }
 }
