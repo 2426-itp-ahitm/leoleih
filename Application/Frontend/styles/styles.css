@@ -2,12 +2,16 @@
   color-scheme: light dark;
   --light-bg: white;
   --light-color: black;
-  --dark-bg: black;
+  --dark-bg: #121212;
   --dark-color: white;
 }
-
+* {
+  background-color: light-dark(var(--light-bg), var(--dark-bg));
+  color: light-dark(var(--light-color), var(--dark-color));
+}
 body{
   text-align: center;
+  
 }
 svg{
   user-select: none;
