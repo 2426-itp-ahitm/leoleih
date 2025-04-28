@@ -1,12 +1,9 @@
 import { Item } from "./item";
-import { Category } from "../model";
 import { produce } from "immer";
 import { store } from "../store";
 
-async function loadItems(
-  searchText: string,
-  category: Category,
-): Promise<Item[]> {
+async function loadItems(searchText: string): Promise<Item[]> {
+  console.log("----------- loaded items -----------");
   if (!searchText) {
     console.log("Search text not found.");
   }
@@ -14,8 +11,8 @@ async function loadItems(
     const response = await fetch("http://localhost:8080/devices");
     const data = await response.json();
     let items = [];
-    console.log(data);
-    switch (category) {
+    console.log("catgory", store.getValue().category);
+    switch (store.getValue().category) {
       case "photo_camera":
         items = data.filter((item) => item.dev_category == 1);
         break;
@@ -54,14 +51,6 @@ async function loadDetail(id) {
   const response = await fetch("http://localhost:8080/devices/" + id);
   const data = await response.json();
   return (await data) as Item;
-}
-
-function addItemToBasket(item: Item) {}
-
-async function getCartItems(id: number): Promise<Item[]> {
-  const response = await fetch("http://localhost:8080/cart/" + id);
-  const data = await response.json();
-  return (await data) as Item[];
 }
 
 export { loadItems, loadDetail };

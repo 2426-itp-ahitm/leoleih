@@ -5,6 +5,8 @@ import { produce } from "immer";
 import { loadItems } from "Model/item-service";
 import { distinctUntilChanged, map } from "rxjs";
 import { Category } from "./model";
+import { getCartItems } from "./model/cart_service";
+import { Item } from "./model/item";
 
 interface SearchPrompt {
   searchText: string;
@@ -21,17 +23,24 @@ store
     })),
     distinctUntilChanged(
       (prev, curr) =>
-        prev.searchText === curr.searchText &&
-        prev.category === curr.category
+        prev.searchText === curr.searchText && prev.category === curr.category,
     ),
   )
-  .subscribe(async (searchPrompt, category) => {
-    if (searchPrompt.searchText != oldSearchText) {
-      oldSearchText = searchPrompt.searchText;
-      const items = await loadItems(searchPrompt.searchText);
-      const newState = produce(store.getValue(), (draft) => {
-        draft.items = items;
-      });
-      store.next(newState);
-    }
+  .subscribe(async ({ searchText, category }) => {
+    console.log("category:", category);
+    const items = await loadItems(searchText);
+    const newState = produce(store.getValue(), (draft) => {
+      draft.items = items;
+    });
+    store.next(newState);
   });
+
+//cart
+updateCartItems();
+async function updateCartItems() {
+  const cartItems = await getCartItems(1);
+  const newState = produce(store.getValue(), (draft) => {
+    draft.cartItems = cartItems;
+  });
+  store.next(newState);
+}

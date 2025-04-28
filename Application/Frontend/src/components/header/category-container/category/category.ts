@@ -1,21 +1,20 @@
-import { html, render } from "lit-html"
-import { style, styleSmall } from "./css_category"
-import {store} from "../../../../store";
-import {distinctUntilChanged, map} from "rxjs";
-import {produce} from "immer";
-import {Category} from "../../../../model";
+import { html, render } from "lit-html";
+import { style, styleSmall } from "./css_category";
+import { store } from "../../../../store";
+import { distinctUntilChanged, map } from "rxjs";
+import { produce } from "immer";
+import { Category } from "../../../../model";
 
 const HTML_NAME = "custom-category";
 class Module extends HTMLElement {
-
   constructor() {
     super();
-    this.attachShadow({ mode: "open" })
+    this.attachShadow({ mode: "open" });
   }
   get svg() {
     return this.getAttribute("svg");
   }
-  get category(){
+  get category() {
     return this.getAttribute("category") as Category;
   }
   getCurrentStyle(categoryBig: boolean) {
@@ -28,7 +27,7 @@ class Module extends HTMLElement {
   content(categoryBig: boolean) {
     return html`
       ${this.getCurrentStyle(categoryBig)}
-      <div @click=${()=>this.set_category()} >
+      <div @click=${() => this.set_category()}>
         <svg
           class="categoryIcon"
           xmlns="http://www.w3.org/2000/svg"
@@ -42,27 +41,31 @@ class Module extends HTMLElement {
       </div>
     `;
   }
-  set_category(){
+  set_category() {
     console.log("category type clicked and set to search:", this.category);
-    const newState = produce(store.getValue(),draft=>{
+    const newState = produce(store.getValue(), (draft) => {
       //Sets the Search text to the name of the category that then gets used in the item service.
       draft.category = this.category as Category;
-    })
+      //if no items are on display, show all items of cathegory
+      if (!draft.items.length) {
+        draft.searchText = " "; //means all items
+      }
+    });
     store.next(newState);
   }
 
   connectedCallback() {
     store
-        .pipe(
-            map(module=>module.categoryBig),
-            distinctUntilChanged()
-        )
-        .subscribe(categoryBig=>{
-      this.renderHTML(categoryBig);
-    })
+      .pipe(
+        map((module) => module.categoryBig),
+        distinctUntilChanged(),
+      )
+      .subscribe((categoryBig) => {
+        this.renderHTML(categoryBig);
+      });
   }
   renderHTML(categoryBig: boolean) {
-    render(this.content(categoryBig), this.shadowRoot)
+    render(this.content(categoryBig), this.shadowRoot);
   }
 }
-customElements.define(HTML_NAME, Module)
+customElements.define(HTML_NAME, Module);

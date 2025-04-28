@@ -5,10 +5,11 @@ import "./item/itemelem";
 import { distinctUntilChanged, map } from "rxjs";
 import { Item } from "Model/item";
 import { produce } from "immer";
-
+import "./cart_dialog/cart_dialog";
+import { addItemToBasket } from "../../model/cart_service";
 const HTML_NAME = "custom-main";
 
-function itemTemplate(item) {
+function itemTemplate(item: Item) {
   if (item == undefined) {
     return html``;
   }
@@ -28,7 +29,7 @@ class Module extends HTMLElement {
     for (let i = 0; i < items.length; i++) {
       elements.push(itemTemplate(items[i]));
     }
-    console.log(detailItem);
+    console.log("Detail Item Selected", detailItem);
     return html`
       ${style}
       <div style="opacity: ${elements.length === 0 ? 0 : 1}">${elements}</div>
@@ -43,19 +44,20 @@ class Module extends HTMLElement {
                 ? html`<p>Notizen: ${detailItem.notes}</p>`
                 : html`Keine Notizen`}
               <button @click=${() => this.closeDetailDialog()}>Close</button>
+              <button
+                @click=${() => this.sendRequestToTeacher(detailItem.dev_id)}
+              >
+                Anfrage an Lehrkraft senden
+              </button>
             </dialog>
           `
         : html``}
-      ${cartOpen
-        ? html`
-            <dialog id="cartDialog" open>
-              <h2>cart</h2>
-              <p>Items in card</p>
-              <button @click=${() => this.closeCartDialog()}>Close</button>
-            </dialog>
-          `
-        : html``}
+      ${cartOpen ? html` <custom-cart-dialog></custom-cart-dialog> ` : html``}
     `;
+  }
+  sendRequestToTeacher(itemId: number) {
+    console.log("Sending request to teacher");
+    addItemToBasket(itemId);
   }
   //Detail Dialog
   closeDetailDialog() {
@@ -71,12 +73,7 @@ class Module extends HTMLElement {
     });
     store.next(newState);
   }
-  closeCartDialog() {
-    const newState = produce(store.getValue(), (draft) => {
-      draft.cartOpen = false;
-    });
-    store.next(newState);
-  }
+
   connectedCallback() {
     store
       .pipe(
@@ -84,12 +81,14 @@ class Module extends HTMLElement {
           items: module.items,
           detailItem: module.detailItem,
           cartOpen: module.cartOpen,
+          category: module.category,
         })),
         distinctUntilChanged(
           (prev, curr) =>
             prev.items === curr.items &&
             prev.detailItem === curr.detailItem &&
-            prev.cartOpen === curr.cartOpen,
+            prev.cartOpen === curr.cartOpen &&
+            prev.category === curr.category,
         ),
       )
       .subscribe(({ items, detailItem, cartOpen }) => {
