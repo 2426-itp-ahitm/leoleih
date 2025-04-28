@@ -20,7 +20,7 @@ const style = html`
       height: 80%;
     }
     #cartButton {
-      position: absolute;
+      position: fixed;
       top: 0vw;
       right: 0vw;
       width: 40px;
