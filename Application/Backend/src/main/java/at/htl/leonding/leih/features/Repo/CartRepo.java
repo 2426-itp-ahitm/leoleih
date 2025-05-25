@@ -13,8 +13,8 @@ public class CartRepo {
     @Inject
     EntityManager em;
 
-    public List getCart(Long id) {
-        return em.createQuery("select i from DeviceCart i where i.cart_id=:id").setParameter("id", id).getResultList();
+    public List<DeviceCart> getCart(Long id) {
+        return em.createQuery("select i from DeviceCart i where i.cart_id=:id", DeviceCart.class).setParameter("id", id).getResultList();
     }
     public List<DeviceCart> getAllCarts() {
         return em.createNamedQuery("DeviceCart.findAll", DeviceCart.class).getResultList();

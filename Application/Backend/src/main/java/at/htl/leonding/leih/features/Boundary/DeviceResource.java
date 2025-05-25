@@ -17,7 +17,6 @@ public class DeviceResource {
 
     @GET
     public Response all() {
-       // var list = repo.listAll().stream().map(mapper::toResource);
         return Response.ok().entity(repo.findAll())
                 .build();
     }

@@ -1,5 +1,6 @@
 package at.htl.leonding.leih.features.Boundary;
 
+import at.htl.leonding.leih.features.Model.Cart;
 import at.htl.leonding.leih.features.Model.DeviceCart;
 import at.htl.leonding.leih.features.Repo.CartRepo;
 import com.sun.codemodel.JForEach;
@@ -43,7 +44,7 @@ public class CartResource {
     @Path("/{cartId}")
         public Response getCart(@PathParam("cartId") Long cartId){
         List<Device> deviceList = new ArrayList<>();
-        List list = cartRepo.getCart(cartId);
+        List<DeviceCart> list = cartRepo.getCart(cartId);
         for (Object o : list){
             DeviceCart deviceCart = (DeviceCart) o;
             Device device = deviceRepo.findById(((DeviceCart) o).getDev_id());
