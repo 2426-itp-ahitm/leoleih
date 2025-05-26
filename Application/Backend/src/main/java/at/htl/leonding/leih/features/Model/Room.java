@@ -1,9 +1,6 @@
 package at.htl.leonding.leih.features.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
+import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 
@@ -13,9 +10,12 @@ public class Room {
     @Id
     @GeneratedValue
     private Long room_id;
-    private Integer room_category;
-    private Timestamp return_date;
-    private Long lent_from;
+    @Column(name = "room_category")
+    private Integer roomCategory;
+    @Column(name = "return_date")
+    private Timestamp returnDate;
+    @Column(name = "lent_from")
+    private Long lentFrom;
 
     public Long getRoom_id() {
         return room_id;
@@ -25,28 +25,28 @@ public class Room {
         this.room_id = room_id;
     }
 
-    public Integer getRoom_category() {
-        return room_category;
+    public Integer getRoomCategory() {
+        return roomCategory;
     }
 
-    public void setRoom_category(Integer room_category) {
-        this.room_category = room_category;
+    public void setRoomCategory(Integer roomCategory) {
+        this.roomCategory = roomCategory;
     }
 
-    public Timestamp getReturn_date() {
-        return return_date;
+    public Timestamp getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturn_date(Timestamp return_date) {
-        this.return_date = return_date;
+    public void setReturnDate(Timestamp returnDate) {
+        this.returnDate = returnDate;
     }
 
-    public Long getLent_from() {
-        return lent_from;
+    public Long getLentFrom() {
+        return lentFrom;
     }
 
-    public void setLent_from(Long lent_from) {
-        this.lent_from = lent_from;
+    public void setLentFrom(Long lentFrom) {
+        this.lentFrom = lentFrom;
     }
 
     public String getNotes() {

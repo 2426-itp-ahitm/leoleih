@@ -1,11 +1,7 @@
 package at.htl.leonding.leih.features.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.NamedQuery;
+import jakarta.persistence.*;
 
-import java.security.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -14,27 +10,32 @@ public class Equipment {
     @Id
     @GeneratedValue
     private Long equ_id;
-    private String equ_type;
-    private String equ_set;
-    private Date return_date;
-    private Long lent_from;
+    @Column(name = "equ_type")
+    private String equType;
+    @Column(name = "equ_set")
+    private String equSet;
+    @Column(name = "return_date")
+    private Date returnDate;
+    @Column(name = "lent_from")
+    private Long lentFrom;
     private String notes;
-    private Long equ_category;
+    @Column(name = "equ_category")
+    private Long equCategory;
 
-    public String getEqu_set() {
-        return equ_set;
+    public String getEquSet() {
+        return equSet;
     }
 
-    public void setEqu_set(String equ_set) {
-        this.equ_set = equ_set;
+    public void setEquSet(String equSet) {
+        this.equSet = equSet;
     }
 
-    public Long getEqu_category() {
-        return equ_category;
+    public Long getEquCategory() {
+        return equCategory;
     }
 
-    public void setEqu_category(Long equ_category) {
-        this.equ_category = equ_category;
+    public void setEquCategory(Long equCategory) {
+        this.equCategory = equCategory;
     }
 
     public Long getEqu_id() {
@@ -46,28 +47,28 @@ public class Equipment {
     }
 
 
-    public String getEqu_type() {
-        return equ_type;
+    public String getEquType() {
+        return equType;
     }
 
-    public void setEqu_type(String equ_type) {
-        this.equ_type = equ_type;
+    public void setEquType(String equType) {
+        this.equType = equType;
     }
 
-    public Date getReturn_date() {
-        return return_date;
+    public Date getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturn_date(Date return_date) {
-        this.return_date = return_date;
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 
-    public Long getLent_from() {
-        return lent_from;
+    public Long getLentFrom() {
+        return lentFrom;
     }
 
-    public void setLent_from(Long lent_from) {
-        this.lent_from = lent_from;
+    public void setLentFrom(Long lentFrom) {
+        this.lentFrom = lentFrom;
     }
 
     public String getNotes() {

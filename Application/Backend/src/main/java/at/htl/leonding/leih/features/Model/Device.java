@@ -1,9 +1,5 @@
 package at.htl.leonding.leih.features.Model;
 import jakarta.persistence.*;
-import org.jboss.resteasy.spi.touri.MappedBy;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 
@@ -11,17 +7,22 @@ import java.sql.Timestamp;
 @NamedQueries({
     @NamedQuery(name="Device.findAll", query="SELECT i FROM Device i"),
     @NamedQuery(name="Device.findById", query="SELECT i FROM Device i WHERE id = :filter_id"),
-    @NamedQuery(name="Device.findByCategory",query="SELECT i FROM Device i WHERE dev_category = :filter")
+    @NamedQuery(name="Device.findByCategory",query="SELECT i FROM Device i WHERE devCategory = :filter")
 })
 public class Device {
     @Id
     @GeneratedValue()
     private Long dev_id;
-    private String dev_type;
-    private int dev_category;
-    private String dev_serial_nr;
-    private String dev_asset_nr;
-    private Timestamp return_date;
+    @Column(name = "dev_type")
+    private String devType;
+    @Column(name = "dev_category")
+    private int devCategory;
+    @Column(name = "dev_serial_nr")
+    private String devSerialNr;
+    @Column(name = "dev_asset_nr")
+    private String devAssetNr;
+    @Column(name = "return_date")
+    private Timestamp returnDate;
     private String notes;
     @ManyToOne
     @JoinColumn(name = "lent_from")
@@ -35,45 +36,45 @@ public class Device {
         this.dev_id = dev_id;
     }
 
-    public String getDev_type() {
-        return dev_type;
+    public String getDevType() {
+        return devType;
     }
 
-    public void setDev_type(String dev_type) {
-        this.dev_type = dev_type;
+    public void setDevType(String devType) {
+        this.devType = devType;
     }
 
-    public int getDev_category() {
-        return dev_category;
+    public int getDevCategory() {
+        return devCategory;
     }
 
-    public void setDev_category(int dev_category) {
-        this.dev_category = dev_category;
+    public void setDevCategory(int devCategory) {
+        this.devCategory = devCategory;
     }
 
-    public String getDev_serial_nr() {
-        return dev_serial_nr;
+    public String getDevSerialNr() {
+        return devSerialNr;
     }
 
-    public void setDev_serial_nr(String dev_serial_nr) {
-        this.dev_serial_nr = dev_serial_nr;
+    public void setDevSerialNr(String devSerialNr) {
+        this.devSerialNr = devSerialNr;
     }
 
-    public String getDev_asset_nr() {
-        return dev_asset_nr;
+    public String getDevAssetNr() {
+        return devAssetNr;
     }
 
-    public void setDev_asset_nr(String dev_asset_nr) {
-        this.dev_asset_nr = dev_asset_nr;
+    public void setDevAssetNr(String devAssetNr) {
+        this.devAssetNr = devAssetNr;
     }
 
 
-    public Timestamp getReturn_date() {
-        return return_date;
+    public Timestamp getReturnDate() {
+        return returnDate;
     }
 
-    public void setReturn_date(Timestamp return_date) {
-        this.return_date = return_date;
+    public void setReturnDate(Timestamp returnDate) {
+        this.returnDate = returnDate;
     }
 
     public String getNotes() {
