@@ -15,7 +15,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
-          cache-dependency-path: './Application/Backend/pom.xml'
+          cache-dependency-path: 'Application/Backend/pom.xml'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        working-directory: './Application/Backend/pom.xml'
+        working-directory: 'Application/Backend/pom.xml'
