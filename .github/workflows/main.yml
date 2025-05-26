@@ -19,3 +19,6 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
         working-directory: Application/Backend
+      - name: build and push docker image
+        run: |
+          docker image tag leoleih-quarkus ghrc.io/christoph....
