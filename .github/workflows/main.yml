@@ -6,7 +6,9 @@ permissions:
   contents: read
 jobs:
   Backend:
-    permissions: write-all
+    permissions:
+      contents: write
+      packages: write
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository code
@@ -31,5 +33,3 @@ jobs:
           docker build --file src/main/docker/Dockerfile --tag ghrc.io/2426-itp-ahitm/leoleih .
           docker push ghrc.io/2426-itp-ahitm/leoleih
         working-directory: Application/Backend
-
-
