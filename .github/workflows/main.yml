@@ -18,5 +18,5 @@ jobs:
         working-directory: Application/Backend
       - name: build docker
         run: |
-          docker build --tag ghrc.io/2426-itp-ahitm/leoleih
-          docker push
+          docker build --tag ghrc.io/2426-itp-ahitm/leoleih .
+          docker push ghrc.io/2426-itp-ahitm/leoleih
