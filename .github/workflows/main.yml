@@ -5,7 +5,8 @@ permissions:
   packages: write
   contents: read
 jobs:
-  Explore-GitHub-Actions:
+  Backend:
+    permissions: write-all
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository code
