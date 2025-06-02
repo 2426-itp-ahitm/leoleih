@@ -30,6 +30,7 @@ jobs:
       - name: build docker
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
-          docker build --file src/main/docker/Dockerfile --tag ${{ env.TAG }} .
+          docker build --tag ${{ env.TAG }} --file src/main/docker/Dockerfile .
+          docker image ls
           docker push ${{ env.TAG }}
         working-directory: Application/Backend
