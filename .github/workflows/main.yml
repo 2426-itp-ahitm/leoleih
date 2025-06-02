@@ -1,14 +1,14 @@
 name: GitHub Actions Demo
 run-name: Build project
 on: [push]
-permissions:
-  packages: write
-  contents: read
+
 jobs:
   Backend:
     permissions:
-      contents: write
       packages: write
+      contents: read
+      attestations: write
+      id-token: write
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository code
