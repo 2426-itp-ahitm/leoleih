@@ -25,6 +25,6 @@ jobs:
       - name: build docker
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
-          docker build --file src/main/docker/Dockerfile --tag ghrc.io/2426-itp-ahitm/leoleih .
+          docker build --file src/main/docker/Dockerfile --tag ghcr.io/2426-itp-ahitm/leoleih .
           docker push ghrc.io/2426-itp-ahitm/leoleih:latest
         working-directory: Application/Backend
