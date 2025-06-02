@@ -1,6 +1,9 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
+permissions:
+  packages: write
+  contents: read
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-24.04
@@ -19,5 +22,5 @@ jobs:
       - name: build docker
         run: |
           docker build --file src/main/docker/Dockerfile --tag ghrc.io/2426-itp-ahitm/leoleih .
-          echo docker push ghrc.io/2426-itp-ahitm/leoleih
+          docker push ghrc.io/2426-itp-ahitm/leoleih
         working-directory: Application/Backend
