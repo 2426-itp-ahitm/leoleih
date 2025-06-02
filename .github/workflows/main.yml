@@ -31,5 +31,5 @@ jobs:
       - name: build docker
         run: |
           docker build --file src/main/docker/Dockerfile --tag ghrc.io/2426-itp-ahitm/leoleih .
-          docker push ghrc.io/2426-itp-4AHITM/leoleih
+          docker push ghrc.io/2426-itp-ahitm/leoleih:latest
         working-directory: Application/Backend
