@@ -2,6 +2,11 @@ name: GitHub Actions Demo
 run-name: Build project
 on: [push]
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
 jobs:
   Backend:
     permissions:
@@ -25,6 +30,6 @@ jobs:
       - name: build docker
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
-          docker build --file src/main/docker/Dockerfile --tag ghcr.io/2426-itp-ahitm/leoleih .
-          docker push ghrc.io/2426-itp-ahitm/leoleih:latest
+          docker build --file src/main/docker/Dockerfile --tag ${{ env.TAG }} .
+          docker push ${{ env.TAG }}
         working-directory: Application/Backend
