@@ -1,0 +1,84 @@
+= Projekt ITP
+1.0.0, {docdate}: ITP
+//:toc-placement!:  // prevents the generation of the doc at this position, so it can be printed afterwards
+:sourcedir: ../src/main/java
+:icons: font
+:sectnums:    // Nummerierung der Überschriften / section numbering
+:toc: left
+:experimental:
+
+
+== Projektauftrag
+
+=== Projektname
+OmniaL
+
+=== Ausgangssituation
+In der Htl-Leonding ist eine mittelgroße Schule in Oberösterreich.
+Viele Schüler arbeiten in der Schule an diversen Projekten/Aufgaben. +
+Oftmals fällt es schwer einen Raum zu finden, welcher frei ist, da Reservierungen für z.B. EDV-Sääle sind an der Schule nur für Lehrer möglich sind. +
+Die Entlehnung von Equipment wird auf einem Blatt Papier ausgeführt, wodurch beim Ausleihen Fehler unterlaufen können. +
+Schüler wissen nicht, wann das jeweilige Equipment wieder verfügbar ist. +
+
+=== Projektbeschreibung
+Eine Anwendung die es Schülern und Lehrern ermöglicht Räume zu reservieren sowie die Entlehnung von Equipment durchzuführen. +
+Die Raumreservierung wird ähnlich zu WebUntis wie ein Kalender gestaltet sein, Schüler können bei leeren Räumen eine Reservierung machen. +
+Die Entlehnung funktioniert nach dem Shop-Prinzip, das gebrauchte Equipment kann in einen "Warenkorb" gegeben werden und für einen gewünschten Zeitraum reserviert werden. Will man das Equipment direkt reservieren so kann man auch den QR-Code scanen. +
+Ist das gewünschte Equipment gerade ausgeliehen, so wird angezeigt ab wann das Equipment wieder zur verfügung steht. +
+Wollen die Professoren wissen, wer was ausgeliehen hat, so sehen sie dies über die Entlehnliste, welche auch ausgedruckt werden kann. +
+
+
+
+=== Projektziel / Nicht-Ziele
+* Schüler wird das planen der Projekte erleichtert
+* Die Entlehnung des Equipments ist übersichtlicher und Lehrern wird das Management der Geräte erleichtert.
+
+=== Projektinhalte
+* Die Schüler können über ein Kalendersystem einen Raum reservieren.
+* Ein Raum kann immer nur einmal reserviert werden und das nur auf eine gewisse Zeitspanne.
+* Die Entlehnung erfolgt durch das Shop-Prinzip.
+
+
+=== Kritische Erfolgsfaktoren
+* *Zeitrahmen*: Das Projekt muss bis zum Projectaward 2025 abgeschlossen sein.
+* *Qualität*: Die Benutzeroberfläche soll anfängerfreundlich und übersichtlich sein.
+* *Resourcen*: Die benötigten Ressourcen (z.B. Schülerlogins) müssen verfügbar sein.
+
+=== Termine
+==== Projektstart
+Dienstag 10.10.2023
+
+==== Projektende
+20.03.2025
+
+====  Meilensteine
+* Ausdruckbare Entlehnunliste
+* Funktionierendes Kalendersystem
+* Raumreservierung
+* Entlehung per digitaler Liste
+
+=== Ressourcen / Kosten
+Als Ressourcen werden die Schülerlogins benötigt, zur überprüfung der Anmeldedaten.
+
+=== Projektorganisation
+==== Projektauftraggeber
+Aberger Christian
+
+==== Projektleiter
+Sophie Stöger
+
+==== Projektteammitglieder
+- Sophie Stöger
+- Sophie Binder
+- Moritz Wagner
+- Maximillian Slabschi
+
+
+
+
+----
+Unterschrift Auftraggeber:___________________
+
+Unterschrift Projektleiter:___________________
+----
+

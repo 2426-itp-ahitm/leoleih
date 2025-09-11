@@ -1,6 +1,0 @@
-Datenbank SetUp:
-1) Docker starten
-2) docker run --detach --name mariadb-leoleih-dev --env MARIADB_ROOT_PASSWORD=leoleih -e MARIADB_DATABASE=mariadb-leoleih-dev -p 3306:3306 mariadb:latest
-3) in IntelliJ: new Datasource -> MariaDB -> name: mariadb-leoleih-dev Benutzer: root Passwort: leoleih
-4)SQL file "Tables" im SQL Ordner ausführen
-5) SQL FILE "Inserts" im SQL Ordner ausführen
