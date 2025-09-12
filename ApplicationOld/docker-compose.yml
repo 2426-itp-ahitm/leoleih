@@ -1,0 +1,24 @@
+name: leoleih
+services:
+  mariadb:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=leoleih
+      - MYSQL_DATABASE=mariadb-leoleih-dev
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  quarkus:
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    build:
+      context: ./Backend/
+      dockerfile: src/main/docker/Dockerfile
+    ports:
+      - "8080:8080"
