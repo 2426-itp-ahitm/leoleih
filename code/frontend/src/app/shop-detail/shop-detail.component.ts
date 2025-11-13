@@ -53,6 +53,8 @@ export class ShopDetailComponent {
       if (event instanceof NavigationEnd) {
         this.httpService.getEquipmentById(this.route.snapshot.params['id']).subscribe( t => {
           this.equipment = t;
+          console.log("Hahhahah");
+          console.log(this.equipment + "Element");
         })
         this.renderCalendar();
       }
