@@ -8,8 +8,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class UserService implements OnDestroy {
   private http: HttpClient = inject(HttpClient);
+<<<<<<< HEAD
   //private URL: string = 'https://it200281.cloud.htl-leonding.ac.at/api/';
   private URL: string = 'http://localhost:8080/api/';
+=======
+  private URL: string = 'https://it200281.cloud.htl-leonding.ac.at/api/';
+>>>>>>> 8ee5df6d970ab36b64c7e0f758f51d339d806482
 
   // BehaviorSubject to track current user
   private userSubject = new BehaviorSubject<Person | null>(null);
@@ -28,8 +32,6 @@ export class UserService implements OnDestroy {
       this.refreshUserData(token);
     }
 
-    console.log("hier")
-    console.log(this.user$)
     // Listen for auth state changes
     this.authEventListener = this.handleAuthStateChange.bind(this);
     window.addEventListener('auth-state-changed', this.authEventListener);

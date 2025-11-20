@@ -10,17 +10,17 @@ export const routes: Routes = [
   {
     path: '',
     component: ShopStartComponent,
-    title: 'Omnial'
+    title: 'Leoleih'
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
-    title: 'Omnial'
+    title: 'Leoleih'
   },
   {
     path: 'cart',
     component: ShopCartComponent,
-    title: 'Omnial'
+    title: 'Leoleih'
   },
   {
     path: 'room',
@@ -30,11 +30,11 @@ export const routes: Routes = [
   {
     path: 'detail/:id',
     component: ShopDetailComponent,
-    title: 'Omnial'
+    title: 'Leoleih'
   },
   {
     path: 'students',
     component: StudentDashboardComponent,
-    title: 'Omnial'
+    title: 'Leoleih'
   }
 ];
