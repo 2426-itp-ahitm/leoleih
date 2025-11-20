@@ -1,0 +1,103 @@
+
+# Demo Nginx Deployment to display information for the authenticated user
+###
+###
+# config map mounted as index.html
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-demo
+data:
+  index.html: |
+    <!doctype html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="color-scheme" content="light dark" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"">
+        <title>LeoCloud - Welcome</title>
+      </head>
+      <body>
+        <main class="container">
+          <h1>Willkommen in der LeoCloud</h1>
+            <article>
+              <div>
+                Ich bin <strong>Korzeniowski Christoph</strong> und meine e-Mail ist <b>c.korzeniowski@students.htl-leonding.ac.at</b>.
+                Mein Benutzername ist <strong>it210153</strong> Meine Klasse ist 5HAITM
+                
+              </div>
+              <div>
+                Mein Namespace ist <code>student-it210153</code> und 
+                meine Anwendung befindet sich hier: <a href="https://it210153.cloud.htl-leonding.ac.at" target="_blank">https://it210153.cloud.htl-leonding.ac.at</a>
+              </div>
+              <div>
+                Mein Dashboard kann ich öffnen, indem ich im Terminal eingebe: <p><code>leocloud dashboard</code></p>
+              </div>
+            </article>
+        </main>
+      </body>
+    </html>
+---
+# nginx Web Server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-demo
+spec:
+  selector:
+    matchLabels:
+      app: nginx-demo
+  template:
+    metadata:
+      labels:
+        app: nginx-demo
+    spec:
+      containers:
+        - name: nginx-demo
+          image: nginx:stable
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html/index.html
+              subPath: index.html
+      volumes:
+        - name: html
+          configMap:
+            name: nginx-demo
+            items:
+              - key: index.html
+                path: index.html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-demo
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: nginx-demo
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: leocloud-nginx-demo-root
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: it210153.cloud.htl-leonding.ac.at
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-demo
+            port:
+              number: 80
+
+
