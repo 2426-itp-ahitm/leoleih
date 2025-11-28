@@ -1,6 +1,10 @@
 package at.htlleonding.omnial.resource;
 
 
+import at.htlleonding.omnial.DTO.RentalDTO;
+import at.htlleonding.omnial.DTO.RentalEquipmentDTO;
+import at.htlleonding.omnial.DTO.RentalEquipmentMapper;
+import at.htlleonding.omnial.DTO.RentalMapper;
 import at.htlleonding.omnial.DTO.RentalRequest;
 import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.Rental;
@@ -32,61 +36,67 @@ public class RentalResource {
     @Inject
     PersonRepository personRepository;
 
+    @Inject
+    RentalMapper rentalMapper;
+
+    @Inject
+    RentalEquipmentMapper rentalEquipmentMapper;
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
-    public List<Rental> getRental() {
-        return Rental.listAll();
+    public List<RentalDTO> getRental() {
+        return Rental.<Rental>listAll().stream().map(rentalMapper::toDTO).toList();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Rental getRentalId(@PathParam("id") long id) {
-        return Rental.findById(id);
+    public Response getRentalId(@PathParam("id") long id) {
+        Rental r = Rental.findById(id);
+        if (r == null) return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(rentalMapper.toDTO(r)).build();
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/{id}")
-    public List<Rental> getRentalByUserId(@PathParam("id") long id) {
-        return rentalRepository.getReservationByUser(id);
+    public List<RentalDTO> getRentalByUserId(@PathParam("id") long id) {
+        return rentalRepository.getReservationByUser(id).stream().map(rentalMapper::toDTO).toList();
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/eq/list")
-    public List<Rental_Equipment> getRentalEquipment() {
-        return Rental_Equipment.listAll();
+    public List<RentalEquipmentDTO> getRentalEquipment() {
+        return Rental_Equipment.<Rental_Equipment>listAll().stream().map(rentalEquipmentMapper::toDTO).toList();
     }
 
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/rent/{id}")
-    public Rental updateRentalRent(Rental rental, @PathParam("id") long id) {
+    public RentalDTO updateRentalRent(Rental rental, @PathParam("id") long id) {
         Rental rental1 = Rental.findById(id);
         rental1.setRented(true);
-        return rental1;
+        return rentalMapper.toDTO(rental1);
     }
 
 
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/return/{id}")
-    public Rental updateRentalReturn(Rental rental, @PathParam("id") long id) {
+    public RentalDTO updateRentalReturn(Rental rental, @PathParam("id") long id) {
         Rental rental1 = Rental.findById(id);
         rental1.setReturned(true);
 
         if (Date.from(Instant.now()).after(rental1.getReturnDate())){
             rental1.setActualReturnDate(Date.from(Instant.now()));
         }
-
-
-        return rental1;
+        return rentalMapper.toDTO(rental1);
     }
 
 
