@@ -9,6 +9,7 @@ cd ../frontend/docker
 sudo rm -f -r dist
 
 cd ../../backend/omnial/src/main/docker
+
 rm -r omnial-1.0-SNAPSHOT-runner.jar
 
 echo "----------------------------------"
