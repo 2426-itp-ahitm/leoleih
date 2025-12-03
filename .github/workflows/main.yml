@@ -16,7 +16,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-24.04
     env:
-      TAG: ghcr.io/${{ github.repository }}
+      TAG: ghcr.io/${{ github.repository }}/backend
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
