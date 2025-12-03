@@ -3,6 +3,7 @@ FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /build
 
 RUN pwd
+RUN ls -a /
 
 # Copy Maven wrapper and pom.xml
 COPY mvnw ./
