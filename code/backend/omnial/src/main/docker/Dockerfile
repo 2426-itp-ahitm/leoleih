@@ -2,6 +2,8 @@
 FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /build
 
+RUN pwd
+
 # Copy Maven wrapper and pom.xml
 COPY mvnw ./
 COPY .mvn .mvn
