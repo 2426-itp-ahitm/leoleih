@@ -5,7 +5,7 @@ on: [push]
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  #TAG: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
 jobs:
   Backend:
@@ -15,22 +15,24 @@ jobs:
       attestations: write
       id-token: write
     runs-on: ubuntu-24.04
+    env:
+      TAG: ghcr.io/${{ github.repository }}/backend
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-          cache-dependency-path: 'Application/Backend/pom.xml'
+          distribution: "temurin"
+          java-version: "21"
+          cache: "maven"
+          cache-dependency-path: "code/backend/omnial/pom.xml"
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        working-directory: Application/Backend
+        working-directory: code/backend/omnial
       - name: build docker
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
           docker build --tag ${{ env.TAG }} --file src/main/docker/Dockerfile .
           docker image ls
           docker push ${{ env.TAG }}
-        working-directory: Application/Backend
+        working-directory: code/backend/omnial

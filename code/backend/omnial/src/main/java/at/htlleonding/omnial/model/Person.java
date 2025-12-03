@@ -7,14 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
-
 @Entity
 @NamedQuery(name = Person.FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.email = :email")
 @NamedQuery(name = Person.FIND_PERSON_BY_UUID, query = "SELECT p from Person p where p.person_uuid = :uuid")
 @NamedQuery(name = Person.FIND_ALL_PERSONS, query = "SELECT p from Person p")
 public class Person {
-
 
     public static final String FIND_ALL_PERSONS = "Person.finAll";
     public static final String FIND_PERSON_BY_EMAIL = "Person.findByEmail";
@@ -37,7 +34,6 @@ public class Person {
     @OneToMany(mappedBy = "person")
     @JsonIgnoreProperties(value = {"person"})
     List<Rental> rentals;
-
 
     public int getId() {
         return id;

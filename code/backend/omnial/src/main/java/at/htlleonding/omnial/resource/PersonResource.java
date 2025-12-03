@@ -1,5 +1,7 @@
 package at.htlleonding.omnial.resource;
 
+import at.htlleonding.omnial.DTO.PersonDTO;
+import at.htlleonding.omnial.DTO.PersonMapper;
 import at.htlleonding.omnial.model.Person;
 import at.htlleonding.omnial.repository.PersonRepository;
 import io.quarkus.security.identity.request.TokenAuthenticationRequest;
@@ -25,26 +27,29 @@ public class PersonResource {
     @Inject
     PersonRepository personRepository;
 
+    @Inject
+    PersonMapper personMapper;
+
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Person getPersonById(@PathParam("id") int id){
-        return personRepository.getById(id);
+    public PersonDTO getPersonById(@PathParam("id") int id){
+        return personMapper.toDTO(personRepository.getById(id));
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/")
-    public Person getPersonByEmail(@QueryParam("email") String email){
-        return personRepository.getByEmail(email);
+    public PersonDTO getPersonByEmail(@QueryParam("email") String email){
+        return personMapper.toDTO(personRepository.getByEmail(email));
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
-    public List<Person> getAllPersons(){
-        return personRepository.getAll();
+    public List<PersonDTO> getAllPersons(){
+        return personRepository.getAll().stream().map(personMapper::toDTO).toList();
     }
 
     @GET
@@ -84,11 +89,11 @@ public class PersonResource {
             if (p1 == null) {
                 Person tokenPerson = new Person(uuid, familyName, firstName,  email, grade);
                 personRepository.addPerson(uuid , firstName, familyName,email, grade);
-                return Response.ok(tokenPerson).build();
+                return Response.ok(personMapper.toDTO(tokenPerson)).build();
 
             }
 
-            return Response.ok(p1).build();
+            return Response.ok(personMapper.toDTO(p1)).build();
 
 
 

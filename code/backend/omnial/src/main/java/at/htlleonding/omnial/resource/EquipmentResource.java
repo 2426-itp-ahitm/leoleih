@@ -1,8 +1,9 @@
 package at.htlleonding.omnial.resource;
 
+import at.htlleonding.omnial.DTO.EquipmentDTO;
+import at.htlleonding.omnial.DTO.EquipmentMapper;
 import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.EquipmentType;
-import at.htlleonding.omnial.model.Rental;
 import at.htlleonding.omnial.repository.EquipmentRepository;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -11,6 +12,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
@@ -19,68 +21,80 @@ import java.util.List;
 public class EquipmentResource {
 
     @Inject
-    EquipmentRepository equipmentRepository;;
+    EquipmentRepository equipmentRepository;
+
+    @Inject
+    EquipmentMapper equipmentMapper;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
-    public List<Equipment> getEquipment() {
-        return equipmentRepository.getAll();
+    public Response getEquipment() {
+        List<EquipmentDTO> equipmentList = equipmentRepository.getAll().stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(equipmentList).build();
     }
-
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/type/{type}")
-    public List<Equipment> getEquipmentByType(@PathParam("type") EquipmentType type) {
-        return this.equipmentRepository.getEquipmentByType(type);
+    public Response getEquipmentByType(@PathParam("type") EquipmentType type) {
+        List<EquipmentDTO> list = equipmentRepository.getEquipmentByType(type).stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(list).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Equipment getEquipmentByType(@PathParam("id") Long id) {
-        return Equipment.findById(id);
+    public Response getEquipmentById(@PathParam("id") Long id) {
+        Equipment e = Equipment.findById(id);
+        if (e == null) return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(equipmentMapper.toDTO(e)).build();
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/available")
-    public List<Equipment> getRentalAvailable(){
-        return this.equipmentRepository.getEquipmentAvailable();
+    public Response getRentalAvailable(){
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentAvailable().stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(list).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/popular")
-    public List<Equipment> getByMostPopular(){
-        return this.equipmentRepository.getEquipmentMostPopular();
+    public Response getByMostPopular(){
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentMostPopular().stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(list).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/recentAvailable")
-    public List<Equipment> getByRecentlyAvailable(){
-        return this.equipmentRepository.getEquipmentRecently();
+    public Response getByRecentlyAvailable(){
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentRecently().stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(list).build();
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/again/{id}")
-    public List<Equipment> getAgain(@PathParam("id") long id){
-        return this.equipmentRepository.getEquipmentAgain(id);
+    public Response getAgain(@PathParam("id") long id){
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentAgain(id).stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(list).build();
     }
 
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/{id}")
-    public List<Equipment> getByUser(@PathParam("id") long id){
-        return this.equipmentRepository.getEquipmentByUser(id);
+    public Response getByUser(@PathParam("id") long id){
+        if (id < 0){
+            return Response.status(Response.Status.BAD_REQUEST).entity("id must be positive").build();
+        }
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentByUser(id).stream().map(equipmentMapper::toDTO).toList();
+        return Response.ok(list).build();
     }
-
-
 
 }
