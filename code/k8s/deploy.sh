@@ -50,9 +50,9 @@ cd ../../backend/omnial/src/main/docker
 
 #docker build --no-cache . -t ghcr.io/s-stoeger/backend:latest
 #docker push ghcr.io/s-stoeger/backend:latest
-docker build --no-cache . -t ghcr.io/s-stoeger/backend:$TAG -t ghcr.io/s-stoeger/backend:latest
-docker push ghcr.io/s-stoeger/backend:$TAG
-docker push ghcr.io/s-stoeger/backend:latest
+docker build --no-cache . -t ghcr.io/2426-itp-ahitm/leoleih:latest$TAG -t ghcr.io/2426-itp-ahitm/leoleih:latest
+docker push ghcr.io/2426-itp-ahitm/leoleih:latest$TAG
+docker push ghcr.io/2426-itp-ahitm/leoleih:latest
 
 echo "----------------------------------"
 echo SUCCESSFULLY BUILT AND PUSHED BACKEND

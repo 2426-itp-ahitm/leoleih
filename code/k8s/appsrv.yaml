@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: appsrv
-          image: ghcr.io/s-stoeger/backend:latest
+          image: ghcr.io/2426-itp-ahitm/leoleih:latest
           # remove this when stable. Currently we do not take care of version numbers
           imagePullPolicy: Always
           ports:
