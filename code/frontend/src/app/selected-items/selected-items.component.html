@@ -1,15 +1,17 @@
-<div id="container" *ngIf="badgeCount > 0">
-
-  @for (equipment of this.equipments | async ; let i = $index; track equipment.id) {
-    <hr>
-    <div  id="item">
-      <img src="{{ equipment.link }}" width="100vw">
-      <h2 class="equipmentName">{{ equipment.name }}</h2>
-      <p>{{getTime(i)}}</p>
-      <app-amount-settings [maxAmount]="equipment.itemCount" [chosenAmount]="getCount(i)"></app-amount-settings>
-      <i (click)="delete(equipment.id)" class="fa-solid fa-x fa-lg removeButton"></i>
-    </div>
-    <hr>
+<mat-list *ngIf="badgeCount > 0">
+  @for (equipment of this.equipments | async; let i = $index; track equipment.id) {
+    <mat-list-item class="item-list-entry">
+      <img matListItemAvatar [src]="equipment.link" [alt]="equipment.name" class="item-img">
+      <span matListItemTitle>{{ equipment.name }}</span>
+      <span matListItemLine>{{getTime(i)}}</span>
+      <div matListItemMeta class="item-actions">
+        <app-amount-settings [maxAmount]="equipment.itemCount" [chosenAmount]="getCount(i)"></app-amount-settings>
+        <button mat-icon-button color="warn" (click)="delete(equipment.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+    <mat-divider></mat-divider>
   }
-</div>
+</mat-list>
 

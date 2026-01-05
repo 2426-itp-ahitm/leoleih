@@ -1,73 +1,115 @@
-<div class="tableBox" style="display: flex">
-  <div class="tableFilter" (click)="tableRentals = rentals">
-    <div class="filterCircle filterCircleBlue">
-      <i class="fa-solid fa-list"></i>
-    </div>
-    <div>
-      <h3 class="filterText">Alle Anfragen</h3>
-      <p class="filterCount">{{this.rentals.length}}</p>
-    </div>
+<div class="dashboard-container">
+  <div class="stats-cards">
+    <mat-card class="stat-card" (click)="showAll()">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon all">
+          <mat-icon>list</mat-icon>
+        </div>
+        <mat-card-title>{{rentals.length}}</mat-card-title>
+        <mat-card-subtitle>Alle Anfragen</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterOpen()">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon open">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+        <mat-card-title>{{getOpenReturnsCount()}}</mat-card-title>
+        <mat-card-subtitle>Offene Rückgaben</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <mat-card class="stat-card" (click)="filterExpired()">
+      <mat-card-header>
+        <div mat-card-avatar class="stat-icon expired">
+          <mat-icon>event_busy</mat-icon>
+        </div>
+        <mat-card-title>{{getExpiredRentalsCount()}}</mat-card-title>
+        <mat-card-subtitle>Verspätete Rückgaben</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
   </div>
-  <div class="tableFilter" (click)="filterOpenReturns()">
-    <div class="filterCircle filterCircleGreen">
-      <i class="fa-regular fa-calendar"></i>
-    </div>
-    <div>
-      <h3 class="filterText">Offene R&uuml;ckgaben</h3>
-      <p class="filterCount">{{this.getOpenReturns().length}}</p>
-    </div>
-  </div>
-  <div class="tableFilter" (click)="filterExpiredRentals()">
-    <div class="filterCircle filterCircleRed">
-      <i class="fa-regular fa-calendar-xmark"></i>
-    </div>
-    <div>
-      <h3 class="filterText">Versp&auml;tete R&uuml;ckgaben</h3>
-      <p class="filterCount">{{this.getExpiredRentals().length}}</p>
-    </div>
-  </div>
-</div>
-<div class="tableBox">
-  <h1>Alle Verleihungen</h1>
 
-  <table id="rentalTable">
-    <tr>
-      <th *ngFor="let tableHeader of tableHeaders; let j = index" (click)="sortRentals(keywords[j])">
-        {{tableHeader}}
-        <i class="fa-solid fa-arrow-up arrow" [ngClass]="{'arrow-up': sortingOrder > 0, 'arrow-down': sortingOrder < 0}"></i>
-      </th>
-    </tr>
-    <ng-container *ngFor="let rental of tableRentals; let i = index">
-      <tr (click)="toggleRow(i)" class="tableRow" [ngClass]="{'expired-rental': isRentalExpired(tableRentals[i])}">
-      <td>{{rental.person.surname}} {{rental.person.firstname}}</td>
-        <td>{{rental.person.grade}}</td>
-        <td>{{rental.person.email}}</td>
-        <td>{{rental.leaseDate | date: 'dd.MM.yy'}} - {{rental.returnDate | date: 'dd.MM.yy'}}</td>
-        <td>
-          <button class="statusButton rentButton" *ngIf="!rental.isRented">verleih</button>
-          <button class="statusButton" id="removeButton" *ngIf="!rental.isRented" (click)="removeRental(rental.person.id)">l&ouml;schen</button>
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div class="table-header">
+        <h1>Alle Verleihungen</h1>
+      </div>
 
-          <!-- vllt mit id="retourButton"-->
-          <button class="statusButton rentButton" *ngIf="rental.isRented && !rental.isReturned">retour</button>
-        </td>
-      </tr>
-      <tr *ngIf="expandedRow === i && equipments.length > 0">
-        <td colspan="5">
-          <div class="expanded-content">
-            <table>
+      <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z0">
 
-              <tr *ngFor="let equipment of equipments" class="tableRow">
-                <td><img src="{{equipment.link}}" width="100vw"></td>
-                <td>1x</td>
-                <td>{{ equipment.name }}</td>
-                <td>{{getTime(i)}}</td>
-                <td></td>
-              </tr>
-            </table>
-          </div>
-        </td>
-      </tr>
-    </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Schüler Name </th>
+          <td mat-cell *matCellDef="let rental"> {{rental.person.surname}} {{rental.person.firstname}} </td>
+        </ng-container>
 
-  </table>
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Klasse </th>
+          <td mat-cell *matCellDef="let rental"> {{rental.person.grade}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+          <td mat-cell *matCellDef="let rental"> {{rental.person.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Datum </th>
+          <td mat-cell *matCellDef="let rental">
+            {{rental.leaseDate | date: 'dd.MM.yy'}} - {{rental.returnDate | date: 'dd.MM.yy'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let rental">
+            <mat-chip *ngIf="isRentalExpired(rental)" class="expired-chip">Verspätet</mat-chip>
+            <mat-chip *ngIf="rental.isRented && !rental.isReturned && !isRentalExpired(rental)" class="rented-chip">Verliehen</mat-chip>
+            <mat-chip *ngIf="!rental.isRented" class="pending-chip">Ausständig</mat-chip>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let rental">
+            <button mat-button color="primary" *ngIf="!rental.isRented">Verleih</button>
+            <button mat-button color="accent" *ngIf="rental.isRented && !rental.isReturned">Retour</button>
+            <button mat-icon-button color="warn" *ngIf="!rental.isRented" (click)="removeRental($event, rental)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <!-- Expanded Content Column -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let rental" [attr.colspan]="displayedColumns.length">
+            <div class="detail-element"
+                 [@detailExpand]="rental == expandedElement ? 'expanded' : 'collapsed'">
+              <div class="equipment-list" *ngIf="equipments.length > 0">
+                <div *ngFor="let equipment of equipments" class="equipment-item">
+                  <img [src]="equipment.link" class="equipment-img">
+                  <div class="equipment-info">
+                    <span class="equipment-name">{{equipment.name}}</span>
+                    <span class="equipment-quantity">1x</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let element; columns: displayedColumns;"
+            class="element-row"
+            [class.expanded-row]="expandedElement === element"
+            [class.expired-row]="isRentalExpired(element)"
+            (click)="toggleRow(element)">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of rentals"></mat-paginator>
+    </mat-card-content>
+  </mat-card>
 </div>

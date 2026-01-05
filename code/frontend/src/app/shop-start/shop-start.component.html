@@ -1,19 +1,26 @@
-<nav>
-  <p>Am Beliebtesten</p>
-  <p>K&uuml;rzlich zurückgegeben</p>
-  <p>Aktuell Verf&uuml;gbar</p>
-  <p>Erneut Entlehnen</p>
-</nav>
-<main>
-  <div id="info">
-    <div>
-      <h1>Herzlich Willkommen</h1>
-      <p>
-        beim Raum und Equipmentverleih der HTL-Leonding f&uuml;r Sch&uuml;ler:innen
-      </p>
-    </div>
-    <img src="assets/images/Equipementhome.png" width="531" height="373" alt="EquipmentHome">
-  </div>
-</main>
+<mat-tab-group *ngIf="(equipmentService.searchTerm$ | async) === '' && (equipmentService.category$ | async) === 'Alle'" (selectedTabChange)="onTabChange($event)">
+  <mat-tab label="Am Beliebtesten"></mat-tab>
+  <mat-tab label="Kürzlich zurückgegeben"></mat-tab>
+  <mat-tab label="Aktuell Verfügbar"></mat-tab>
+  <mat-tab label="Erneut Entlehnen"></mat-tab>
+</mat-tab-group>
 
-<app-card-row [rowCount]="2"></app-card-row>
+<div class="welcome-section" *ngIf="(equipmentService.searchTerm$ | async) === '' && (equipmentService.category$ | async) === 'Alle'">
+  <div class="welcome-text">
+    <h1>Herzlich Willkommen</h1>
+    <p>beim Raum- und Equipmentverleih der HTL-Leonding für Schüler:innen</p>
+  </div>
+  <div class="welcome-image">
+    <img src="assets/images/Equipementhome.png" alt="EquipmentHome">
+  </div>
+</div>
+
+<div class="search-info" *ngIf="(equipmentService.searchTerm$ | async) !== '' || (equipmentService.category$ | async) !== 'Alle'">
+  <h2>Suchergebnisse</h2>
+  <p *ngIf="(equipmentService.searchTerm$ | async) !== ''">Suche nach: "<strong>{{ equipmentService.searchTerm$ | async }}</strong>"</p>
+  <p *ngIf="(equipmentService.category$ | async) !== 'Alle'">Kategorie: <strong>{{ equipmentService.category$ | async }}</strong></p>
+</div>
+
+<div class="content-section">
+  <app-card-row [rowCount]="2"></app-card-row>
+</div>

@@ -6,6 +6,10 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {AmountSettingsComponent} from '../amount-settings/amount-settings.component';
 import {Equipment, RentalEquipment} from '../interfaces';
 import {BehaviorSubject} from 'rxjs';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-selected-items',
@@ -13,6 +17,10 @@ import {BehaviorSubject} from 'rxjs';
     AmountSettingsComponent,
     NgIf,
     AsyncPipe,
+    MatListModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule,
   ],
   templateUrl: './selected-items.component.html',
   styleUrl: './selected-items.component.css'
