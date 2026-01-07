@@ -3,9 +3,7 @@ package at.htlleonding.omnial.readExcel;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import at.htlleonding.omnial.model.Equipment;
@@ -17,7 +15,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -28,129 +26,113 @@ public class ExcelReader {
     EntityManager em;
 
     void onStartUp(@Observes StartupEvent event){
-        readCameras();
+        readExcel();
     }
+
     @Transactional
-    public void readCameras() {
-        try (FileInputStream file = new FileInputStream("data/Geraete_alle.xlsx");
-             XSSFWorkbook workbook = new XSSFWorkbook(file)) {
+    public void readExcel(){
+        System.out.println("readExcel");
+        try(FileInputStream file = new FileInputStream("data/Geraete_alle.xlsx");
+            XSSFWorkbook workbook = new XSSFWorkbook(file)) {
 
-            XSSFSheet sheet = workbook.getSheetAt(0);
+            int worksheetCount = workbook.getNumberOfSheets();
+            for(int w = 0; w < worksheetCount; w++){
+                XSSFSheet sheet = workbook.getSheetAt(w);
+                Row headerRow = sheet.getRow(0);
+                int columnIndexSet = -1;
+                int columnIndexTyp = -1;
+                int columnIndexSeriennummer = -1;
 
-            for (Row row : sheet) {
-                List<Object> values = new ArrayList<>();
-
-                for (int i = 0; i < 3; i++) {
-                    Cell cell = row.getCell(i);
-
-                    if (cell == null) {
-                        values.add(null);
-                        continue;
+                for (Cell cell : headerRow) {
+                    if ("set".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+                        columnIndexSet = cell.getColumnIndex();
                     }
-
-                    switch (cell.getCellType()) {
-                        case STRING:
-                            values.add(cell.getStringCellValue());
-                            break;
-                        case NUMERIC:
-                            values.add(cell.getNumericCellValue());
-                            break;
-                        case BOOLEAN:
-                            values.add(cell.getBooleanCellValue());
-                            break;
-                        default:
-                            values.add(null);
+                    if("typ".equalsIgnoreCase(cell.getStringCellValue().trim())){
+                        columnIndexTyp = cell.getColumnIndex();
+                    }
+                    else if("beschreibung".equalsIgnoreCase(cell.getStringCellValue().trim())){
+                        columnIndexTyp = cell.getColumnIndex();
+                    }
+                    if("seriennummer".equalsIgnoreCase(cell.getStringCellValue().trim())){
+                        columnIndexSeriennummer = cell.getColumnIndex();
                     }
                 }
-                if (values.get(0) != null && !values.get(0).toString().equals("Set")) {
-                    System.out.println(values.get(0));
-                    System.out.println(values.get(1));
-                    Equipment equipment = new Equipment();
-                    equipment.setName(values.get(0).toString());
-                    equipment.setTitle(values.get(1).toString());
-                    equipment.setLabelNumber(values.get(2).toString());
-                    equipment.setAvailable(1);
-                    equipment.setEquipmentType(EquipmentType.KAMERA);
-                    em.persist(equipment);
+                if (columnIndexSet == -1) {
+                    throw new RuntimeException("Column 'set' not found");
+                }
+                if(columnIndexTyp == -1){
+                    throw new RuntimeException("Column 'typ' or 'beschreibung' not found");
+                }
+                DataFormatter formatter = new DataFormatter();
+
+                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                    String set = "";
+                    String typ = "";
+                    String seriennummer="";
+                    Row row = sheet.getRow(i);
+                    if (row == null) continue;
+
+                    Cell setCell = row.getCell(columnIndexSet);
+                    if (setCell == null) continue;
+
+                    if(!formatter.formatCellValue(setCell).isEmpty()){
+                        set = formatter.formatCellValue(setCell);
+                    }
+
+                    Cell typCell = row.getCell(columnIndexTyp);
+                    if (typCell == null) continue;
+
+                    if(!formatter.formatCellValue(typCell).isEmpty()){
+                        typ = formatter.formatCellValue(typCell);
+                    }
+                    if(columnIndexSeriennummer != -1){
+                        Cell seriennummerCell = row.getCell(columnIndexSeriennummer);
+                        if (seriennummerCell == null) continue;
+
+                        if(!formatter.formatCellValue(seriennummerCell).isEmpty()){
+                            seriennummer = formatter.formatCellValue(seriennummerCell);
+                        }
+                    }
+                    if(!set.isEmpty()&&!set.isBlank()){
+                        Equipment eq = new Equipment();
+                        eq.setName(set);
+                        eq.setTitle(typ);
+                        eq.setLabelNumber(seriennummer);
+                        eq.setAvailable(1);
+                        eq.setEquipmentType(setEquipmentType(set));
+                        //System.out.printf("%s %s\n",eq.getName(),eq.getEquipmentType().toString());
+                        em.persist(eq);
+                    }
                 }
             }
-
-        } catch (FileNotFoundException ex) {
+        }catch (FileNotFoundException ex) {
             throw new RuntimeException(ex);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
     }
+    public EquipmentType setEquipmentType(String set){
+        String str = set.trim();
+        EquipmentType type = null;
+        if (str == null || str.isEmpty()) {
 
-            @Transactional
-            public void readExcel() {
-                try (FileInputStream file = new FileInputStream("data/Geraete_alle.xlsx");
-                     XSSFWorkbook workbook = new XSSFWorkbook(file)) {
-
-                    XSSFSheet sheet = workbook.getSheetAt(0);
-
-                    Iterator<Row> rowIterator = sheet.iterator();
-                    if (!rowIterator.hasNext()) {
-                        return;
-                    }
-
-                    Row headerRow = rowIterator.next();
-                    int colSet = -1;
-                    int colTyp = -1;
-                    int colSeriennummer = -1;
-
-                    for (Cell cell : headerRow) {
-                        String header = cell.getStringCellValue().trim().toLowerCase();
-                        switch (header) {
-                            case "set":
-                                colSet = cell.getColumnIndex();
-                                break;
-                            case "typ":
-                                colTyp = cell.getColumnIndex();
-                                break;
-                            case "seriennummer":
-                                colSeriennummer = cell.getColumnIndex();
-                                break;
-                        }
-                    }
-
-                    if (colSet == -1 || colTyp == -1 || colSeriennummer == -1) {
-                        throw new RuntimeException("Missing one or more required columns: Set / Typ / Seriennummer");
-                    }
-
-                    while (rowIterator.hasNext()) {
-                        Row row = rowIterator.next();
-
-                        String setValue = getCellString(row.getCell(colSet));
-                        String typValue = getCellString(row.getCell(colTyp));
-                        String seriennummerValue = getCellString(row.getCell(colSeriennummer));
-
-                        if (setValue == null || setValue.equalsIgnoreCase("set"))
-                            continue;
-
-                        Equipment equipment = new Equipment();
-                        equipment.setName(setValue);
-                        equipment.setTitle(typValue);
-                        equipment.setLabelNumber(seriennummerValue);
-                        equipment.setAvailable(1);
-                        equipment.setEquipmentType(EquipmentType.KAMERA);
-
-                        em.persist(equipment);
-                    }
-
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            private String getCellString(Cell cell) {
-                if (cell == null) return null;
-                return switch (cell.getCellType()) {
-                    case STRING -> cell.getStringCellValue();
-                    case NUMERIC -> String.valueOf((long) cell.getNumericCellValue());
-                    case BOOLEAN -> String.valueOf(cell.getBooleanCellValue());
-                    default -> null;
-                };
-            }
         }
+        else if(str.startsWith("A")){
+            type = EquipmentType.AUDIO;
+        }
+        else if(str.startsWith("FZ")||str.startsWith("S")||str.startsWith("VZ")||str.startsWith("SS")||str.startsWith("VL")||str.startsWith("VO")){
+            type = EquipmentType.ZUBEHÖR;
+
+        }
+        else if(str.startsWith("F")||str.startsWith("FS")||str.startsWith("VK")||str.startsWith("PVS")){
+            type = EquipmentType.KAMERA;
+        }
+        else{
+            type = null;
+        }
+        return type;
+    }
+}
+
+
 
