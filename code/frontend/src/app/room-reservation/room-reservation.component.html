@@ -1,65 +1,69 @@
-<div class="layout">
-  <button id="addRoom" (click)="addReservation()"><i class="fa-solid fa-plus"></i></button>
-  <!-- Left Side: Calendar and Room List -->
-  <div class="left-panel">
-    <!-- Small Calendar -->
-    <div class="small-calendar">
-      <div id="navigation">
-        <button id="prev-month" (click)="changeMonth(-1)">
-          <i class="fa-solid fa-caret-left"></i>
-        </button>
-        <div id="month-year">{{ monthYear }}</div>
-        <button id="next-month" (click)="changeMonth(1)">
-          <i class="fa-solid fa-caret-right"></i>
-        </button>
-      </div>
-      <div id="days-container" class="days-container">
-        <div class="day"
-             *ngFor="let day of days"
-             [class.disabled]="day.disabled"
-             [class.weekend]="day.isWeekend"
-             [class.selected]="selectedDays.includes(day.date)"
-             [class.highlighted]="isInRange(day.date)"
-             (click)="!day.disabled && selectDay(day.date)"
-        >
-          {{ day.label }}
-        </div>
-      </div>
+<div class="reservation-container">
+  <div class="reservation-layout">
+    <!-- Left Side: Selection and Info -->
+    <div class="selection-panel">
+      <mat-card class="calendar-card">
+        <mat-card-header>
+          <mat-card-title>Datum wählen</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-calendar [selected]="selectedDate" (selectedChange)="onDateChange($event)"></mat-calendar>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="room-card">
+        <mat-card-header>
+          <mat-card-title>Räume</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-selection-list [multiple]="false">
+            <mat-list-option *ngFor="let room of rooms" [selected]="currentRoom?.id === room.id" (click)="setRoom(room)">
+              {{ room.name }}
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <!-- Room List -->
-    <div class="room-list">
-      <h3 id="room">Rooms</h3>
-      <div class="room-scroll">
-        <ul>
-          <li *ngFor="let room of rooms" (click)="setRoom(room)">{{ room.name }}</li>
-        </ul>
-      </div>
+    <!-- Right Side: Grid -->
+    <div class="grid-panel">
+      <mat-card class="grid-card">
+        <mat-card-header>
+          <mat-card-title>{{ currentRoom?.name }} - Wochenansicht</mat-card-title>
+          <mat-card-subtitle>{{ currentWeekStart | date:'dd.MM.yyyy' }} - {{ weekDays[4] | date:'dd.MM.yyyy' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="table-container">
+            <table class="reservation-table">
+              <thead>
+                <tr>
+                  <th>Zeit</th>
+                  <th *ngFor="let day of weekDays">{{ day | date:'EEEE dd.MM' }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let time of times; let rowIndex = index">
+                  <td class="time-col">{{ time }}</td>
+                  <td
+                    *ngFor="let day of weekDays; let colIndex = index"
+                    (mousedown)="onMouseDown(rowIndex, colIndex, $event)"
+                    (mousemove)="onMouseMove(rowIndex, colIndex)"
+                    (mouseup)="onMouseUp($event)"
+                    (click)="onCellClick(rowIndex, colIndex)"
+                    [style.background-color]="getCellColor(rowIndex, colIndex)"
+                    class="grid-cell">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" (click)="addReservation()">
+            <mat-icon>add</mat-icon> Reservieren
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
-  </div>
-
-  <!-- Right Side: Main Calendar Grid -->
-  <div class="calendar">
-    <table>
-      <thead>
-      <tr>
-        <th>{{ currentRoom?.name }}</th>
-        <th *ngFor="let day of weekDaysFormatted">{{ day }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let time of times; let rowIndex = index">
-        <td>{{ time }}</td>
-        <td
-          *ngFor="let day of weekDays; let colIndex = index"
-          (mousedown)="onMouseDown(rowIndex, colIndex, $event)"
-          (mousemove)="onMouseMove(rowIndex, colIndex)"
-          (mouseup)="onMouseUp($event)"
-          (click)="onCellClick(rowIndex, colIndex)"
-          [style.background-color]="getCellColor(rowIndex, colIndex)">
-        </td>
-      </tr>
-      </tbody>
-    </table>
   </div>
 </div>

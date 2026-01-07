@@ -1,19 +1,39 @@
-<main>
-  <div id="auswahl">
-    <div id="auswahl-equipment">
-      <h1>Auswahl</h1>
-      <app-selected-items [rentalEquipment]="rental"></app-selected-items>
+<div class="cart-container">
+  <div class="cart-layout">
+    <div class="equipment-section">
+      <mat-card class="cart-card">
+        <mat-card-header>
+          <mat-card-title>Auswahl</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <app-selected-items [rentalEquipment]="rental"></app-selected-items>
+          <p *ngIf="rental.length === 0" class="empty-msg">Ihr Warenkorb ist leer.</p>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <div id="auswahl-room">
-      <h2 style="text-align: center;">Wollen sie noch einen Raum reservieren?</h2>
-      <div id="roomSection">
-        <div *ngIf="rooms.length!==0 && !test">
-          <app-room-item [rooms]="rooms"></app-room-item>
-        </div>
-        <button (click)="addRoom()" id="addRoom">Hinzufügen</button>
-      </div>
-      <button (click)="addReservation()" id="submitRental">Reservieren</button>
+    <div class="room-section">
+      <mat-card class="side-card">
+        <mat-card-header>
+          <mat-card-title>Zusatzoptionen</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="promo-text">Wollen sie noch einen Raum reservieren?</p>
+          <div class="room-items-container">
+            <app-room-item *ngIf="rooms.length !== 0 && !test" [rooms]="rooms"></app-room-item>
+          </div>
+          <button mat-stroked-button color="primary" class="full-width-btn" (click)="addRoom()">
+            <mat-icon>add</mat-icon> Raum hinzufügen
+          </button>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" class="full-width-btn"
+                  [disabled]="rental.length === 0 && rooms.length === 0"
+                  (click)="addReservation()">
+            Reservieren
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
   </div>
-</main>
+</div>
