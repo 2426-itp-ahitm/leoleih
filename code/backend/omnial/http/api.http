@@ -115,7 +115,7 @@ GET http://localhost:8080/api/equipment/user/1
 
 ###
 
-GET http://localhost:8080/api/equipment/list
+GET https://it200281.cloud.htl-leonding.ac.at/api/equipment/list
 
 ###
 GET http://localhost:8080/api/persons/token
