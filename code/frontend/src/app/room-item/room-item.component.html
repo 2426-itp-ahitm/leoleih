@@ -1,8 +1,14 @@
-<div  id="room" *ngFor="let reservation of rooms">
-  <div id="placeholder"></div>
-  <div id="roomText">
-    <h2>{{reservationService.getRoomById(reservation.roomId)}}</h2>
-    <p>Am {{ reservation.reservationDate | date:'dd.MM.yyyy' }} |
-      {{ reservation.startTime | date:'HH:mm'}} - {{ reservation.endTime | date:'HH:mm' }}</p>
-  </div>
-</div>
+<mat-card class="room-card" *ngFor="let reservation of rooms">
+  <mat-card-header>
+    <div mat-card-avatar class="room-icon">
+      <mat-icon>meeting_room</mat-icon>
+    </div>
+    <mat-card-title>{{reservationService.getRoomById(reservation.roomId)}}</mat-card-title>
+    <mat-card-subtitle>
+      Am {{ reservation.reservationDate | date:'dd.MM.yyyy' }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ reservation.startTime | date:'HH:mm'}} - {{ reservation.endTime | date:'HH:mm' }}</p>
+  </mat-card-content>
+</mat-card>

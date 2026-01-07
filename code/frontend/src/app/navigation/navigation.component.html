@@ -1,62 +1,62 @@
-<div class="app-navigation">
-  <a id="navigation-profile">
+<mat-toolbar color="primary" class="app-navigation">
+  <div id="navigation-profile" [matMenuTriggerFor]="profileMenu">
     <div id="navigation-profile-div">
       <p *ngIf="user">{{user.surname.charAt(0)}}{{user.firstname.charAt(0)}}</p>
     </div>
-    <div style="display: block">
-      <p style="width: 100%; padding-bottom: 0" class="navigation">{{user?.surname}} {{user?.firstname}}</p>
-      <a (click)="logout()" id="logout">Logout</a>
+    <div class="user-info">
+      <p class="user-name">{{user?.surname}} {{user?.firstname}}</p>
     </div>
-
-
-  </a>
-  <div id="navigation-links">
-    <div id="searchbar">
-      <select>
-        <option>Alle</option>
-        <option>Kamera</option>
-        <option>Audio</option>
-        <option>Zubeh&ouml;r</option>
-        <option>Raum</option>
-      </select>
-      <p>Suche nach Equipment bzw. R&auml;ume</p>
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </div>
-    <a routerLink="" class="navigation navigation-effect">Shop</a>
-    <a routerLink="dashboard" class="navigation navigation-effect">Dashboard</a>
-    <a routerLink="cart" class="navigation navigation-effect">Warenkorb
-      <i class="fa-solid fa-cart-shopping" *ngIf="badgeCount === 0"></i>
-      <i class="fa-solid fa-cart-shopping" *ngIf="badgeCount !== 0" matBadge="{{badgeCount}}" matBadgeColor="accent" matBadgePosition="above after"></i>
-
-    </a>
-
   </div>
 
+  <mat-menu #profileMenu="matMenu">
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+
+  <div id="navigation-links">
+    <div class="search-container">
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange()">
+          <mat-option value="Alle">Alle</mat-option>
+          <mat-option value="Kamera">Kamera</mat-option>
+          <mat-option value="Audio">Audio</mat-option>
+          <mat-option value="Zubehör">Zubehör</mat-option>
+          <mat-option value="Raum">Raum</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-input">
+        <mat-label>Suche nach Equipment bzw. Räumen</mat-label>
+        <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="nav-buttons">
+      <button mat-button routerLink="">Shop</button>
+      <button mat-button routerLink="dashboard">Dashboard</button>
+      <button mat-icon-button routerLink="cart" aria-label="Warenkorb">
+        <mat-icon [matBadge]="badgeCount > 0 ? badgeCount : null" matBadgeColor="accent">shopping_cart</mat-icon>
+      </button>
+    </div>
+  </div>
 
   <div id="mobile-dropdown">
-    <button id="menu-toggle">☰</button>
-    <div id="dropdown-menu">
-
-      <a routerLink="" class="navigation">Shop</a>
-      <a routerLink="dashboard" class="navigation">Dashboard</a>
-      <!-- <a *ngIf="user?.grade == 'Teacher' || user?.grade == 'admin'" routerLink="dashboard" class="navigation">Dashboard</a> -->
-      <!--<a *ngIf="!(user?.grade == 'Teacher' || user?.grade == 'admin')" routerLink="dashboardStudent" class="navigation">Dashboard</a>-->
-
-      <a routerLink="cart" class="navigation">Warenkorb <i class="fa-solid fa-cart-shopping"></i></a>
-    </div>
+    <button mat-icon-button [matMenuTriggerFor]="mobileMenu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #mobileMenu="matMenu">
+      <button mat-menu-item routerLink="">Shop</button>
+      <button mat-menu-item routerLink="dashboard">Dashboard</button>
+      <button mat-menu-item routerLink="cart">
+        <mat-icon [matBadge]="badgeCount > 0 ? badgeCount : null" matBadgeColor="accent">shopping_cart</mat-icon>
+        <span>Warenkorb</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
   </div>
-  <div id="search-handy">
-    <div id="searchbar-handy">
-      <select>
-        <option>Alle</option>
-        <option>Kamera</option>
-        <option>Mikrofon</option>
-        <option>Zubeh&ouml;r</option>
-        <option>Raum</option>
-      </select>
-      <p>Suche nach Equipment bzw. R&auml;ume</p>
-      <i class="fa-solid fa-magnifying-glass"></i>
-    </div>
-  </div>
-
-</div>
+</mat-toolbar>

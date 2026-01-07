@@ -1,147 +1,124 @@
-.full-width-table {
-  width: 100%;
+<<<<<<< HEAD
+=======
+.dashboard-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.statusButton {
-  border-radius: 5px;
-  padding: 0.2vw 0.5vw;
+.stats-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.rentButton {
-  background-color: var(--greenO);
-  color: var(--green);
-  border: 2px solid var(--green);
-}
-
-#removeButton {
-  background-color: var(--redO);
-  color: var(--red);
-  border: 2px solid var(--red);
-  margin-left: 2%;
-}
-
-#retourButton {
-  background-color: var(--light_blue);
-  color: var(--mid_blue);
-  border: 2px solid var(--mid_blue);
-  margin-left: 2%;
-}
-
-.tableBox {
-  width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.2);
-  margin-bottom: 5%;
-  margin-top: 5%;
-  border-radius: 10px;
+.stat-card {
   cursor: pointer;
+  transition: transform 0.2s;
 }
 
-.tableFilter {
-  padding-top: 2%;
-  padding-bottom: 2%;
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 33%;
-}
-
-.filterCircle {
+  justify-content: center;
   border-radius: 50%;
-  width: 7vw;
-  height: 7vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 3%;
+  width: 40px;
+  height: 40px;
 }
 
-.filterCircleGreen {
-  background-color: var(--greenO);
-  border: 2px solid var(--green);
-  color: var(--green);
+.stat-icon.all { background-color: #bbdefb; color: #0d47a1; }
+.stat-icon.open { background-color: #c8e6c9; color: #1b5e20; }
+.stat-icon.expired { background-color: #ffcdd2; color: #b71c1c; }
+
+.table-card {
+  border-radius: 8px;
 }
 
-.filterCircleRed {
-  background-color: var(--redO);
-  border: 2px solid var(--red);
-  color: var(--red);
+.table-header {
+  padding: 1rem 0;
 }
 
-.filterCircleBlue {
-  background-color: var(--light_blue);
-  border: 2px solid var(--mid_blue);
-  color: var(--mid_blue);
-}
-
-
-.filterCircle > i {
-  font-size: 3vw;
-}
-
-.filterText {
-  color: var(--grey);
-}
-
-.filterCount {
+.table-header h1 {
   margin: 0;
-  font-size: 2vw;
-  font-weight: bold;
-}
-
-h1 {
-  padding-top: 2%;
-  margin-left: 5%;
-  margin-bottom: 1%;
-  font-size: 2.5rem;
-  cursor: default;
+  font-size: 1.5rem;
+  font-weight: 500;
 }
 
 table {
-  width: 95%;
-  text-align: left;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: 1vw;
-  border-collapse: collapse;
+  width: 100%;
 }
 
-#rentalTable > tr:first-child {
-  color: var(--grey);
+.element-row td {
+  border-bottom-width: 0;
+  cursor: pointer;
 }
 
-.tableRow:not(:first-child) {
-  border-top: 1px solid var(--grey);
+.element-row:hover {
+  background: #f5f5f5;
 }
 
-td, th {
-  padding: 1.5% 2vw;
+.expanded-row {
+  background: #f9f9f9;
 }
 
- .expired-rental {
-   color: var(--red)
- }
-
-th:hover > i {
-  opacity: 1;
-  transition: 0.5s;
+.detail-row {
+  height: 0;
 }
 
-th > i {
-  opacity: 0;
-  transition: 0.5s;
+.detail-element {
+  overflow: hidden;
+  display: flex;
 }
 
-.arrow {
-  display: inline-block;
-  transition: transform 0.3s ease-in-out;
+.equipment-list {
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.arrow-up {
-  transform: rotate(0deg);
+.equipment-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: 1px solid #eee;
 }
 
-.arrow-down {
-  transform: rotate(180deg);
+.equipment-img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
 }
+
+.equipment-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.equipment-name {
+  font-weight: 500;
+}
+
+.equipment-quantity {
+  color: #757575;
+  font-size: 0.8rem;
+}
+
+.expired-row {
+  color: #b71c1c;
+}
+
+.expired-chip { background-color: #ffcdd2 !important; color: #b71c1c !important; }
+.rented-chip { background-color: #c8e6c9 !important; color: #1b5e20 !important; }
+.pending-chip { background-color: #bbdefb !important; color: #0d47a1 !important; }
+>>>>>>> 0d9141762b60b9ef3172fa7373fb16c199230b0c

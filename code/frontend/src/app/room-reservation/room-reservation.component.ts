@@ -1,5 +1,5 @@
-import {Component, inject} from '@angular/core';
-import {NgForOf} from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {NgForOf, DatePipe} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {HttpService} from '../http.service';
 import {ReservationService} from '../reservation.service';
@@ -7,17 +7,30 @@ import {ReservationDTO, Room} from '../interfaces';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {LocalStorageService} from '../local-storage.service';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-room-reservation',
+  providers: [provideNativeDateAdapter()],
   imports: [
     NgForOf,
-    FormsModule
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatListModule,
+    MatDatepickerModule,
+    DatePipe,
   ],
   templateUrl: './room-reservation.component.html',
   styleUrl: './room-reservation.component.css'
 })
-export class RoomReservationComponent {
+export class RoomReservationComponent implements OnInit {
   times: string[] = [
     '7:00', '8:00', '8:55', '10:00', '10:55', '11:50', '12:45',
     '13:40', '14:35', '15:30', '16:25', '17:20', '18:15', '19:10'
@@ -27,352 +40,159 @@ export class RoomReservationComponent {
   storageService: LocalStorageService = inject(LocalStorageService);
   private snackBar = inject(MatSnackBar);
 
-  currentWeekStart: Date;
+  currentWeekStart: Date = new Date();
   weekDays: Date[] = [];
-  weekDaysFormatted: string[] = [];
 
-  rooms: Room[] = []; // Example rooms
+  selectedDate: Date = new Date();
+
+  rooms: Room[] = [];
   currentRoom?: Room = undefined;
 
-  // Track selected cells
-  selectedCells: { [key: string]: string } = {}; // Key: "rowIndex-columnIndex", Value: color
-
-  // Track drag selection state
+  selectedCells: { [key: string]: string } = {};
   isDragging: boolean = false;
   startCell: { rowIndex: number, colIndex: number } | null = null;
   endCell: { rowIndex: number, colIndex: number } | null = null;
 
-  // Available colors for selection
-  colors: string[] = ['#ffcccc', '#ccffcc', '#ccccff', '#ffffcc']; // Example colors
-  count: number = 0;
-
+  colors: string[] = ['#ffcccc', '#ccffcc', '#ccccff', '#ffffcc'];
 
   reservationService: ReservationService = inject(ReservationService);
 
-
-  constructor() {
-    // Initialize with the current week
+  ngOnInit() {
     this.currentWeekStart = this.getStartOfWeek(new Date());
-    this.renderCalendar();
-    this.selectedDays.push(new Date().getDate());
     this.updateWeekDays();
 
     this.httpService.getAllRooms().subscribe(r => {
-        this.rooms = r
-        this.currentRoom = this.rooms[0]
+      this.rooms = r;
+      if (this.rooms.length > 0) {
+        this.currentRoom = this.rooms[0];
       }
-    )
-
-
+    });
   }
 
   setRoom(room: Room) {
     this.currentRoom = room;
   }
 
-
-  // Helper function to get the start of the week (Monday)
   getStartOfWeek(date: Date): Date {
     const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when Sunday
-    return new Date(date.setDate(diff));
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(new Date(date).setDate(diff));
   }
 
-  // Update the week days based on the current week start
   updateWeekDays(): void {
     this.weekDays = [];
-    this.weekDaysFormatted = [];
-    let startWeek = 0;
-    if (this.count !== 0) {
-      startWeek = 1
-
-    }
-    this.count++
-    for (let i = 0; i < 5; i++) { // Only weekdays (Monday to Friday)
+    for (let i = 0; i < 5; i++) {
       const day = new Date(this.currentWeekStart);
-      day.setDate(day.getDate() + i + startWeek);
+      day.setDate(day.getDate() + i);
       this.weekDays.push(day);
-      this.weekDaysFormatted.push(this.formatDate(day));
     }
   }
 
-  // Format date as "Day YYYY.MM.DD"
-  formatDate(date: Date): string {
-    const days = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
-    const dayName = days[date.getDay() - 1]; // Adjust for Monday as the first day
-    return `${dayName} ${date.toISOString().slice(0, 10).replace(/-/g, '.')}`;
-  }
-
-  // Handle date selection from the small calendar
-  onDateSelect(selectedDate: Date): void {
-    this.currentWeekStart = this.getStartOfWeek(selectedDate);
-    this.updateWeekDays();
+  onDateChange(selectedDate: Date | null): void {
+    if (selectedDate) {
+      this.selectedDate = selectedDate;
+      this.currentWeekStart = this.getStartOfWeek(selectedDate);
+      this.updateWeekDays();
+    }
   }
 
   onMouseDown(rowIndex: number, colIndex: number, event: MouseEvent): void {
-    // Record the starting cell for potential drag
+    event.preventDefault();
     this.isDragging = true;
     this.startCell = { rowIndex, colIndex };
     this.endCell = { rowIndex, colIndex };
-
-    // Set selectedDate and selectedTime when the drag starts
-    this.selectedDate = this.weekDays[colIndex]; // Date from column header
-    this.selectedTime = this.times[rowIndex];   // Time from row index
+    this.selectCellsInRange();
   }
-
 
   onMouseMove(rowIndex: number, colIndex: number): void {
     if (this.isDragging) {
-      // Only update the end cell during drag, don't do selection yet
       this.endCell = { rowIndex, colIndex };
+      this.selectCellsInRange();
     }
   }
-
 
   onMouseUp(event: MouseEvent): void {
-    if (this.isDragging) {
-      // Check if this was a drag or just a click
-      const isDragOperation = this.startCell && this.endCell &&
-        (this.startCell.rowIndex !== this.endCell.rowIndex ||
-          this.startCell.colIndex !== this.endCell.colIndex);
-
-      if (isDragOperation) {
-        // This was a drag selection
-        this.selectCellsInRange();
-      } else {
-        // This was a single click - handle toggle here
-        const rowIndex = this.startCell?.rowIndex;
-        const colIndex = this.startCell?.colIndex;
-        if (rowIndex !== undefined && colIndex !== undefined) {
-          this.toggleCell(rowIndex, colIndex);
-        }
-      }
-
-      // Reset drag state
-      this.isDragging = false;
-      this.startCell = null;
-      this.endCell = null;
-    }
+    this.isDragging = false;
+    this.startCell = null;
+    this.endCell = null;
   }
 
-
-// New helper function to toggle a single cell
-  toggleCell(rowIndex: number, colIndex: number): void {
-    const key = `${rowIndex}-${colIndex}`;
-    if (this.selectedCells[key]) {
-      // If the cell is already selected, remove the selection
-      delete this.selectedCells[key];
-    } else {
-      // Assign a color to the selected cell
-      const colorIndex = Object.keys(this.selectedCells).length % this.colors.length;
-      this.selectedCells[key] = this.colors[colorIndex];
-    }
-  }
-
-// Select all cells within the current drag range
   selectCellsInRange(): void {
     if (!this.startCell || !this.endCell) return;
 
-    const minRow = Math.min(this.startCell.rowIndex, this.endCell.rowIndex);
-    const maxRow = Math.max(this.startCell.rowIndex, this.endCell.rowIndex);
-    const minCol = Math.min(this.startCell.colIndex, this.endCell.colIndex);
-    const maxCol = Math.max(this.startCell.colIndex, this.endCell.colIndex);
+    const startRow = Math.min(this.startCell.rowIndex, this.endCell.rowIndex);
+    const endRow = Math.max(this.startCell.rowIndex, this.endCell.rowIndex);
+    const startCol = Math.min(this.startCell.colIndex, this.endCell.colIndex);
+    const endCol = Math.max(this.startCell.colIndex, this.endCell.colIndex);
 
-    // Check if at least one cell in range is already selected
-    let hasSelectedCell = false;
-    for (let row = minRow; row <= maxRow; row++) {
-      for (let col = minCol; col <= maxCol; col++) {
-        const key = `${row}-${col}`;
+    for (let r = startRow; r <= endRow; r++) {
+      for (let c = startCol; c <= endCol; c++) {
+        const key = `${r}-${c}`;
         if (this.selectedCells[key]) {
-          hasSelectedCell = true;
-          break;
-        }
-      }
-      if (hasSelectedCell) break;
-    }
-
-    // If at least one cell is selected, delete all cells in the range
-    if (hasSelectedCell) {
-      for (let row = minRow; row <= maxRow; row++) {
-        for (let col = minCol; col <= maxCol; col++) {
-          const key = `${row}-${col}`;
           delete this.selectedCells[key];
-        }
-      }
-    } else {
-      // Otherwise, select all cells with the same color
-      const colorIndex = Object.keys(this.selectedCells).length % this.colors.length;
-      const selectionColor = this.colors[colorIndex];
-
-      for (let row = minRow; row <= maxRow; row++) {
-        for (let col = minCol; col <= maxCol; col++) {
-          const key = `${row}-${col}`;
-          this.selectedCells[key] = selectionColor;
+        } else {
+          this.selectedCells[key] = this.colors[0];
         }
       }
     }
   }
 
-  // Get the color for a specific cell
   getCellColor(rowIndex: number, colIndex: number): string {
-    const key = `${rowIndex}-${colIndex}`;
-    return this.selectedCells[key] || '';
+    return this.selectedCells[`${rowIndex}-${colIndex}`] || 'transparent';
   }
-
-  months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-
-  currentDate = new Date();
-  selectedDays: number[] = [];
-  days: { label: number | null; isWeekend: boolean; disabled: boolean; date: number }[] = [];
-
-  renderCalendar() {
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    const blanks = firstDay === 0 ? 6 : firstDay - 1; // Adjust for Monday-starting week
-    this.days = [];
-
-    // Add blanks for the start of the week
-    for (let i = 0; i < blanks; i++) {
-      this.days.push({ label: null, isWeekend: false, disabled: true, date: 0 });
-    }
-
-    // Add actual days of the month
-    for (let i = 1; i <= daysInMonth; i++) {
-      const dayOfWeek = new Date(year, month, i).getDay();
-      this.days.push({
-        label: i,
-        isWeekend: dayOfWeek === 0 || dayOfWeek === 6,
-        disabled: false,
-        date: i,
-      });
-    }
-  }
-
-  get monthYear(): string {
-    const year = this.currentDate.getFullYear();
-    const month = this.currentDate.getMonth();
-    return `${this.months[month]} ${year}`;
-  }
-
-  changeMonth(offset: number) {
-    this.currentDate.setMonth(this.currentDate.getMonth() + offset);
-    this.renderCalendar();
-    this.selectedDays = []; // Reset selected days when changing months
-  }
-
-  selectDay(day: number | null) {
-    if (day === null) {
-     return;
-    }
-
-    if (this.selectedDays.includes(day)) {
-      // Deselect the day
-      this.selectedDays = this.selectedDays.filter((d) => d !== day);
-    } else {
-      // Add the day if less than 2 are selected
-      if (this.selectedDays.length < 1) {
-        this.selectedDays.push(day);
-      } else {
-        // Replace the earliest selected day if 2 are already selected
-        this.selectedDays.shift();
-        this.selectedDays.push(day);
-      }
-    }
-
-    if (this.selectedDays.length > 0) {
-      // Get the selected date from the current month and year
-      const selectedDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
-      this.onDateSelect(selectedDate);
-    }
-  }
-
-  isInRange(day: number | null): boolean {
-    if (day === null) return false;
-    if (this.selectedDays.length === 2) {
-      const [start, end] = [Math.min(...this.selectedDays), Math.max(...this.selectedDays)];
-      return day > start && day < end;
-    }
-    return false;
-  }
-
-  selectedDate: Date | null = null;
-  selectedTime: string | null = null;
 
   onCellClick(rowIndex: number, colIndex: number): void {
-    console.log("hey")
-    // Set the selectedDate from the table header (weekDays[colIndex])
-    this.selectedDate = this.weekDays[colIndex]; // Get the date from the table header
-    this.selectedTime = this.times[rowIndex];   // Get the time from the row
+    const key = `${rowIndex}-${colIndex}`;
+    if (this.selectedCells[key]) {
+      delete this.selectedCells[key];
+    } else {
+      this.selectedCells[key] = this.colors[0];
+    }
+    this.selectedDate = this.weekDays[colIndex];
   }
-
 
   addReservation() {
-    if (!this.selectedDate || !this.selectedTime) {
-      alert("Please select a time slot in the calendar.");
-      return;
-    }
+    if (!this.currentRoom) return;
 
-    let startTime, endTime;
+    const selectedKeys = Object.keys(this.selectedCells);
+    if (selectedKeys.length === 0) return;
 
-    // If there's a range selected (dragging), use the first and last times
-    if (this.startCell && this.endCell) {
-      // The first time is from the start cell
-      const firstTime = this.times[this.startCell.rowIndex];
-      const [startHour, startMinute] = firstTime.split(':').map(Number);
-      startTime = new Date(this.selectedDate);
-      startTime.setHours(startHour, startMinute, 0, 0); // Set to the start time
+    const firstKey = selectedKeys[0];
+    const [firstRow, firstCol] = firstKey.split('-').map(Number);
 
-      // The last time is from the end cell
-      const lastTime = this.times[this.endCell.rowIndex];
-      const [endHour, endMinute] = lastTime.split(':').map(Number);
-      endTime = new Date(this.selectedDate);
-      endTime.setHours(endHour, endMinute, 0, 0); // Set to the end time
-    } else {
-      // If only one time is selected, use that as both start and end
-      const [hours, minutes] = this.selectedTime.split(':').map(Number);
-      startTime = new Date(this.selectedDate);
-      startTime.setHours(hours, minutes, 0, 0); // Apply the selected time to the date
+    let minRow = firstRow;
+    let maxRow = firstRow;
+    let col = firstCol;
 
-      // End time is one hour after the start time by default
-      endTime = new Date(startTime);
-      endTime.setHours(startTime.getHours() + 1); // Example: 1-hour reservation
-    }
+    selectedKeys.forEach(key => {
+      const [r, c] = key.split('-').map(Number);
+      if (c === col) {
+        minRow = Math.min(minRow, r);
+        maxRow = Math.max(maxRow, r);
+      }
+    });
 
-    const reservationDTO: ReservationDTO = {
-      roomId: this.currentRoom!.id, // Replace with actual selected room
-      personId: 1, // Replace with actual user ID
-      startTime: startTime.toISOString(),
-      endTime: endTime.toISOString(),
-      reservationDate: startTime.toISOString().split('T')[0], // YYYY-MM-DD format
+    const startTimeParts = this.times[minRow].split(':');
+    const endTimeParts = this.times[maxRow].split(':');
+
+    const reservationDate = this.weekDays[col];
+
+    const start = new Date(reservationDate);
+    start.setHours(parseInt(startTimeParts[0]), parseInt(startTimeParts[1]), 0, 0);
+
+    const end = new Date(reservationDate);
+    end.setHours(parseInt(endTimeParts[0]), parseInt(endTimeParts[1]), 0, 0);
+
+    const reservation: ReservationDTO = {
+      roomId: this.currentRoom.id,
+      personId: 1, // Placeholder
+      reservationDate: reservationDate.toISOString(),
+      startTime: start.toISOString(),
+      endTime: end.toISOString()
     };
 
-    this.storageService.addRoomDTO(reservationDTO);
-
-
-
-    this.snackBar.open('Hinzugefügt', 'Schließen')
-    setTimeout(() => {
-      this.snackBar.dismiss()
-    } ,2500)
-
+    this.storageService.addRoomDTO(reservation);
+    this.snackBar.open('Raum reserviert', 'Schließen');
     this.router.navigate(['cart']);
   }
-
-
 }

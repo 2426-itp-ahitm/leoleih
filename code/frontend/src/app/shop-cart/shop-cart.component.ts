@@ -9,6 +9,9 @@ import {ReservationService} from '../reservation.service';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {Router} from '@angular/router';
 import {RoomItemComponent} from '../room-item/room-item.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-shop-cart',
@@ -16,7 +19,10 @@ import {RoomItemComponent} from '../room-item/room-item.component';
   imports: [
     SelectedItemsComponent,
     NgIf,
-    RoomItemComponent
+    RoomItemComponent,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
   ],
   styleUrl: './shop-cart.component.css'
 })

@@ -15,45 +15,56 @@
   margin: 0;
 }
 
-.app-footer h4 {
-  font-size: 1.5rem;
+.footer-logo img {
+  height: 64px;
+  width: auto;
 }
 
-.app-footer > div {
-  width: 50%;
+.footer-content {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-#footer-ask {
+.footer-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.footer-contacts {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  gap: 0.25rem;
 }
 
-#footer-ask a {
-  font-size: 1rem;
-  text-decoration-line: underline;
-  color: var(--white);
+.contact-item {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
 }
 
-@media screen and (max-width: 768px) {
-  .app-footer {
-    flex-direction: column; /* Elemente stapeln sich vertikal */
-    padding: 2% 5%; /* Mehr Polsterung für kleinere Geräte */
-    font-size: 16px; /* Kleinere Schriftgröße */
-    text-align: center; /* Zentrierter Text */
-    width: 90%;
-  }
+.contact-label {
+  font-weight: 500;
+  margin-right: 0.5rem;
+  color: white;
+}
 
-  .app-footer > div {
-    width: 100%; /* Volle Breite für die Inhalte */
-    margin-bottom: 2%; /* Abstand zwischen den Abschnitten */
-  }
+.footer-contacts a {
+  color: white;
+  text-decoration: none;
+}
 
-  .app-footer h1 {
-    font-size: 18px; /* Kleinere Schriftgröße für Überschriften */
+.footer-contacts a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
   }
 }
