@@ -8,6 +8,8 @@ import java.util.List;
 
 import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.EquipmentType;
+import at.htlleonding.omnial.model.Tag;
+import at.htlleonding.omnial.model.TagType;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -26,6 +28,7 @@ public class ExcelReader {
     EntityManager em;
 
     void onStartUp(@Observes StartupEvent event){
+        createTags();
         readExcel();
     }
 
@@ -131,6 +134,18 @@ public class ExcelReader {
             type = null;
         }
         return type;
+    }
+    @Transactional
+    public void createTags(){
+        Tag audioTag = new Tag();
+        audioTag.setType(TagType.AUDIO);
+        Tag videoTag = new Tag();
+        videoTag.setType(TagType.VIDEO);
+        Tag fotoTag = new Tag();
+        fotoTag.setType(TagType.FOTO);
+        em.persist(audioTag);
+        em.persist(videoTag);
+        em.persist(fotoTag);
     }
 }
 
