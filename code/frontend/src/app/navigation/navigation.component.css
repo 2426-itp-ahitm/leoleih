@@ -15,11 +15,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e0e0e0;
+  background-color: rgba(40, 40, 40, 1);
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  color: #000;
+  color: #ffffff;
   margin-right: 0.5rem;
   font-weight: bold;
 }

@@ -4,7 +4,7 @@
     <div class="selection-panel">
       <mat-card class="calendar-card">
         <mat-card-header>
-          <mat-card-title>Datum wählen</mat-card-title>
+          <mat-card-title style="color: white">Datum wählen</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-calendar [selected]="selectedDate" (selectedChange)="onDateChange($event)"></mat-calendar>
@@ -13,7 +13,7 @@
 
       <mat-card class="room-card">
         <mat-card-header>
-          <mat-card-title>Räume</mat-card-title>
+          <mat-card-title style="color: white">Räume</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-selection-list [multiple]="false">
@@ -29,7 +29,7 @@
     <div class="grid-panel">
       <mat-card class="grid-card">
         <mat-card-header>
-          <mat-card-title>{{ currentRoom?.name }} - Wochenansicht</mat-card-title>
+          <mat-card-title style="color: white">{{ currentRoom?.name }} - Wochenansicht</mat-card-title>
           <mat-card-subtitle>{{ currentWeekStart | date:'dd.MM.yyyy' }} - {{ weekDays[4] | date:'dd.MM.yyyy' }}</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>

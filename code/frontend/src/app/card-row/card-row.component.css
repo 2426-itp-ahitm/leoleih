@@ -15,7 +15,7 @@
 
 .product-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(230, 230, 230, 0.91);
 }
 
 .product-img {
@@ -39,7 +39,7 @@ mat-card-content {
 }
 
 .product-description {
-  color: #757575;
+  color: #2e2e2e;
   font-size: 0.9rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -54,7 +54,7 @@ mat-card-actions {
 .no-results {
   text-align: center;
   padding: 4rem 2rem;
-  color: #757575;
+  color: #2e2e2e;
 }
 
 .no-results mat-icon {

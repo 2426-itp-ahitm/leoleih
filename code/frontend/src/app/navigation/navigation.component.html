@@ -1,4 +1,4 @@
-<mat-toolbar color="primary" class="app-navigation">
+<mat-toolbar color="primary" class="app-navigation" style="background-color: rgba(40, 40, 40, 1)" >
   <div id="navigation-profile" [matMenuTriggerFor]="profileMenu">
     <div id="navigation-profile-div">
       <p *ngIf="user">{{user.surname.charAt(0)}}{{user.firstname.charAt(0)}}</p>
@@ -11,14 +11,14 @@
   <mat-menu #profileMenu="matMenu">
     <button mat-menu-item (click)="logout()">
       <mat-icon>logout</mat-icon>
-      <span>Logout</span>
+      <span style="color: white">Logout</span>
     </button>
   </mat-menu>
 
   <div id="navigation-links">
-    <div class="search-container">
+    <div class="search-container" style="background-color: rgba(40, 40, 40, 1)">
       <mat-form-field appearance="outline" subscriptSizing="dynamic">
-        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange()">
+        <mat-select [(ngModel)]="selectedCategory" (selectionChange)="onCategoryChange()" style="color: white">
           <mat-option value="Alle">Alle</mat-option>
           <mat-option value="Kamera">Kamera</mat-option>
           <mat-option value="Audio">Audio</mat-option>
@@ -26,17 +26,17 @@
           <mat-option value="Raum">Raum</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-input">
-        <mat-label>Suche nach Equipment bzw. Räumen</mat-label>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic" class="search-input" style="color: white">
+        <mat-label style="color: white">Suche nach Equipment bzw. Räumen</mat-label>
         <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()">
-        <mat-icon matSuffix>search</mat-icon>
+        <mat-icon matSuffix style="color: white">search</mat-icon>
       </mat-form-field>
     </div>
 
     <div class="nav-buttons">
-      <button mat-button routerLink="">Shop</button>
-      <button mat-button routerLink="dashboard">Dashboard</button>
-      <button mat-icon-button routerLink="cart" aria-label="Warenkorb">
+      <button mat-button routerLink="" style="color: white">Shop</button>
+      <button mat-button routerLink="dashboard" style="color: white">Dashboard</button>
+      <button mat-icon-button routerLink="cart" aria-label="Warenkorb" style="color: white">
         <mat-icon [matBadge]="badgeCount > 0 ? badgeCount : null" matBadgeColor="accent">shopping_cart</mat-icon>
       </button>
     </div>

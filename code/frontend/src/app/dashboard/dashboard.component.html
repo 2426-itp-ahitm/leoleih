@@ -5,7 +5,7 @@
         <div mat-card-avatar class="stat-icon all">
           <mat-icon>list</mat-icon>
         </div>
-        <mat-card-title>{{rentals.length}}</mat-card-title>
+        <mat-card-title style="color: white">{{rentals.length}}</mat-card-title>
         <mat-card-subtitle>Alle Anfragen</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
@@ -15,7 +15,7 @@
         <div mat-card-avatar class="stat-icon open">
           <mat-icon>calendar_today</mat-icon>
         </div>
-        <mat-card-title>{{getOpenReturnsCount()}}</mat-card-title>
+        <mat-card-title style="color: white">{{getOpenReturnsCount()}}</mat-card-title>
         <mat-card-subtitle>Offene Rückgaben</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
@@ -25,7 +25,7 @@
         <div mat-card-avatar class="stat-icon expired">
           <mat-icon>event_busy</mat-icon>
         </div>
-        <mat-card-title>{{getExpiredRentalsCount()}}</mat-card-title>
+        <mat-card-title style="color: white">{{getExpiredRentalsCount()}}</mat-card-title>
         <mat-card-subtitle>Verspätete Rückgaben</mat-card-subtitle>
       </mat-card-header>
     </mat-card>
@@ -34,7 +34,7 @@
   <mat-card class="table-card">
     <mat-card-content>
       <div class="table-header">
-        <h1>Alle Verleihungen</h1>
+        <h1 style="color: white">Alle Verleihungen</h1>
       </div>
 
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z0">
