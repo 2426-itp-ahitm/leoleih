@@ -1,7 +1,10 @@
 package at.htlleonding.omnial.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @NamedQuery(name = Equipment.FIND_ALL_EQUIPMENT , query = "SELECT e from Equipment e")
 @Entity
@@ -23,6 +26,14 @@ public class Equipment extends PanacheEntity {
     private int available;
 
     private String link;
+
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(
+            name = "article_tag",
+            joinColumns = @JoinColumn(name = "equipment_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+     Set<Tag> tagSet;
 
     public String getLink() {
         return link;
@@ -86,5 +97,21 @@ public class Equipment extends PanacheEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Tag> getTagSet() {
+        return tagSet;
+    }
+
+    public void setTagSet(Set<Tag> tagSet) {
+        this.tagSet = tagSet;
+    }
+    public void addTag(Tag tag) {
+        tagSet.add(tag);
+        tag.equipmentSet.add(this);
+    }
+    public void removeTag(Tag tag) {
+        tagSet.remove(tag);
+        tag.equipmentSet.remove(this);
     }
 }
