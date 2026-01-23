@@ -16,6 +16,7 @@ import { Person } from '../interfaces';
 import { HttpService } from '../http.service';
 import { EquipmentService } from '../equipment.service';
 import { FormsModule } from '@angular/forms';
+import {TeacherService} from '../teacher.service';
 
 @Component({
   selector: 'app-navigation',
@@ -44,6 +45,7 @@ export class NavigationComponent implements OnInit {
   equipmentService: EquipmentService = inject(EquipmentService);
   badgeCount: number = 0;
   user?: Person;
+  teacherService: TeacherService = inject(TeacherService);
 
   searchTerm: string = '';
   selectedCategory: string = 'Alle';
