@@ -1,7 +1,11 @@
 package at.htlleonding.omnial.DTO;
 
+import at.htlleonding.omnial.model.Equipment;
+import at.htlleonding.omnial.model.State;
+
 import java.util.Date;
 
+//TODO auf frontend aunpassen
 public record RentalDTO(
         Long id,
         int personId,
@@ -9,5 +13,7 @@ public record RentalDTO(
         Date returnDate,
         boolean isRented,
         boolean isReturned,
-        Date actualReturnDate
+        Date actualReturnDate,
+        State status,
+        Equipment equipment
 ) {}

@@ -5,6 +5,7 @@ import {ShopDetailComponent} from './shop-detail/shop-detail.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {RoomReservationComponent} from './room-reservation/room-reservation.component';
 import {StudentDashboardComponent} from './student-dashboard/student-dashboard.component';
+import {TeacherDashboardComponent} from './teacher-dashboard/teacher-dashboard.component';
 
 export const routes: Routes = [
   {
@@ -14,7 +15,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: TeacherDashboardComponent,
     title: 'Leoleih'
   },
   {

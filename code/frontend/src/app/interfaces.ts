@@ -1,11 +1,15 @@
+//TODO equipment hinzufügen
 export interface Rental {
-  person: Person,
-  leaseDate: Date,
-  returnDate: Date,
-  isRented: boolean,
-  isReturned: boolean,
-  actualReturnDate: Date
+  id: number;
+  personId: number;
+  leaseDate: string;
+  returnDate: string;
+  isRented: boolean;
+  isReturned: boolean;
+  person?: Person;
+  state: string;
 }
+
 
 export interface RentalRequest {
   personId: number,

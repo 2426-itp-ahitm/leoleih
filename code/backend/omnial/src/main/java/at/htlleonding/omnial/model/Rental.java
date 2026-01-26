@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Rental extends PanacheEntity {
@@ -25,16 +27,23 @@ public class Rental extends PanacheEntity {
 
     public Date actualReturnDate;
 
+    public State status;
+
+    //TODO den scheiß fertig mochn
+    @OneToMany
+    public List<Equipment> equiments = new ArrayList<>();
+
 
     public Rental() {
     }
 
-    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned) {
+    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned, State status) {
         this.person = person;
         this.leaseDate = leaseDate;
         this.returnDate = returnDate;
         this.isRented = isRented;
         this.isReturned = isReturned;
+        this.status = status;
     }
 
     public void setId(Long id) {
@@ -91,5 +100,13 @@ public class Rental extends PanacheEntity {
 
     public void setActualReturnDate(Date actualReturnDate) {
         this.actualReturnDate = actualReturnDate;
+    }
+
+    public State getStatus() {
+        return status;
+    }
+
+    public void setStatus(State status) {
+        this.status = status;
     }
 }

@@ -22,6 +22,9 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+//TODO neiche routen vom aktualisieren von Statusse
+//TODO delete a ufnktional mochn (vielleicht is es a frontend problem)
+//TODO lehrer soll eine notiz auf ein rental hinterlassen können (wichtig um z.b. ort und zeit der abholung auszumachen)
 @Path("api/rental")
 @Transactional
 public class RentalResource {

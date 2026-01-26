@@ -35,7 +35,7 @@ export class HttpService {
     return this.http.post<RentalRequest>(`${this.URL}rental`, rental);
   }
 
-  getEquipmentByPersonId(id: number): Observable<Equipment[]> | undefined {
+  getEquipmentByPersonId(id: number | undefined): Observable<Equipment[]> | undefined {
     return this.http.get<Equipment[]>(`${this.URL}equipment/user/${id}`);
   }
 
@@ -43,6 +43,9 @@ export class HttpService {
     return this.http.get<Person[]>(`${this.URL}persons/list`);
   }
 
+  getPersonById(id: number): Observable<Person> {
+    return this.http.get<Person>(`${this.URL}persons/${id}`);
+  }
   getAllRooms() {
     return this.http.get<Room[]>(`${this.URL}rooms/list`);
   }

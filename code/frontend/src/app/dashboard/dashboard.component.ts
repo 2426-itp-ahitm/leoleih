@@ -12,6 +12,7 @@ import {Equipment, Rental} from '../interfaces';
 import {map} from 'rxjs';
 import {format} from 'date-fns';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {UserService} from '../user.service';
 
 
 @Component({
@@ -59,17 +60,25 @@ export class DashboardComponent implements OnInit {
         this.dataSource.data = this.rentals;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        console.log(filteredRentals);
 
         // Custom filter for nested objects if needed, but MatTableDataSource handles simple ones well.
         this.dataSource.sortingDataAccessor = (item, property) => {
-          switch(property) {
-            case 'name': return `${item.person.surname} ${item.person.firstname}`.toLowerCase();
-            case 'grade': return item.person.grade.toLowerCase();
-            case 'email': return item.person.email.toLowerCase();
-            case 'date': return new Date(item.leaseDate).getTime();
-            default: return (item as any)[property];
+          if (!item.person) return '';
+          switch (property) {
+            case 'name':
+              return `${item.person.surname ?? ''} ${item.person.firstname ?? ''}`.toLowerCase();
+            case 'grade':
+              return item.person.grade?.toLowerCase() ?? '';
+            case 'email':
+              return item.person.email?.toLowerCase() ?? '';
+            case 'date':
+              return new Date(item.leaseDate).getTime();
+            default:
+              return (item as any)[property];
           }
         };
+
       });
   }
 
@@ -83,7 +92,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getEquipmentOfRentalRequest(rental: Rental): void {
-    this.httpService.getEquipmentByPersonId(rental.person.id)?.subscribe(r => {
+    this.httpService.getEquipmentByPersonId(rental?.person?.id)?.subscribe(r => {
       this.equipments = r;
     });
   }
@@ -118,7 +127,7 @@ export class DashboardComponent implements OnInit {
 
   removeRental(event: Event, rental: Rental) {
     event.stopPropagation();
-    this.rentals = this.rentals.filter(r => r.person.id !== rental.person.id);
+    this.rentals = this.rentals.filter(r => r.person?.id !== rental.person?.id);
     this.dataSource.data = this.rentals;
   }
 

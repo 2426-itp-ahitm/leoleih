@@ -21,7 +21,8 @@ public class RentalMapper {
                 rental.getReturnDate(),
                 rental.isRented(),
                 rental.isReturned(),
-                rental.getActualReturnDate()
+                rental.getActualReturnDate(),
+                rental.getStatus()
         );
     }
 
