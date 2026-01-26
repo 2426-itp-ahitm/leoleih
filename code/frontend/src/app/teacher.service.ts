@@ -1,16 +1,15 @@
-import {inject, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {LocalStorageService} from './local-storage.service';
+import { Injectable } from '@angular/core';
+import {KeycloakUserProfile} from './keycloak-user-info';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TeacherService {
-  private http: HttpClient = inject(HttpClient);
+  isTeacher: boolean = false;
 
-  storageService: LocalStorageService = inject(LocalStorageService);
-
-  private URL: string = 'http://localhost:8080/api/';
+  checkIfTeacher(keycloakUser: KeycloakUserProfile) {
+    return !keycloakUser.distinguishedName.includes("Students")
+  }
 
   constructor() { }
 }

@@ -37,5 +37,10 @@ export const routes: Routes = [
     path: 'students',
     component: StudentDashboardComponent,
     title: 'Leoleih'
+  },
+  {
+    path: 'teacher',
+    component: TeacherDashboardComponent,
+    title: 'Leoleih'
   }
 ];

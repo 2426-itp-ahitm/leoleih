@@ -2,6 +2,9 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import Keycloak from 'keycloak-js';
+import {KeycloakUserProfile} from './app/keycloak-user-info';
+import {TeacherService} from './app/teacher.service';
+import {ApplicationRef, inject} from '@angular/core';
 
 // Create Keycloak instance
 const keycloak = new Keycloak({
@@ -22,7 +25,9 @@ const createAuthEvent = (token: string | null) => {
 };
 
 // Keycloak initialization function
-async function init() {
+async function init(appRef: ApplicationRef) {
+
+
   try {
     const authenticated = await keycloak.init({
       onLoad: 'login-required',
@@ -37,6 +42,15 @@ async function init() {
     } else {
       // Store token in localStorage
       localStorage.setItem('token', keycloak.token!);
+
+      const userData: KeycloakUserProfile = await keycloak.loadUserInfo() as KeycloakUserProfile
+
+      // Use TeacherService to determine if user is a teacher
+      const teacherService = appRef.injector.get(TeacherService);
+      teacherService.isTeacher = teacherService.checkIfTeacher(userData);
+
+
+      console.log("isTeacher:", teacherService.isTeacher)
 
       // Notify application of authentication
       createAuthEvent(keycloak.token!);
@@ -89,6 +103,5 @@ export function logout() {
 }
 
 bootstrapApplication(AppComponent, appConfig)
+  .then(appRef => init(appRef))
   .catch((err) => console.error(err));
-
-init();

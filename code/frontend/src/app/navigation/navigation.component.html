@@ -35,7 +35,12 @@
 
     <div class="nav-buttons">
       <button mat-button routerLink="" style="color: white">Shop</button>
-      <button mat-button routerLink="dashboard" style="color: white">Dashboard</button>
+      @if (teacherService.isTeacher) {
+        <button mat-button routerLink="teacher" style="color: white">Dashboard</button>
+      } @else {
+        <button mat-button routerLink="students" style="color: white">Dashboard</button>
+      }
+
       <button mat-icon-button routerLink="cart" aria-label="Warenkorb" style="color: white">
         <mat-icon [matBadge]="badgeCount > 0 ? badgeCount : null" matBadgeColor="accent">shopping_cart</mat-icon>
       </button>
