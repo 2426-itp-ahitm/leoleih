@@ -33,6 +33,8 @@ public class Rental extends PanacheEntity {
     @NotNull
     public State status = State.AUSSTEHEND;
 
+    private String note;
+
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "rental_id"),
@@ -53,6 +55,15 @@ public class Rental extends PanacheEntity {
 //        this.isReturned = isReturned;
 //        this.status = status;
 //    }
+
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
 
     public Set<Equipment> getEquipments() {
         return equipments;
