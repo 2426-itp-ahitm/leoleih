@@ -3,6 +3,7 @@ package at.htlleonding.omnial.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.smallrye.common.constraint.NotNull;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -28,7 +29,9 @@ public class Rental extends PanacheEntity {
 
     public Date actualReturnDate;
 
-    public State status;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    public State status = State.AUSSTEHEND;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(
