@@ -23,14 +23,11 @@ public class EquipmentResource {
     @Inject
     EquipmentRepository equipmentRepository;
 
-    @Inject
-    EquipmentMapper equipmentMapper;
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
     public Response getEquipment() {
-        List<EquipmentDTO> equipmentList = equipmentRepository.getAll().stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> equipmentList = equipmentRepository.getAll().stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(equipmentList).build();
     }
 
@@ -38,7 +35,7 @@ public class EquipmentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/type/{type}")
     public Response getEquipmentByType(@PathParam("type") EquipmentType type) {
-        List<EquipmentDTO> list = equipmentRepository.getEquipmentByType(type).stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> list = equipmentRepository.getEquipmentByType(type).stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(list).build();
     }
 
@@ -48,7 +45,7 @@ public class EquipmentResource {
     public Response getEquipmentById(@PathParam("id") Long id) {
         Equipment e = Equipment.findById(id);
         if (e == null) return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(equipmentMapper.toDTO(e)).build();
+        return Response.ok(EquipmentMapper.toDTO(e)).build();
     }
 
 
@@ -56,7 +53,7 @@ public class EquipmentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/available")
     public Response getRentalAvailable(){
-        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentAvailable().stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentAvailable().stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(list).build();
     }
 
@@ -64,7 +61,7 @@ public class EquipmentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/popular")
     public Response getByMostPopular(){
-        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentMostPopular().stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentMostPopular().stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(list).build();
     }
 
@@ -72,7 +69,7 @@ public class EquipmentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/recentAvailable")
     public Response getByRecentlyAvailable(){
-        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentRecently().stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentRecently().stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(list).build();
     }
 
@@ -81,7 +78,7 @@ public class EquipmentResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/again/{id}")
     public Response getAgain(@PathParam("id") long id){
-        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentAgain(id).stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentAgain(id).stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(list).build();
     }
 
@@ -93,7 +90,7 @@ public class EquipmentResource {
         if (id < 0){
             return Response.status(Response.Status.BAD_REQUEST).entity("id must be positive").build();
         }
-        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentByUser(id).stream().map(equipmentMapper::toDTO).toList();
+        List<EquipmentDTO> list = this.equipmentRepository.getEquipmentByUser(id).stream().map(EquipmentMapper::toDTO).toList();
         return Response.ok(list).build();
     }
 

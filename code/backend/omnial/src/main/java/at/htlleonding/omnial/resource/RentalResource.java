@@ -1,14 +1,9 @@
 package at.htlleonding.omnial.resource;
 
 
-import at.htlleonding.omnial.DTO.RentalDTO;
-import at.htlleonding.omnial.DTO.RentalEquipmentDTO;
-import at.htlleonding.omnial.DTO.RentalEquipmentMapper;
-import at.htlleonding.omnial.DTO.RentalMapper;
-import at.htlleonding.omnial.DTO.RentalRequest;
+import at.htlleonding.omnial.DTO.*;
 import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.Rental;
-import at.htlleonding.omnial.model.Rental_Equipment;
 import at.htlleonding.omnial.repository.EquipmentRepository;
 import at.htlleonding.omnial.repository.PersonRepository;
 import at.htlleonding.omnial.repository.RentalRepository;
@@ -19,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,9 +37,6 @@ public class RentalResource {
 
     @Inject
     RentalMapper rentalMapper;
-
-    @Inject
-    RentalEquipmentMapper rentalEquipmentMapper;
 
 
     @GET
@@ -75,7 +68,10 @@ public class RentalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/eq/list")
     public List<RentalEquipmentDTO> getRentalEquipment() {
-        return Rental_Equipment.<Rental_Equipment>listAll().stream().map(rentalEquipmentMapper::toDTO).toList();
+        return Rental.<Rental>listAll().stream()
+                .flatMap(rental -> rental.getEquipments().stream()
+                        .map(equipment -> new RentalEquipmentDTO(0, rental.getId(), equipment.getId())))
+                .toList();
     }
 
 
@@ -114,17 +110,15 @@ public class RentalResource {
         rental.returnDate = rentalRequest.returnDate;
         rental.isRented = false;
         rental.isReturned = false;
-        Rental.persist(rental);
-
-
         for (Long equipmentId : rentalRequest.equipmentIds) {
             Equipment equipment = Equipment.findById(equipmentId);
-            equipment.setAvailable(equipment.getAvailable()-1);
             if (equipment != null) {
-               Rental_Equipment rentalEquipment = new Rental_Equipment(rental, equipment);
-               Rental_Equipment.persist(rentalEquipment);
+                equipment.setAvailable(equipment.getAvailable() - 1);
+                rental.getEquipments().add(equipment);
             }
         }
+
+        Rental.persist(rental);
 
         return Response.status(Response.Status.CREATED).build();
     }
@@ -135,18 +129,12 @@ public class RentalResource {
         Rental toDelete = Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
                 rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
 
-        long deleteCount = Rental_Equipment.delete("rental.id = ?1", toDelete.id);
-        long deleted2Count = Rental.delete(
+        Rental.delete(
                 "person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
                 rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate
         );
 
-        // Optional: Protokollierung der gelöschten Einträge
-        if (deleteCount == rentalRequest.equipmentIds.size() && deleted2Count > 0) {
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.NO_CONTENT).build();
-        }
+        return Response.ok().build();
     }
 
     @PUT

@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Rental extends PanacheEntity {
@@ -29,21 +30,33 @@ public class Rental extends PanacheEntity {
 
     public State status;
 
-    //TODO den scheiß fertig mochn
-    //@OneToMany
-    //public List<Equipment> equiments = new ArrayList<>();
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "rental_id"),
+            inverseJoinColumns = @JoinColumn(name = "equipment_id"),
+            name = "rental_equipment"
+    )
+    private Set<Equipment> equipments = new java.util.HashSet<>();
 
+// Brauchen ma des überhaupt? - Timon
+//    public Rental() {
+//    }
+//
+//    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned, State status) {
+//        this.person = person;
+//        this.leaseDate = leaseDate;
+//        this.returnDate = returnDate;
+//        this.isRented = isRented;
+//        this.isReturned = isReturned;
+//        this.status = status;
+//    }
 
-    public Rental() {
+    public Set<Equipment> getEquipments() {
+        return equipments;
     }
 
-    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned, State status) {
-        this.person = person;
-        this.leaseDate = leaseDate;
-        this.returnDate = returnDate;
-        this.isRented = isRented;
-        this.isReturned = isReturned;
-        this.status = status;
+    public void setEquipments(Set<Equipment> equipments) {
+        this.equipments = equipments;
     }
 
     public void setId(Long id) {

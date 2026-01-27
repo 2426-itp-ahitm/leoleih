@@ -1,9 +1,9 @@
 package at.htlleonding.omnial.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @NamedQuery(name = Equipment.FIND_ALL_EQUIPMENT , query = "SELECT e from Equipment e")
@@ -27,6 +27,9 @@ public class Equipment extends PanacheEntity {
 
     private String link;
 
+    @ManyToMany(mappedBy = "equipments")
+    private Set<Rental> rentals;
+
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "article_tag",
@@ -34,6 +37,14 @@ public class Equipment extends PanacheEntity {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
      Set<Tag> tagSet;
+
+    public Set<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(Set<Rental> rentals) {
+        this.rentals = rentals;
+    }
 
     public String getLink() {
         return link;

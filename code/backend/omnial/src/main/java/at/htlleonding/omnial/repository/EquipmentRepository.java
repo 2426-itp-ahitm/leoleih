@@ -33,23 +33,23 @@ public class EquipmentRepository  {
 
 
     public List<Equipment> getEquipmentMostPopular() {
-        return entityManager.createQuery("select e from Equipment e  , Rental_Equipment re where re.equipment.id = e.id group by e.id order by count(re) ", Equipment.class)
+        return entityManager.createQuery("select e from Rental r join r.equipments e group by e.id order by count(r) ", Equipment.class)
                 .getResultList();
     }
 
     public List<Equipment> getEquipmentRecently() {
-        return entityManager.createQuery("select e from Equipment e  , Rental_Equipment re where re.equipment.id = e.id order by re.rental.leaseDate", Equipment.class)
+        return entityManager.createQuery("select e from Rental r join r.equipments e order by r.leaseDate", Equipment.class)
                 .getResultList();
     }
 
     public List<Equipment> getEquipmentAgain(long id) {
-        return entityManager.createQuery("select e from Equipment e  , Rental_Equipment re, Person p where re.equipment.id = e.id and re.rental.person.id = :id order by rental.leaseDate", Equipment.class).setParameter("id", id)
+        return entityManager.createQuery("select e from Rental r join r.equipments e where r.person.id = :id order by r.leaseDate", Equipment.class).setParameter("id", id)
                 .getResultList();
     }
 
 
     public List<Equipment> getEquipmentByUser(long id) {
-        return entityManager.createQuery("select e from Equipment e  , Rental_Equipment re, Person p where re.rental.person.id = :id and re.rental.isReturned=false and e.id=re.equipment.id", Equipment.class).setParameter("id", id)
+        return entityManager.createQuery("select e from Rental r join r.equipments e where r.person.id = :id and r.isReturned=false", Equipment.class).setParameter("id", id)
                 .getResultList();
     }
 

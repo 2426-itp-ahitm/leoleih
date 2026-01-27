@@ -1,12 +1,13 @@
 package at.htlleonding.omnial.DTO;
 
 import at.htlleonding.omnial.model.Equipment;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class EquipmentMapper {
 
-    public EquipmentDTO toDTO(Equipment equipment) {
+    public static EquipmentDTO toDTO(Equipment equipment) {
         if (equipment == null) return null;
         return new EquipmentDTO(
                 equipment.getId(),
@@ -20,7 +21,7 @@ public class EquipmentMapper {
         );
     }
 
-    public Equipment toEntity(EquipmentDTO dto) {
+    public static Equipment toEntity(EquipmentDTO dto) {
         if (dto == null) return null;
         Equipment equipment = new Equipment();
         equipment.setId(dto.id());
