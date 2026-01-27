@@ -67,10 +67,9 @@ public class RentalResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/eq/list")
-    public List<RentalEquipmentDTO> getRentalEquipment() {
+    public List<RentalDTO> getRentalEquipment() {
         return Rental.<Rental>listAll().stream()
-                .flatMap(rental -> rental.getEquipments().stream()
-                        .map(equipment -> new RentalEquipmentDTO(0, rental.getId(), equipment.getId())))
+                .map(rentalMapper::toDTO)
                 .toList();
     }
 
