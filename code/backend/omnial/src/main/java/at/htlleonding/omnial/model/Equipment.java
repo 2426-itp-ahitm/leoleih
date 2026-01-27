@@ -2,8 +2,6 @@ package at.htlleonding.omnial.model;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
-
-import java.util.List;
 import java.util.Set;
 
 @NamedQuery(name = Equipment.FIND_ALL_EQUIPMENT , query = "SELECT e from Equipment e")

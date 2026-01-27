@@ -35,6 +35,28 @@ public class Person {
     @JsonIgnoreProperties(value = {"person"})
     List<Rental> rentals;
 
+    /****/
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getPerson_uuid() {
+        return person_uuid;
+    }
+
+    public void setPerson_uuid(String person_uuid) {
+        this.person_uuid = person_uuid;
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
+    }
+
+    public void setRentals(List<Rental> rentals) {
+        this.rentals = rentals;
+    }
+
     public int getId() {
         return id;
     }
