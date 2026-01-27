@@ -87,7 +87,14 @@ public class PersonResource {
 
             Person p1 = personRepository.getByUuid(uuid);
             if (p1 == null) {
-                Person tokenPerson = new Person(uuid, familyName, firstName,  email, grade);
+                Person tokenPerson = new Person();
+
+                tokenPerson.setPerson_uuid(uuid);
+                tokenPerson.setFirstname(firstName);
+                tokenPerson.setSurname(familyName);
+                tokenPerson.setEmail(email);
+                tokenPerson.setGrade(grade);
+
                 personRepository.addPerson(uuid , firstName, familyName,email, grade);
                 return Response.ok(personMapper.toDTO(tokenPerson)).build();
 

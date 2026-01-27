@@ -98,7 +98,13 @@ public class PersonRepository {
         Person temp = getByUuid(uuid);
 
         if (temp==null){
-          Person newPerson = new Person(uuid,lastName, firstName, email, grade);
+          Person newPerson = new Person();
+
+          newPerson.setPerson_uuid(uuid);
+          newPerson.setFirstname(firstName);
+          newPerson.setEmail(email);
+          newPerson.setGrade(grade);
+
           System.out.println(newPerson);
           entityManager.persist(newPerson);
       }

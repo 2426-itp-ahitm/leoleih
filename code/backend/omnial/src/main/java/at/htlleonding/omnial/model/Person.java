@@ -15,7 +15,6 @@ public class Person {
 
     public static final String FIND_ALL_PERSONS = "Person.finAll";
     public static final String FIND_PERSON_BY_EMAIL = "Person.findByEmail";
-
     public static final String FIND_PERSON_BY_UUID = "Person.findByUuid";
 
     @Id
@@ -97,22 +96,22 @@ public class Person {
         this.grade = grade;
     }
 
-    public Person(String uuid, String surname, String firstname) {
-        this(uuid, surname, firstname, "");
-    }
-
-    public Person(String uuid, String surname, String firstname, String email) {
-        this.person_uuid = uuid;
-        this.surname = surname;
-        this.firstname = firstname;
-        this.email = email;
-    }
-
-    public Person(String uuid, String surname, String firstname, String email, String grade) {
-        this(uuid, surname, firstname, email);
-        this.grade = grade;
-    }
-
-    public Person() {
-    }
+//    public Person(String uuid, String surname, String firstname) {
+//        this(uuid, surname, firstname, "");
+//    }
+//
+//    public Person(String uuid, String surname, String firstname, String email) {
+//        this.person_uuid = uuid;
+//        this.surname = surname;
+//        this.firstname = firstname;
+//        this.email = email;
+//    }
+//
+//    public Person(String uuid, String surname, String firstname, String email, String grade) {
+//        this(uuid, surname, firstname, email);
+//        this.grade = grade;
+//    }
+//
+//    public Person() {
+//    }
 }

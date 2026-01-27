@@ -26,7 +26,16 @@ public class ReservationMapper {
     public Reservation toEntity(ReservationDTO reservationDTO){
         Person person = personRepository.getById(reservationDTO.personId());
         Room room = roomRepository.getRoomById(reservationDTO.roomId());
-        return new Reservation(reservationDTO.id(), room,person,reservationDTO.startTime(),reservationDTO.endTime(),reservationDTO.reservationDate());
+
+        Reservation reservation = new Reservation();
+        reservation.setId(reservationDTO.id());
+        reservation.setRoom(room);
+        reservation.setPerson(person);
+        reservation.setStartTime(reservationDTO.startTime());
+        reservation.setEndTime(reservationDTO.endTime());
+        reservation.setReservationDate(reservationDTO.reservationDate());
+
+        return reservation;
     }
 
 }

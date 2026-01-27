@@ -36,28 +36,39 @@ public class Reservation {
     private LocalDateTime endTime;
     private LocalDate reservationDate;
 
-    public Reservation(Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
-        this.room = room;
-        this.person = person;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.reservationDate = date;
-    }
-
-    public Reservation(int id,Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
-        this(room,person,startTime,endTime,date);
-        this.id = id;
-    }
-
-
-    public Reservation() {
-    }
+// Brauchen ma des überhaupt? - Timon
+//    public Reservation(Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
+//        this.room = room;
+//        this.person = person;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.reservationDate = date;
+//    }
+//
+//    public Reservation(int id,Room room, Person person, LocalDateTime startTime, LocalDateTime endTime, LocalDate date) {
+//        this(room,person,startTime,endTime,date);
+//        this.id = id;
+//    }
+//
+//
+//    public Reservation() {
+//    }
 
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
+    public static int getCountId() {
+        return countId;
+    }
+
+    public static void setCountId(int countId) {
+        Reservation.countId = countId;
+    }
 
     public Room getRoom() {
         return room;
