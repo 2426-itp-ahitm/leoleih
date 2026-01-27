@@ -30,8 +30,8 @@ public class Rental extends PanacheEntity {
     public State status;
 
     //TODO den scheiß fertig mochn
-    @OneToMany
-    public List<Equipment> equiments = new ArrayList<>();
+    //@OneToMany
+    //public List<Equipment> equiments = new ArrayList<>();
 
 
     public Rental() {

@@ -13,6 +13,7 @@ import {map} from 'rxjs';
 import {format} from 'date-fns';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {UserService} from '../user.service';
+import {RouterLink} from '@angular/router';
 
 
 @Component({
@@ -31,6 +32,7 @@ import {UserService} from '../user.service';
     NgForOf,
     DatePipe,
     NgIf,
+    RouterLink,
   ],
   animations: [
     trigger('detailExpand', [

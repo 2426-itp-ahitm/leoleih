@@ -6,7 +6,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {RoomReservationComponent} from './room-reservation/room-reservation.component';
 import {StudentDashboardComponent} from './student-dashboard/student-dashboard.component';
 import {TeacherDashboardComponent} from './teacher-dashboard/teacher-dashboard.component';
-
+import {SettingsComponent} from './settings/settings.component';
 export const routes: Routes = [
   {
     path: '',
@@ -41,6 +41,11 @@ export const routes: Routes = [
   {
     path: 'teacher',
     component: TeacherDashboardComponent,
+    title: 'Leoleih'
+  },
+  {
+    path: 'dashboard/settings',
+    component: SettingsComponent,
     title: 'Leoleih'
   }
 ];

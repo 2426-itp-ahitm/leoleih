@@ -107,6 +107,7 @@ public class RentalResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRental(RentalRequest rentalRequest) {
+        System.out.println(rentalRequest);
         Rental rental = new Rental();
         rental.person = personRepository.getById(rentalRequest.personId);
         rental.leaseDate = rentalRequest.leaseDate;

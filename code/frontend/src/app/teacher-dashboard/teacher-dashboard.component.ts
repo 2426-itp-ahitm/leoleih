@@ -9,13 +9,14 @@ import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
 import {MatIcon} from '@angular/material/icon';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-teacher-dashboard',
   templateUrl: './teacher-dashboard.component.html',
   styleUrl: './teacher-dashboard.component.css',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, DatePipe, MatButton, MatChip, MatIcon, MatIconButton, NgForOf, NgIf]
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule, DatePipe, MatButton, MatChip, MatIcon, MatIconButton, NgForOf, NgIf, RouterLink]
 })
 export class TeacherDashboardComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;

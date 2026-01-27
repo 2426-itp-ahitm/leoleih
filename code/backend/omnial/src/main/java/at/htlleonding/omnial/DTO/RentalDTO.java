@@ -1,6 +1,5 @@
 package at.htlleonding.omnial.DTO;
 
-import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.State;
 
 import java.util.Date;
@@ -14,6 +13,5 @@ public record RentalDTO(
         boolean isRented,
         boolean isReturned,
         Date actualReturnDate,
-        State status,
-        Equipment equipment
+        State status
 ) {}
