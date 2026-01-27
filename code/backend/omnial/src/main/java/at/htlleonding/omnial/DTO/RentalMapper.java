@@ -22,7 +22,8 @@ public class RentalMapper {
                 rental.isRented(),
                 rental.isReturned(),
                 rental.getActualReturnDate(),
-                rental.getStatus()
+                rental.getStatus(),
+                rental.getNote()
         );
     }
 
@@ -37,6 +38,7 @@ public class RentalMapper {
         r.setRented(dto.isRented());
         r.setReturned(dto.isReturned());
         r.setActualReturnDate(dto.actualReturnDate());
+        r.setNote(dto.note());
         return r;
     }
 }

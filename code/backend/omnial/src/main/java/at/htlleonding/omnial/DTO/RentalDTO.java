@@ -13,5 +13,6 @@ public record RentalDTO(
         boolean isRented,
         boolean isReturned,
         Date actualReturnDate,
-        State status
+        State status,
+        String note
 ) {}
