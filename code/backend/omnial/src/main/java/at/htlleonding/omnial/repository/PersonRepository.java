@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @ApplicationScoped
-public class PersonRepository {
+public class PersonRepository implements io.quarkus.hibernate.orm.panache.PanacheRepositoryBase<Person, Integer> {
     @Inject
     EntityManager entityManager;
 

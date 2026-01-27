@@ -77,7 +77,7 @@ public class RentalResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/rent/{id}")
-    public RentalDTO updateRentalRent(Rental rental, @PathParam("id") long id) {
+    public RentalDTO updateRentalRent(@PathParam("id") long id) {
         Rental rental1 = Rental.findById(id);
         rental1.setRented(true);
         return rentalMapper.toDTO(rental1);
@@ -87,7 +87,7 @@ public class RentalResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/return/{id}")
-    public RentalDTO updateRentalReturn(Rental rental, @PathParam("id") long id) {
+    public RentalDTO updateRentalReturn(@PathParam("id") long id) {
         Rental rental1 = Rental.findById(id);
         rental1.setReturned(true);
 
@@ -103,19 +103,24 @@ public class RentalResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRental(RentalRequest rentalRequest) {
         System.out.println(rentalRequest);
-        Rental rental = new Rental();
-        rental.person = personRepository.getById(rentalRequest.personId);
-        rental.leaseDate = rentalRequest.leaseDate;
-        rental.returnDate = rentalRequest.returnDate;
-        rental.isRented = false;
-        rental.isReturned = false;
-        rental.setNote(rentalRequest.note);
-        for (Long equipmentId : rentalRequest.equipmentIds) {
-            Equipment equipment = Equipment.findById(equipmentId);
-            if (equipment != null) {
-                equipment.setAvailable(equipment.getAvailable() - 1);
-                rental.getEquipments().add(equipment);
-            }
+        RentalDTO dto = new RentalDTO(
+                null,
+                rentalRequest.personId,
+                rentalRequest.leaseDate,
+                rentalRequest.returnDate,
+                false,
+                false,
+                null,
+                null,
+                rentalRequest.note,
+                rentalRequest.equipmentIds.toArray(Long[]::new)
+        );
+
+        Rental rental = rentalMapper.toEntity(dto);
+
+        // adjust available count
+        for (Equipment equipment : rental.getEquipments()) {
+            equipment.setAvailable(equipment.getAvailable() - 1);
         }
 
         Rental.persist(rental);

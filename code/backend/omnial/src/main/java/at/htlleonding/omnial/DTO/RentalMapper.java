@@ -1,16 +1,25 @@
 package at.htlleonding.omnial.DTO;
 
+import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.Person;
 import at.htlleonding.omnial.model.Rental;
+import at.htlleonding.omnial.repository.EquipmentRepository;
 import at.htlleonding.omnial.repository.PersonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class RentalMapper {
 
     @Inject
     PersonRepository personRepository;
+
+    @Inject
+    EquipmentRepository equipmentRepository;
 
     public RentalDTO toDTO(Rental rental) {
         if (rental == null) return null;
@@ -23,7 +32,8 @@ public class RentalMapper {
                 rental.isReturned(),
                 rental.getActualReturnDate(),
                 rental.getStatus(),
-                rental.getNote()
+                rental.getNote(),
+                rental.getEquipments().stream().map(Equipment::getId).toArray(Long[]::new)
         );
     }
 
@@ -39,6 +49,15 @@ public class RentalMapper {
         r.setReturned(dto.isReturned());
         r.setActualReturnDate(dto.actualReturnDate());
         r.setNote(dto.note());
+
+        if (dto.equipmentIds() != null) {
+            Set<Equipment> equipments = java.util.Arrays.stream(dto.equipmentIds())
+                    .map(id -> equipmentRepository.findById(id))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toSet());
+            r.setEquipments(equipments);
+        }
+
         return r;
     }
 }

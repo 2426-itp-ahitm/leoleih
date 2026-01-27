@@ -11,7 +11,7 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 
 @ApplicationScoped
-public class EquipmentRepository  {
+public class EquipmentRepository implements PanacheRepository<Equipment> {
 
     @Inject
     EntityManager entityManager;
