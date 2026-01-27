@@ -8,4 +8,5 @@ public class RentalRequest {
     public Date leaseDate;
     public Date returnDate;
     public List<Long> equipmentIds;
+    public String note;
 }

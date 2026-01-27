@@ -110,6 +110,7 @@ public class RentalResource {
         rental.returnDate = rentalRequest.returnDate;
         rental.isRented = false;
         rental.isReturned = false;
+        rental.setNote(rentalRequest.note);
         for (Long equipmentId : rentalRequest.equipmentIds) {
             Equipment equipment = Equipment.findById(equipmentId);
             if (equipment != null) {
