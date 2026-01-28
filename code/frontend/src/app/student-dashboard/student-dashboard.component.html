@@ -1,19 +1,46 @@
 <div id="flex">
-  <div class="tableBox">
+  <div class="tableBox" style="color: white">
     <h1>Deine Entlehnungen</h1>
 
     <table id="rentalTable">
       <tr>
-        <th *ngFor="let tableHeader of tableHeaders; let j = index">
-          {{ tableHeader }}
+        <th>
+          Name
+        </th>
+        <th>
+          Equipment Typ
+        </th>
+        <th>
+          Item Count
         </th>
       </tr>
       <ng-container *ngFor="let equipment of tableEquipment">
         <tr class="tableRow">
-          <td><img src="{{equipment.link}}"></td>
           <td>{{equipment.name}}</td>
           <td>{{equipment.equipmentType}}</td>
           <td>{{equipment.itemCount}}x</td>
+        </tr>
+      </ng-container>
+      <tr>
+        <th>
+          Lease Date
+        </th>
+        <th>
+          Return date
+        </th>
+        <th>
+          Notiz des Lehrers
+        </th>
+        <th>
+          Aktueller Status
+        </th>
+      </tr>
+      <ng-container *ngFor="let rental of rentals">
+        <tr class="tableRow">
+          <td> {{rental.leaseDate}}</td>
+          <td> {{rental.returnDate}}</td>
+          <td> {{rental.note}}</td>
+          <td> {{rental.state}}</td>
         </tr>
       </ng-container>
     </table>

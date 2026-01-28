@@ -33,7 +33,7 @@ public class Rental extends PanacheEntity {
     @NotNull
     public State state = State.AUSSTEHEND;
 
-    private String note;
+    public String note;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(

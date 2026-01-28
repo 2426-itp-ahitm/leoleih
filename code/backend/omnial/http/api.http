@@ -125,6 +125,10 @@ Authorization: Bearer <Token>
 GET http://localhost:8080/api/rental/list
 
 ###
+
+GET http://localhost:8080/api/rental/user/1
+
+###
 POST http://localhost:8080/api/rental
 Content-Type: application/json
 
@@ -186,11 +190,32 @@ PUT http://localhost:8080/api/rental/update
 Content-Type: application/json
 
 {
-"id": 102,
-"personId":2 ,
-"leaseDate": "2025-03-08T00:00:00Z",
-"returnDate": "2025-03-09T00:00:00Z",
-"equipmentIds": [1, 51],
-"state": "ÜBERZOGEN",
-"note": "BAdabimkjhgfghj"
+  "actualReturnDate": null,
+  "equipmentIds"
+  :
+  [201],
+  "id"
+  :
+  104,
+  "isRented"
+  :
+  false,
+  "isReturned"
+  :
+  false,
+  "leaseDate"
+  :
+  "2026-01-28T23:00:00.000+00:00",
+  "note"
+  :
+  "Hallo",
+  "personId"
+  :
+  6,
+  "returnDate"
+  :
+  "2026-01-30T23:00:00.000+00:00",
+  "state"
+  :
+  "ZURÜCKGEGEBEN"
 }

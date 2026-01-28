@@ -7,8 +7,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import {HttpService} from "../http.service";
-import {Rental} from '../interfaces';
+import {Equipment, Rental} from '../interfaces';
 import {Router} from '@angular/router';
+import {NgForOf} from '@angular/common';
 
 
 @Component({
@@ -22,7 +23,8 @@ import {Router} from '@angular/router';
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgForOf
   ]
 })
 
@@ -32,8 +34,9 @@ export class SettingsComponent implements OnInit {
   private router: Router = inject(Router);
   private state: string = 'AUSSTEHEND';
   private notiz: string = '';
-  private rental: Rental | null = null;
+  protected rental: Rental | null = null;
   public addressForm!: FormGroup ;
+  protected equipments: Equipment[] = [];
   private fb = inject(FormBuilder);
 
 
@@ -45,11 +48,16 @@ export class SettingsComponent implements OnInit {
 
     this.httpService.getRentalById(history.state.id).subscribe(rental => {
       this.rental = rental;
-      console.log(rental);
       this.addressForm.patchValue({
-        notiz: 'TEST',
-        state: 'AUSSTEHEND'
+        notiz: this.rental.note,
+        state: this.rental.state,
       });
+      for (let i = 0; i < this.rental.equipmentIds.length; i++) {
+        this.httpService.getEquipmentById(this.rental.equipmentIds[i]).subscribe(equipment => {
+          this.equipments.push(equipment);
+          }
+        );
+      }
     });
   }
   hasUnitNumber = false;
@@ -69,7 +77,7 @@ export class SettingsComponent implements OnInit {
     this.rental.state = this.addressForm?.value.state!;
     console.log(this.rental);
     console.log("^^^^^^^^^^");
-    this.httpService.updateRental(this.rental);
+    this.httpService.updateRental(this.rental).subscribe();
     this.router.navigate(['dashboard']);
   }
 }

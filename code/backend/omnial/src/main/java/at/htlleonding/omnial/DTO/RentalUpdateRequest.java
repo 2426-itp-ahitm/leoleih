@@ -1,7 +1,5 @@
 package at.htlleonding.omnial.DTO;
 
-import at.htlleonding.omnial.model.State;
-
 import java.util.Date;
 import java.util.List;
 

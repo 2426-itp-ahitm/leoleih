@@ -9,6 +9,7 @@ export interface Rental {
   person: Person;
   state: string;
   note: string;
+  equipmentIds: number[]
 }
 
 

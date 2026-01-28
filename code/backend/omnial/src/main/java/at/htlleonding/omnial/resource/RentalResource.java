@@ -178,8 +178,7 @@ public class RentalResource {
     public Response update(RentalUpdateRequest rentalRequest) {
         Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
                 rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
-        System.out.println(rentalRequest + "HALLLO");
-        System.out.println(myRental);
+        myRental.note = rentalRequest.note;
         if(rentalRequest.state.equals("AUSSTEHEND")) {
             myRental.state = State.AUSSTEHEND;
         } else if (rentalRequest.state.equals("AUSGEBORGT")) {

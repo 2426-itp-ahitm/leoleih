@@ -28,6 +28,10 @@ export class HttpService {
     return this.http.get<Rental>(`${this.URL}rental/${id}`);
   }
 
+  getRentalByUserId(userId: number){
+    return this.http.get<Rental[]>(`${this.URL}rental/user/${userId}`);
+  }
+
   // Get all rentals
   getAllRentals() {
     //return this.http.get<Rental[]>(this.URL + "rental/list");
@@ -55,7 +59,7 @@ export class HttpService {
   }
   updateRental(rental: Rental | null){
     console.log(rental)
-    this.http.put(`${this.URL}rental/update`, rental)
+    return this.http.put(`${this.URL}rental/update`, rental)
   }
 
   constructor() {

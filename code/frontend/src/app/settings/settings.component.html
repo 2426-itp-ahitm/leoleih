@@ -1,9 +1,23 @@
 <form [formGroup]="addressForm" novalidate (ngSubmit)="onSubmit()">
+
   <mat-card class="shipping-card">
     <mat-card-header>
-      <mat-card-title>Settings</mat-card-title>
+      <mat-card-title style="color: white">Settings</mat-card-title>
     </mat-card-header>
     <mat-card-content>
+      <ng-container *ngFor="let equipment of equipments">
+        <tr class="tableRow" style="color: white">
+          <td>{{equipment.name}}</td>
+          <td>{{equipment.equipmentType}}</td>
+          <td>{{equipment.itemCount}}x</td>
+        </tr>
+      </ng-container>
+      <ng-container >
+        <tr class="tableRow" style="color: white">
+          <td>Lease Date: {{rental?.leaseDate}}</td>
+          <td>Return Date: {{rental?.returnDate}}</td>
+        </tr>
+      </ng-container>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
