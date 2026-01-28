@@ -4,6 +4,7 @@ package at.htlleonding.omnial.resource;
 import at.htlleonding.omnial.DTO.*;
 import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.Rental;
+import at.htlleonding.omnial.model.State;
 import at.htlleonding.omnial.repository.EquipmentRepository;
 import at.htlleonding.omnial.repository.PersonRepository;
 import at.htlleonding.omnial.repository.RentalRepository;
@@ -170,9 +171,30 @@ public class RentalResource {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
 
-
-
-
+    }
+    @PUT
+    @Path("/update")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response update(RentalUpdateRequest rentalRequest) {
+        Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
+                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
+        System.out.println(rentalRequest + "HALLLO");
+        System.out.println(myRental);
+        if(rentalRequest.state.equals("AUSSTEHEND")) {
+            myRental.state = State.AUSSTEHEND;
+        } else if (rentalRequest.state.equals("AUSGEBORGT")) {
+            myRental.state = State.AUSGEBORGT;
+        } else if (rentalRequest.state.equals("RESERVIERT")) {
+            myRental.state = State.RESERVIERT;
+        } else if (rentalRequest.state.equals("ZURÜCKGEGEBEN")) {
+            myRental.state = State.ZURÜCKGEGEBEN;
+        } else if (rentalRequest.state.equals("ÜBERZOGEN")) {
+            myRental.state = State.ÜBERZOGEN;
+        }else {
+            System.out.println(rentalRequest.note);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    return Response.ok().build();
     }
 
 }

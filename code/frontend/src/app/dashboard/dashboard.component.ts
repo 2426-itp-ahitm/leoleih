@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import {HttpService} from '../http.service';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {CommonModule, DatePipe, NgForOf, NgIf} from '@angular/common';
 import {Equipment, Rental} from '../interfaces';
 import {map} from 'rxjs';
 import {format} from 'date-fns';
@@ -22,6 +22,7 @@ import {RouterLink} from '@angular/router';
   styleUrl: './dashboard.component.css',
   standalone: true,
   imports: [
+    CommonModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -29,10 +30,7 @@ import {RouterLink} from '@angular/router';
     MatIconModule,
     MatButtonModule,
     MatChipsModule,
-    NgForOf,
-    DatePipe,
-    NgIf,
-    RouterLink,
+    RouterLink
   ],
   animations: [
     trigger('detailExpand', [

@@ -132,7 +132,9 @@ Content-Type: application/json
   "personId":2 ,
   "leaseDate": "2025-03-08T00:00:00Z",
   "returnDate": "2025-03-09T00:00:00Z",
-  "equipmentIds": [1, 51]
+  "equipmentIds": [1, 51],
+  "status": "ÜBERZOGEN",
+  "note": "BAdabimkjhgfghj"
 }
 
 ###
@@ -178,4 +180,17 @@ Content-Type: application/json
   "leaseDate": "2025-03-31T00:00:00Z",
   "returnDate": "2025-04-02T00:00:00Z",
   "equipmentIds": [1, 51]
+}
+###
+PUT http://localhost:8080/api/rental/update
+Content-Type: application/json
+
+{
+"id": 102,
+"personId":2 ,
+"leaseDate": "2025-03-08T00:00:00Z",
+"returnDate": "2025-03-09T00:00:00Z",
+"equipmentIds": [1, 51],
+"state": "ÜBERZOGEN",
+"note": "BAdabimkjhgfghj"
 }

@@ -27,15 +27,14 @@
       <th mat-header-cell *matHeaderCellDef> Status </th>
       <td mat-cell *matCellDef="let rental">
         <mat-chip *ngIf="isRentalExpired(rental)" class="expired-chip">Verspätet</mat-chip>
-        <mat-chip *ngIf="rental?.isRented && !rental?.isReturned && !isRentalExpired(rental)" class="rented-chip">Verliehen</mat-chip>
-        <mat-chip *ngIf="!rental?.isRented" class="pending-chip">Ausständig</mat-chip>
+        <mat-chip class="rented-chip" *ngIf="rental.state">{{rental.state}}</mat-chip>
       </td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let rental">
-        <button mat-button color="primary" routerLink="settings">Status Bearbeiten</button>
+        <button mat-button color="primary" (click)="navToSettings(rental.id)">Status Bearbeiten</button>
         <!--<button mat-button color="accent" *ngIf="rental?.isRented && !rental?.isReturned">Retour</button>
         <button mat-icon-button color="warn" *ngIf="!rental?.isRented" (click)="removeRental($event, rental)">
           <mat-icon>delete</mat-icon>

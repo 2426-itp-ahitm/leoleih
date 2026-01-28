@@ -23,6 +23,10 @@ export class HttpService {
   getEquipmentById(id: number): Observable<Equipment> {
     return this.http.get<Equipment>(`${this.URL}equipment/${id}`);
   }
+  getRentalById(id: number): Observable<Rental> {
+    console.log(`${this.URL}rental/${id}`);
+    return this.http.get<Rental>(`${this.URL}rental/${id}`);
+  }
 
   // Get all rentals
   getAllRentals() {
@@ -48,6 +52,10 @@ export class HttpService {
   }
   getAllRooms() {
     return this.http.get<Room[]>(`${this.URL}rooms/list`);
+  }
+  updateRental(rental: Rental | null){
+    console.log(rental)
+    this.http.put(`${this.URL}rental/update`, rental)
   }
 
   constructor() {

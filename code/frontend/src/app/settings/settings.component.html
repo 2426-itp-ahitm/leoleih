@@ -13,7 +13,7 @@
               formControlName="notiz"
               rows="3"></textarea>
 
-            @if (addressForm.controls['notiz'].hasError('required')) {
+            @if (addressForm?.controls?.['notiz']?.hasError('required')) {
               <mat-error>Last name is <strong>required</strong></mat-error>
             }
           </mat-form-field>
@@ -27,7 +27,7 @@
                 <mat-option [value]="state">{{ state }}</mat-option>
               }
             </mat-select>
-            @if (addressForm.controls['state'].hasError('required')) {
+            @if (addressForm?.controls?.['state']?.hasError('required')) {
               <mat-error>State is <strong>required</strong></mat-error>
             }
           </mat-form-field>
