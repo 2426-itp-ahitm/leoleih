@@ -64,7 +64,6 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
-          # Use -f to point to the specific location if it's not in the root of 'code/frontend'
-          docker build --tag ${{ env.TAG }} -f code/frontend/docker/Dockerfile . 
+          docker build --tag ${{ env.TAG }} . 
           docker push ${{ env.TAG }}
         working-directory: code/frontend
