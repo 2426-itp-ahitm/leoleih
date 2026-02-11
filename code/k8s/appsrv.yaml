@@ -24,7 +24,9 @@ spec:
             - name: QUARKUS_HTTP_CORS_ORIGINS
               #value: "/[a-z\\d]\\.cloud\\.htl-leonding\\.ac\\.at\\/.*/"
               value: /.*/
-
+      
+      imagePullSecrets:
+        - name: leoleih-gh-key
 ---
 apiVersion: v1
 kind: Service

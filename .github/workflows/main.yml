@@ -36,3 +36,34 @@ jobs:
           docker image ls
           docker push ${{ env.TAG }}
         working-directory: code/backend/omnial
+
+  Frontend:
+    permissions:
+      packages: write
+      contents: read
+    runs-on: ubuntu-24.04
+    env:
+      TAG: ghcr.io/${{ github.repository }}/frontend
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: "code/frontend/package-lock.json"
+
+      - name: Install dependencies and Build
+        run: |
+          npm ci
+          npm run build
+        working-directory: code/frontend
+
+      - name: Build and Push Docker Image
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
+          docker build --tag ${{ env.TAG }} .
+          docker push ${{ env.TAG }}
+        working-directory: code/frontend
