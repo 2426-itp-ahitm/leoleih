@@ -1,6 +1,19 @@
 <div class="mat-elevation-z2">
+  <mat-form-field appearance="outline">
+    <mat-label>Status ganz oben</mat-label>
 
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort class="mat-elevation-z0">
+    <mat-select [(ngModel)]="topStatus" (selectionChange)="updateSorting()">
+      <mat-option value="verspätet">Verspätet</mat-option>
+      <mat-option value="ausstehend">Ausstehend</mat-option>
+      <mat-option value="zurückgegeben">Zurückgegeben</mat-option>
+      <mat-option value="reserviert">Reserviert</mat-option>
+      <mat-option value="ausgeborgt">Ausgeborgt</mat-option>
+    </mat-select>
+
+  </mat-form-field>
+
+
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortActive="status" matSortDirection="asc" class="mat-elevation-z0">
 
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Schüler Name </th>
