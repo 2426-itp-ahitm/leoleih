@@ -1,49 +1,169 @@
+<style>
+  #rentalTable {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1b1b1b;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #e0e0e0;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  #rentalTable th {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    text-align: left;
+    padding: 14px 16px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid #3a3a3a;
+  }
+
+  #rentalTable td {
+    padding: 12px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid #2f2f2f;
+  }
+
+  .tableRow {
+    background-color: #1e1e1e;
+    transition: background-color 0.2s ease;
+  }
+
+  .tableRow:hover {
+    background-color: #2c2c2c;
+  }
+
+  .equipment-name {
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .equipment-type {
+    color: #bdbdbd;
+  }
+
+  .equipment-count {
+    color: #4fc3f7;
+    font-weight: 600;
+  }
+
+  .date {
+    color: #81c784;
+    font-weight: 600;
+  }
+
+  .status {
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+
+  .status-active {
+    background-color: rgba(76, 175, 80, 0.18);
+    color: #66bb6a;
+  }
+
+  .status-returned {
+    background-color: rgba(33, 150, 243, 0.18);
+    color: #42a5f5;
+  }
+
+  .status-overdue {
+    background-color: rgba(244, 67, 54, 0.18);
+    color: #ef5350;
+  }
+
+  /* Lehrer Notiz – eigene Zeile */
+  .note-row td {
+    background-color: #151515;
+    padding: 14px 18px;
+    border-bottom: 1px solid #303030;
+  }
+
+  .note-label {
+    color: #9e9e9e;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .note-text {
+    color: #ffcc80;
+    font-style: italic;
+    line-height: 1.5;
+    white-space: pre-wrap;
+  }
+</style>
+
 <div id="flex">
   <div class="tableBox" style="color: white">
     <h1>Deine Entlehnungen</h1>
 
     <table id="rentalTable">
+
       <tr>
-        <th>
-          Name
-        </th>
-        <th>
-          Equipment Typ
-        </th>
-        <th>
-          Item Count
-        </th>
+        <th>Name</th>
+        <th>Equipment Typ</th>
+        <th>Item Count</th>
       </tr>
+
       <ng-container *ngFor="let equipment of tableEquipment">
         <tr class="tableRow">
-          <td>{{equipment.name}}</td>
-          <td>{{equipment.equipmentType}}</td>
-          <td>{{equipment.itemCount}}x</td>
+          <td class="equipment-name">{{ equipment.name }}</td>
+          <td class="equipment-type">{{ equipment.equipmentType }}</td>
+          <td class="equipment-count">{{ equipment.itemCount }}x</td>
         </tr>
       </ng-container>
+
       <tr>
-        <th>
-          Lease Date
-        </th>
-        <th>
-          Return date
-        </th>
-        <th>
-          Notiz des Lehrers
-        </th>
-        <th>
-          Aktueller Status
-        </th>
+        <th>Lease Date</th>
+        <th>Return Date</th>
+        <th>Status</th>
       </tr>
+
       <ng-container *ngFor="let rental of rentals">
+
         <tr class="tableRow">
-          <td> {{rental.leaseDate}}</td>
-          <td> {{rental.returnDate}}</td>
-          <td> {{rental.note}}</td>
-          <td> {{rental.state}}</td>
+          <td class="date">
+            {{ rental.leaseDate | date:'yyyy.MM.dd' }}
+          </td>
+
+          <td class="date">
+            {{ rental.returnDate | date:'yyyy.MM.dd' }}
+          </td>
+
+          <td>
+        <span
+          class="status"
+          [ngClass]="{
+            'status-active': rental.state === 'ACTIVE',
+            'status-returned': rental.state === 'RETURNED',
+            'status-overdue': rental.state === 'OVERDUE'
+          }">
+          {{ rental.state }}
+        </span>
+          </td>
         </tr>
+
+        <tr class="note-row">
+          <td colspan="3">
+            <span class="note-label">Notiz des Lehrers</span>
+            <span class="note-text">{{ rental.note }}</span>
+          </td>
+        </tr>
+
       </ng-container>
+
     </table>
+
   </div>
   <div class="tableBox">
     <h1>Deine Reservierungen</h1>

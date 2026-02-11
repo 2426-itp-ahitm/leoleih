@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import {HttpService} from "../http.service";
 import {Equipment, Rental} from '../interfaces';
 import {Router} from '@angular/router';
-import {NgForOf} from '@angular/common';
+import {DatePipe, NgForOf} from '@angular/common';
 
 
 @Component({
@@ -24,7 +24,8 @@ import {NgForOf} from '@angular/common';
     MatRadioModule,
     MatCardModule,
     ReactiveFormsModule,
-    NgForOf
+    NgForOf,
+    DatePipe
   ]
 })
 
@@ -39,6 +40,8 @@ export class SettingsComponent implements OnInit {
   protected equipments: Equipment[] = [];
   private fb = inject(FormBuilder);
   cdr = inject(ChangeDetectorRef);
+  initialState!: string;
+
 
 
 
@@ -54,6 +57,8 @@ export class SettingsComponent implements OnInit {
         notiz: this.rental.note,
         state: this.rental.state,
       });
+      this.initialState = this.rental.state;
+
       for (let i = 0; i < this.rental.equipmentIds.length; i++) {
         this.httpService.getEquipmentById(this.rental.equipmentIds[i]).subscribe(equipment => {
           this.equipments.push(equipment);
@@ -63,18 +68,39 @@ export class SettingsComponent implements OnInit {
     });
     this.cdr.detectChanges();
 
+
   }
   hasUnitNumber = false;
 
-  states = [
-    "AUSGEBORGT",
+
+  states: string[] = [
+    "AUSSTEHEND",
     "RESERVIERT",
-    "ZURÜCKGEGEBEN",
+    "AUSGEBORGT",
     "ÜBERZOGEN",
-    "AUSSTEHEND"
+    "ZURÜCKGEGEBEN"
   ];
 
+  get allowedStates(): string[] {
+    switch (this.initialState) {
+      case 'AUSSTEHEND':
+        return ['AUSSTEHEND', 'RESERVIERT'];
+
+      case 'RESERVIERT':
+        return ['AUSSTEHEND','RESERVIERT' ,'AUSGEBORGT'];
+
+      case 'AUSGEBORGT':
+        return ['AUSGEBORGT','ZURÜCKGEGEBEN'];
+
+      default:
+        return [this.initialState];
+    }
+  }
+
+
   onSubmit(): void {
+    const newState = this.addressForm.get('state')?.value;
+
     if (!this.rental) return;
 
     this.rental.note = this.addressForm?.value.notiz!;
@@ -83,7 +109,7 @@ export class SettingsComponent implements OnInit {
     console.log("^^^^^^^^^^");
     this.httpService.updateRental(this.rental).subscribe();
     this.cdr.detectChanges();
+    this.initialState = newState;
     this.router.navigate(['dashboard']).then(r => this.cdr.detectChanges());
-    this.cdr.detectChanges();
   }
 }
