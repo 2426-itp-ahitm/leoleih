@@ -6,11 +6,11 @@ TAG=$(date +"%d-%m-%y_%H-%M")
 echo DELETING OLD BUILDS.....
 
 cd ../frontend/docker
-sudo rm -f -r dist
+sudo rm -f -r dist || tru || true
 
 cd ../../backend/omnial/src/main/docker
 
-rm -r omnial-1.0-SNAPSHOT-runner.jar
+rm -r omnial-1.0-SNAPSHOT-runner.jar || true
 
 echo "----------------------------------"
 echo SUCCESSFULLY DELETED
