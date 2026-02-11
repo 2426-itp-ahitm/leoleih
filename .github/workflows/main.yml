@@ -66,6 +66,6 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
-          docker build --tag ${{ env.TAG }} . 
+          docker build --tag ${{ env.TAG }} --file docker/Dockerfile .
           docker push ${{ env.TAG }}
         working-directory: code/frontend
