@@ -121,6 +121,7 @@ export class TeacherDashboardComponent implements AfterViewInit, OnInit {
             }
           };
         });
+    console.log("Hallo")
   }
   toggleRow(element: Rental) {
     if (this.expandedElement === element) {
