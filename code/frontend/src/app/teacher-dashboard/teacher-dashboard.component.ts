@@ -1,15 +1,15 @@
-import {AfterViewInit, Component, inject, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, inject, OnInit, ViewChild} from '@angular/core';
 import {MatTableModule, MatTable, MatTableDataSource} from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
-import {forkJoin, map, switchMap} from 'rxjs';
+import {filter, forkJoin, map, switchMap} from 'rxjs';
 import {Equipment, Person, Rental} from '../interfaces';
 import {HttpService} from '../http.service';
 import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
 import {MatIcon} from '@angular/material/icon';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterLink} from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
@@ -30,7 +30,7 @@ import { FormsModule } from '@angular/forms';
     ])
   ]
 })
-export class TeacherDashboardComponent implements AfterViewInit {
+export class TeacherDashboardComponent implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   router: Router = inject(Router);
@@ -41,13 +41,48 @@ export class TeacherDashboardComponent implements AfterViewInit {
   expandedElement: Rental | null = null;
   equipments: Equipment[] = [];
   person: Person | null = null;
+  cdr = inject(ChangeDetectorRef);
 
   displayedColumns: string[] = ["name", "grade", "email", "date", "status", "actions"];
 //TODO buttoms im html hinzufügen zum ändern vom status
 //TODO detail reparieren
 //TODO Klassenansicht (wenn vom backend her realisierbar)
 //TODO notiz hinzufügen können als lehrer
+
+  ngOnInit() {
+    this.cdr.detectChanges();
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => {
+        this.loadRentals();
+      });
+  }
+  loadRentals() {
+    this.httpService.getAllRentals()
+      .pipe(
+        map(rentals =>
+          rentals.filter(r =>
+            !(r.isRented && r.isReturned) && r.personId != null
+          )
+        ),
+        switchMap(rentals =>
+          forkJoin(
+            rentals.map(rental =>
+              this.httpService.getPersonById(rental.personId).pipe(
+                map(person => ({...rental, person}))
+              )
+            )
+          )
+        )
+      )
+      .subscribe(rentalsWithPerson => {
+        this.rentals = rentalsWithPerson;
+        this.dataSource.data = rentalsWithPerson;
+      });
+  }
+
   ngAfterViewInit(): void {
+    this.cdr.detectChanges();
     this.httpService.getAllRentals()
         .pipe(
             map(rentals =>
@@ -116,8 +151,7 @@ export class TeacherDashboardComponent implements AfterViewInit {
             }
           };
         });
-
-
+    console.log("Hallo")
   }
   toggleRow(element: Rental) {
     if (this.expandedElement === element) {

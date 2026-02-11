@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 
 import {ReactiveFormsModule, FormBuilder, Validators, FormGroup} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -38,6 +38,8 @@ export class SettingsComponent implements OnInit {
   public addressForm!: FormGroup ;
   protected equipments: Equipment[] = [];
   private fb = inject(FormBuilder);
+  cdr = inject(ChangeDetectorRef);
+
 
 
   ngOnInit() {
@@ -59,6 +61,8 @@ export class SettingsComponent implements OnInit {
         );
       }
     });
+    this.cdr.detectChanges();
+
   }
   hasUnitNumber = false;
 
@@ -78,6 +82,8 @@ export class SettingsComponent implements OnInit {
     console.log(this.rental);
     console.log("^^^^^^^^^^");
     this.httpService.updateRental(this.rental).subscribe();
-    this.router.navigate(['dashboard']);
+    this.cdr.detectChanges();
+    this.router.navigate(['dashboard']).then(r => this.cdr.detectChanges());
+    this.cdr.detectChanges();
   }
 }
