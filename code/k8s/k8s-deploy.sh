@@ -34,8 +34,9 @@ fi
 # 3. Force a rollout restart
 echo "Restarting deployments..."
 # Using '|| true' so the script doesn't crash if these aren't named exactly right yet
-kubectl rollout restart deployment/shop-frontend --namespace=$NAMESPACE || true
-kubectl rollout restart deployment/leoleih-backend --namespace=$NAMESPACE || true
+kubectl rollout restart deployment appsrv || true
+kubectl rollout restart deployment postgres || true
+kubectl rollout restart deployment nginx || true
 
 echo "----------------------------------"
 echo "✅ DEPLOYMENT COMPLETED"
