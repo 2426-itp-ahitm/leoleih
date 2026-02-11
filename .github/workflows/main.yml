@@ -60,7 +60,9 @@ jobs:
           npm ci
           npm run build
         working-directory: code/frontend
-
+      - name: List files for debugging
+        run: ls -R
+        working-directory: code/frontend
       - name: Build and Push Docker Image
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io --password-stdin -u ${{ github.actor }}
