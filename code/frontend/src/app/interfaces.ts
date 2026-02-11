@@ -6,8 +6,10 @@ export interface Rental {
   returnDate: string;
   isRented: boolean;
   isReturned: boolean;
-  person?: Person;
+  person: Person;
   state: string;
+  note: string;
+  equipmentIds: number[]
 }
 
 

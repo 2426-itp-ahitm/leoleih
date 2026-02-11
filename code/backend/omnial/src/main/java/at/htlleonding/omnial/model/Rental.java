@@ -31,9 +31,9 @@ public class Rental extends PanacheEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    public State status = State.AUSSTEHEND;
+    public State state = State.AUSSTEHEND;
 
-    private String note;
+    public String note;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(
@@ -47,13 +47,13 @@ public class Rental extends PanacheEntity {
 //    public Rental() {
 //    }
 //
-//    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned, State status) {
+//    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned, State state) {
 //        this.person = person;
 //        this.leaseDate = leaseDate;
 //        this.returnDate = returnDate;
 //        this.isRented = isRented;
 //        this.isReturned = isReturned;
-//        this.status = status;
+//        this.state = state;
 //    }
 
 
@@ -129,11 +129,11 @@ public class Rental extends PanacheEntity {
         this.actualReturnDate = actualReturnDate;
     }
 
-    public State getStatus() {
-        return status;
+    public State getState() {
+        return state;
     }
 
-    public void setStatus(State status) {
-        this.status = status;
+    public void setState(State state) {
+        this.state = state;
     }
 }

@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="app-navigation" style="background-color: rgba(40, 40, 40, 1)" >
   <div id="navigation-profile" [matMenuTriggerFor]="profileMenu">
     <div id="navigation-profile-div">
-      <p *ngIf="user">{{user.surname.charAt(0)}}{{user.firstname.charAt(0)}}</p>
+      <!--<p *ngIf="user">{{user.surname.charAt(0)}}{{user.firstname.charAt(0)}}</p>-->
     </div>
     <div class="user-info">
       <p class="user-name">{{user?.surname}} {{user?.firstname}}</p>

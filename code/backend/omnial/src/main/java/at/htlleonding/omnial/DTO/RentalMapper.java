@@ -31,7 +31,7 @@ public class RentalMapper {
                 rental.isRented(),
                 rental.isReturned(),
                 rental.getActualReturnDate(),
-                rental.getStatus(),
+                rental.getState(),
                 rental.getNote(),
                 rental.getEquipments().stream().map(Equipment::getId).toArray(Long[]::new)
         );

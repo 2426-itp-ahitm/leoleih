@@ -9,18 +9,29 @@ import {DatePipe, NgForOf, NgIf} from '@angular/common';
 import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatChip} from '@angular/material/chips';
 import {MatIcon} from '@angular/material/icon';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
 
 @Component({
   selector: 'app-teacher-dashboard',
   templateUrl: './teacher-dashboard.component.html',
   styleUrl: './teacher-dashboard.component.css',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, DatePipe, MatButton, MatChip, MatIcon, MatIconButton, NgForOf, NgIf, RouterLink]
+  imports: [MatTableModule, MatPaginatorModule, MatSortModule, DatePipe, MatButton, MatChip, NgForOf, NgIf],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms ease-in-out'))
+    ])
+  ]
 })
 export class TeacherDashboardComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  router: Router = inject(Router);
+  activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   httpService: HttpService = inject(HttpService)
   rentals: Rental[] = [];
   dataSource = new MatTableDataSource<Rental>([]);
@@ -105,4 +116,12 @@ export class TeacherDashboardComponent implements AfterViewInit {
   }
 
   protected readonly console = console;
+
+  navToSettings(id:number) {
+    this.router.navigate(['settings'], {
+      relativeTo: this.activatedRoute,
+      state: { id:id }
+    });
+
+  }
 }
