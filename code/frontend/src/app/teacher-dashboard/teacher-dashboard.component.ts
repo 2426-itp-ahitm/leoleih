@@ -11,6 +11,9 @@ import {MatChip} from '@angular/material/chips';
 import {MatIcon} from '@angular/material/icon';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+
 
 
 @Component({
@@ -70,17 +73,44 @@ export class TeacherDashboardComponent implements AfterViewInit {
           this.dataSource.data = rentalsWithPerson;
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
+          this.sort.active = 'status';
+          this.sort.direction = 'asc';
+          this.sort.sortChange.emit();
 
           this.dataSource.sortingDataAccessor = (item, property) => {
             switch (property) {
+
               case 'name':
-                return `${item?.person?.surname} ${item?.person?.firstname}`.toLowerCase();
+                return `${item?.person?.surname ?? ''} ${item?.person?.firstname ?? ''}`.toLowerCase();
+
               case 'grade':
-                return item?.person?.grade.toLowerCase();
+                return item?.person?.grade?.toLowerCase() ?? '';
+
               case 'email':
-                return item?.person?.email.toLowerCase();
+                return item?.person?.email?.toLowerCase() ?? '';
+
               case 'date':
                 return new Date(item.leaseDate).getTime();
+
+              case 'status':
+
+                const priority: Record<string, number> = {
+                  'ausstehend': 0,
+                  'verspätet': 1,
+                  'zurückgegeben': 2
+                };
+
+                const computedStatus = this.isRentalExpired(item)
+                  ? 'verspätet'
+                  : (item.state ?? '').toLowerCase();
+
+                const statusRank = priority[computedStatus] ?? 99;
+
+                const returnDate = new Date(item.returnDate).getTime();
+
+                return statusRank * 1_000_000_000 + returnDate;
+
+
               default:
                 return (item as any)[property];
             }
