@@ -2,7 +2,7 @@
 set -e
 
 # Configuration
-K8S_DIR="." 
+K8S_DIR="."
 NAMESPACE="student-it210195"
 
 echo "----------------------------------"

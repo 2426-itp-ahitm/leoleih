@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appsrv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appsrv
+  template:
+    metadata:
+      labels:
+        app: appsrv
+    spec:
+      imagePullSecrets:
+        - name: leoleih-gh-key
+      # 1. THE WAIT: This stops the app from starting until Postgres is ready
+      initContainers:
+        - name: wait-for-postgres
+          image: busybox:1.28
+          command:
+            [
+              "sh",
+              "-c",
+              "until nc -zv postgres 5432; do echo waiting for postgres; sleep 2; done",
+            ]
+      containers:
+        - name: appsrv
+          image: ghcr.io/2426-itp-ahitm/leoleih/backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: QUARKUS_HTTP_CORS_ORIGINS
+              value: /.*/
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://postgres:5432/demo
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: demo
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              value: demo
+            # 2. THE SCHEMA FIX: This creates the 'tag' table automatically
+            - name: QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION
+              value: update
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: appsrv
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+  selector:
+    app: appsrv

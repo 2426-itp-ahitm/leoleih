@@ -10,7 +10,7 @@ import {LocalStorageService} from './local-storage.service';
 export class HttpService {
   private http: HttpClient = inject(HttpClient);
   storageService: LocalStorageService = inject(LocalStorageService);
-  private URL: string = 'http://localhost:8080/api/';
+  private URL: string = 'https://it210195.cloud.htl-leonding.ac.at/api';
   //private URL: string = 'http://localhost:8080/api/';
   equipments: Equipment[] = [];
 
