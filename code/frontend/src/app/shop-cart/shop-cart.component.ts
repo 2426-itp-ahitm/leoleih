@@ -58,31 +58,35 @@ export class ShopCartComponent implements OnInit {
 
   ngOnInit() {
       this.rentalService.loadFromLocalStorage();
+      console.log(this.rooms)
   }
 
   addReservation() {
-    const equipmentIds: number[] = this.rental.map(item => item.equipmentID);
+    if (this.rental[0] != undefined &&this.rental) {
+      const equipmentIds: number[] = this.rental.map(item => item.equipmentID);
 
-    const rentalsRequest: RentalRequest = {
-      personId: this.user!.id,
-      leaseDate: new Date(this.rental[0].startTime),
-      returnDate: new Date(this.rental[0].endTime),
-      equipmentIds: equipmentIds
-    };
+      const rentalsRequest: RentalRequest = {
+        personId: this.user!.id,
+        leaseDate: new Date(this.rental[0].startTime),
+        returnDate: new Date(this.rental[0].endTime),
+        equipmentIds: equipmentIds
+      };
 
-    console.log("moin")
-    console.log(this.user)
+      console.log("moin")
+      console.log(this.user)
 
-    this.httpService.postRentalDTO(rentalsRequest).subscribe((res: any) => {})
-    this.localStorageService.clearStorage()
+      this.httpService.postRentalDTO(rentalsRequest).subscribe((res: any) => {})
+      this.localStorageService.clearStorage()
 
-    this.snackBar.open('Reserviert', 'Schließen')
-    setTimeout(() => {
-      this.snackBar.dismiss()
-    } ,2500)
+      this.snackBar.open('Reserviert', 'Schließen')
+      setTimeout(() => {
+        this.snackBar.dismiss()
+      } ,2500)
 
-    this.test = true
-    this.localStorageService.deleteRoomDTO()
+      this.test = true
+      this.localStorageService.deleteRoomDTO()
+    }
+
   }
 
   addRoom() {

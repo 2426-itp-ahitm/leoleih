@@ -12,7 +12,8 @@ import {UserService} from '../user.service';
     NgForOf,
     RoomItemComponent,
     NgClass,
-    DatePipe
+    DatePipe,
+    NgIf
   ],
   templateUrl: './student-dashboard.component.html',
   styleUrl: './student-dashboard.component.css'
@@ -25,6 +26,8 @@ export class StudentDashboardComponent implements OnInit {
   userService: UserService = inject(UserService);
   reservationService: ReservationService = inject(ReservationService);
   reservations: ReservationDTO[] = [];
+  expandedRows: { [id: number]: boolean } = {};
+
 
   ngOnInit() {
 
