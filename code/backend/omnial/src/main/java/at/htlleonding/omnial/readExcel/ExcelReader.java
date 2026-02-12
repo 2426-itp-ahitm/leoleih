@@ -29,7 +29,7 @@ public class ExcelReader {
 
     void onStartUp(@Observes StartupEvent event){
         createTags();
-        readExcel();
+        //readExcel(); for prod, fix later TODO
     }
 
     @Transactional
