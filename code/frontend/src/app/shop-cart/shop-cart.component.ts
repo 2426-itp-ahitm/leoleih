@@ -86,6 +86,9 @@ export class ShopCartComponent implements OnInit {
       this.test = true
       this.localStorageService.deleteRoomDTO()
     }
+    for (let i = 0; i < this.rooms.length; i++) {
+      this.reservationService.addRoomReservation(this.rooms[i]);
+    }
 
   }
 
