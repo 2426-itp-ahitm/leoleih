@@ -38,7 +38,7 @@ export class StudentDashboardComponent implements OnInit {
           rental.equipmentIds.forEach(eqId => {
             this.httpService.getEquipmentById(eqId).subscribe(
               equipment => {
-                this.tableEquipment.push(equipment);
+                  this.tableEquipment.push(equipment);
               }
             )
           })
@@ -49,5 +49,6 @@ export class StudentDashboardComponent implements OnInit {
     this.reservationService.reservations.subscribe(reservation => {
       this.reservations = reservation;
     })
+    console.log(this.rentals);
   }
 }
