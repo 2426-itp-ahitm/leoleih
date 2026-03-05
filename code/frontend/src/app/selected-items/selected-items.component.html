@@ -3,9 +3,9 @@
     <mat-list-item class="item-list-entry">
       <img matListItemAvatar [src]="equipment.link" [alt]="equipment.name" class="item-img">
       <span matListItemTitle>{{ equipment.name }}</span>
-      <span matListItemLine>{{getTime(i)}}</span>
+      <span matListItemLine >{{getTime(i)}}</span>
       <div matListItemMeta class="item-actions">
-        <app-amount-settings [maxAmount]="equipment.itemCount" [chosenAmount]="getCount(i)"></app-amount-settings>
+        <app-amount-settings [maxAmount]="equipment.itemCount" [chosenAmount]="getCount(i)"  style="color: #000000"></app-amount-settings>
         <button mat-icon-button color="warn" (click)="delete(equipment.id)">
           <mat-icon>delete</mat-icon>
         </button>

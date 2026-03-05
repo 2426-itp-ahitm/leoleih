@@ -2,13 +2,15 @@ import {Component, inject, Input, OnInit} from '@angular/core';
 import {LocalStorageService} from '../local-storage.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import {MatListItem} from "@angular/material/list";
 
 @Component({
   selector: 'app-amount-settings',
-  imports: [
-    MatButtonModule,
-    MatIconModule,
-  ],
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        MatListItem,
+    ],
   templateUrl: './amount-settings.component.html',
   styleUrl: './amount-settings.component.css'
 })

@@ -1,9 +1,9 @@
 <div class="amount-container">
   <button mat-icon-button (click)="amount = amount - 1" [disabled]="amount === 1">
-    <mat-icon>remove</mat-icon>
+    <mat-icon  style="color: #000000">remove</mat-icon>
   </button>
   <span class="amount-display">{{amount}}</span>
   <button mat-icon-button (click)="amount = amount + 1" [disabled]="maxAmount != undefined && amount >= maxAmount">
-    <mat-icon>add</mat-icon>
+    <mat-icon  style="color: #000000">add</mat-icon>
   </button>
 </div>

@@ -5,6 +5,7 @@ import {HttpService} from '../http.service';
 import {RoomItemComponent} from '../room-item/room-item.component';
 import {ReservationService} from '../reservation.service';
 import {UserService} from '../user.service';
+import {MatListItem} from '@angular/material/list';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -22,6 +23,7 @@ export class StudentDashboardComponent implements OnInit {
   tableHeaders: string[] =  ["Img", "Name", "Typ", "Anzahl"]
   tableEquipment: Equipment[] = [];
   rentals: Rental[] = [];
+  index: number = 0;
   httpService: HttpService = inject(HttpService);
   userService: UserService = inject(UserService);
   reservationService: ReservationService = inject(ReservationService);
