@@ -1,0 +1,43 @@
+@startuml
+[*] --> Reservierung
+
+state Reservierung {
+  [*] --> ZeitraumGewählt
+  ZeitraumGewählt : Gerät + Zeitraum gewählt
+
+  ZeitraumGewählt --> Prüfung
+  Prüfung : Verfügbarkeit prüfen
+
+  Prüfung --> Abgelehnt : nicht verfügbar
+  Prüfung --> Bestätigt : verfügbar
+
+  Abgelehnt --> [*]
+}
+
+Bestätigt --> VerfügbarkeitAktualisiert
+
+
+VerfügbarkeitAktualisiert --> Abholung
+
+state Abholung {
+  [*] --> WartenAufID
+  WartenAufID : Gerät bereit zur Abholung
+
+  WartenAufID --> Ausgeliehen : Geräte-ID eingetragen
+  Ausgeliehen : Gerät an Schüler gebunden
+}
+
+Abholung --> Rückgabe : Gerät zurückgegeben
+
+state Rückgabe {
+  [*] --> IDIrrelevant
+  IDIrrelevant : Geräte-ID nicht mehr relevant
+
+  IDIrrelevant --> VerfügbarAktualisiert2
+  VerfügbarAktualisiert2 : Verfügbarkeit aktualisiert
+
+  VerfügbarAktualisiert2 --> [*]
+}
+
+Rückgabe --> [*]
+@enduml

@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {DatePipe, NgForOf, NgIf} from '@angular/common';
+import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {Equipment, Rental, ReservationDTO} from '../interfaces';
 import {HttpService} from '../http.service';
 import {RoomItemComponent} from '../room-item/room-item.component';
@@ -10,7 +10,10 @@ import {UserService} from '../user.service';
   selector: 'app-student-dashboard',
   imports: [
     NgForOf,
-    RoomItemComponent
+    RoomItemComponent,
+    NgClass,
+    DatePipe,
+    NgIf
   ],
   templateUrl: './student-dashboard.component.html',
   styleUrl: './student-dashboard.component.css'
@@ -23,6 +26,8 @@ export class StudentDashboardComponent implements OnInit {
   userService: UserService = inject(UserService);
   reservationService: ReservationService = inject(ReservationService);
   reservations: ReservationDTO[] = [];
+  expandedRows: { [id: number]: boolean } = {};
+
 
   ngOnInit() {
 
@@ -33,7 +38,7 @@ export class StudentDashboardComponent implements OnInit {
           rental.equipmentIds.forEach(eqId => {
             this.httpService.getEquipmentById(eqId).subscribe(
               equipment => {
-                this.tableEquipment.push(equipment);
+                  this.tableEquipment.push(equipment);
               }
             )
           })
@@ -44,5 +49,6 @@ export class StudentDashboardComponent implements OnInit {
     this.reservationService.reservations.subscribe(reservation => {
       this.reservations = reservation;
     })
+    console.log(this.rentals);
   }
 }
