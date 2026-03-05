@@ -1,0 +1,26 @@
+@startuml
+[*] --> Anfrage_gestellt : Schüler wählt Gegenstand\nund Abholzeitpunkt
+state "Anfrage gestellt" as Anfrage_gestellt
+Anfrage_gestellt --> Anfrage_abgelehnt : Lehrperson lehnt ab
+Anfrage_gestellt --> Genehmigt : Lehrperson akzeptiert
+state "Abgelehnt" as Anfrage_abgelehnt
+Anfrage_abgelehnt --> Anfrage_gestellt : Schüler wählt neuen\nGegenstand / Zeitraum
+state "Genehmigt" as Genehmigt
+Genehmigt --> Uebergabe : Lehrperson und Schüler\ntreffen sich zum gewählten Zeitpunkt
+state "Übergabe" as Uebergabe
+Uebergabe --> Ausgeliehen : Lehrperson setzt Status\nauf "Ausgeliehen" + trägt ID ein
+state "Ausgeliehen" as Ausgeliehen
+Ausgeliehen --> Rueckgabe_pünktlich : Rückgabezeitpunkt erreicht\n[Gerät rechtzeitig zurückgegeben]
+Ausgeliehen --> Verzoegert : Rückgabezeitpunkt erreicht\n[Gerät nicht rechtzeitig zurückgegeben]
+state "Verspätet" as Verzoegert
+Verzoegert --> Zurueckgegeben : Schüler gibt Gerät zurück
+Verzoegert --> Sanktioniert : Schüler gibt Gerät nicht zurück
+state "Sanktioniert" as Sanktioniert
+Sanktioniert --> Zurueckgegeben : (Prozess abgeschlossen)
+state "Zurückgegeben (pünktlich)" as Rueckgabe_pünktlich
+Rueckgabe_pünktlich --> Zurueckgegeben
+state "Zurückgegeben" as Zurueckgegeben
+Zurueckgegeben --> Archiviert : Lehrperson markiert Gerät\nals zurückgegeben\nGerät verschwindet aus Dashboard
+state "Archiviert" as Archiviert
+Archiviert --> [*]
+@enduml
