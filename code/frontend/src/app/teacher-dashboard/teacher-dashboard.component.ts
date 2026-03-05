@@ -62,7 +62,7 @@ export class TeacherDashboardComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.setupSortingAccessor();
     this.loadRentals();
-    
+
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => {

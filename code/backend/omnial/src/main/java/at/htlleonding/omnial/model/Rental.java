@@ -1,6 +1,5 @@
 package at.htlleonding.omnial.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.smallrye.common.constraint.NotNull;
@@ -11,30 +10,42 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Entity representing a Rental transaction.
+ * Extends PanacheEntity for simplified database access (Active Record pattern).
+ */
 @Entity
 public class Rental extends PanacheEntity {
 
+    /**
+     * The person who is renting the equipment.
+     * @JsonIgnoreProperties avoids circular references when serializing to JSON.
+     */
     @ManyToOne
     @JsonIgnoreProperties(value = {"rentals"})
-
     public Person person;
 
-    public Date leaseDate;
+    public Date leaseDate;        // When the equipment was taken
+    public Date returnDate;       // The scheduled/expected return date
+    public boolean isRented;      // Flag indicating if the equipment is currently out
+    public boolean isReturned;    // Flag indicating if the transaction is completed
+    public Date actualReturnDate; // The actual date the equipment was brought back
 
-    public Date returnDate;
-
-    public boolean isRented;
-
-    public boolean isReturned;
-
-    public Date actualReturnDate;
-
+    /**
+     * Current status of the rental (e.g., PENDING, APPROVED, REJECTED).
+     * Defaults to AUSSTEHEND (Pending).
+     */
     @Enumerated(EnumType.STRING)
     @NotNull
     public State state = State.AUSSTEHEND;
 
-    public String note;
+    public String note; // Optional comments or damage reports
 
+    /**
+     * The set of equipment included in this specific rental.
+     * Uses EAGER fetching to ensure equipment details are loaded with the rental.
+     * 'rental_equipment' acts as the bridge table.
+     */
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "rental_id"),
@@ -43,19 +54,11 @@ public class Rental extends PanacheEntity {
     )
     private Set<Equipment> equipments = new java.util.HashSet<>();
 
-// Brauchen ma des überhaupt? - Timon
-//    public Rental() {
-//    }
-//
-//    public Rental(Person person, Date leaseDate, Date returnDate, boolean isRented, boolean isReturned, State state) {
-//        this.person = person;
-//        this.leaseDate = leaseDate;
-//        this.returnDate = returnDate;
-//        this.isRented = isRented;
-//        this.isReturned = isReturned;
-//        this.state = state;
-//    }
+    // Note to Timon: Quarkus/Hibernate requires a no-args constructor.
+    // Since this is a PanacheEntity, the default one is provided automatically if no other
+    // constructors are present. If you add a custom constructor, you MUST manually add the empty one back.
 
+    // --- Getters and Setters ---
 
     public String getNote() {
         return note;
