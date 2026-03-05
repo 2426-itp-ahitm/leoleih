@@ -4,12 +4,18 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.*;
 import java.util.Set;
 
-@NamedQuery(name = Equipment.FIND_ALL_EQUIPMENT , query = "SELECT e from Equipment e")
+/**
+ * Represents a piece of equipment in the system.
+ * Inherits from PanacheEntity, which automatically provides an ID field and static CRUD methods.
+ */
+@NamedQuery(name = Equipment.FIND_ALL_EQUIPMENT, query = "SELECT e from Equipment e")
 @Entity
 public class Equipment extends PanacheEntity {
 
-    public static final String FIND_ALL_EQUIPMENT= "Equipment.finAll";
+    // Constant for referencing the NamedQuery in repository or service layers
+    public static final String FIND_ALL_EQUIPMENT = "Equipment.finAll";
 
+    // Stores the enum value as a String in the database for better readability
     @Enumerated(EnumType.STRING)
     private EquipmentType equipmentType;
 
@@ -25,16 +31,26 @@ public class Equipment extends PanacheEntity {
 
     private String link;
 
+    /**
+     * Bi-directional many-to-many relationship with Rental.
+     * 'mappedBy' indicates that the Rental entity owns the relationship mapping.
+     */
     @ManyToMany(mappedBy = "equipments")
     private Set<Rental> rentals;
 
+    /**
+     * Bi-directional many-to-many relationship with Tag.
+     * Defines a join table named 'article_tag' to link the two entities.
+     */
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "article_tag",
             joinColumns = @JoinColumn(name = "equipment_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-     Set<Tag> tagSet;
+    Set<Tag> tagSet;
+
+    // --- Getters and Seters ---
 
     public Set<Rental> getRentals() {
         return rentals;
@@ -115,10 +131,19 @@ public class Equipment extends PanacheEntity {
     public void setTagSet(Set<Tag> tagSet) {
         this.tagSet = tagSet;
     }
+
+    /**
+     * Helper method to sync the bi-directional relationship with Tag.
+     * Ensures both sides of the relationship are aware of the link.
+     */
     public void addTag(Tag tag) {
         tagSet.add(tag);
         tag.equipmentSet.add(this);
     }
+
+    /**
+     * Helper method to remove the bi-directional relationship with Tag.
+     */
     public void removeTag(Tag tag) {
         tagSet.remove(tag);
         tag.equipmentSet.remove(this);

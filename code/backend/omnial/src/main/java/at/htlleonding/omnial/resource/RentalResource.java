@@ -1,6 +1,5 @@
 package at.htlleonding.omnial.resource;
 
-
 import at.htlleonding.omnial.DTO.*;
 import at.htlleonding.omnial.model.Equipment;
 import at.htlleonding.omnial.model.Rental;
@@ -19,16 +18,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//TODO neiche routen vom aktualisieren von Statusse
-//TODO delete a ufnktional mochn (vielleicht is es a frontend problem)
-//TODO lehrer soll eine notiz auf ein rental hinterlassen können (wichtig um z.b. ort und zeit der abholung auszumachen)
+/**
+ * REST Endpoint for managing the Equipment Rental lifecycle.
+ * Handles the transitions between requested, rented, and returned states.
+ */
 @Path("api/rental")
 @Transactional
 public class RentalResource {
 
     @Inject
-    RentalRepository rentalRepository;;
-
+    RentalRepository rentalRepository;
 
     @Inject
     EquipmentRepository equipmentRepository;
@@ -39,7 +38,9 @@ public class RentalResource {
     @Inject
     RentalMapper rentalMapper;
 
-
+    /**
+     * Lists all rentals in the system using Panache's active record pattern.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/list")
@@ -47,6 +48,9 @@ public class RentalResource {
         return Rental.<Rental>listAll().stream().map(rentalMapper::toDTO).toList();
     }
 
+    /**
+     * Fetches a specific rental by its unique database ID.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
@@ -56,7 +60,9 @@ public class RentalResource {
         return Response.ok(rentalMapper.toDTO(r)).build();
     }
 
-
+    /**
+     * Returns all rental history for a specific user.
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/user/{id}")
@@ -64,17 +70,9 @@ public class RentalResource {
         return rentalRepository.getReservationByUser(id).stream().map(rentalMapper::toDTO).toList();
     }
 
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/eq/list")
-    public List<RentalDTO> getRentalEquipment() {
-        return Rental.<Rental>listAll().stream()
-                .map(rentalMapper::toDTO)
-                .toList();
-    }
-
-
+    /**
+     * Marks a specific rental as 'rented' (equipment has physically left the storage).
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/rent/{id}")
@@ -84,7 +82,10 @@ public class RentalResource {
         return rentalMapper.toDTO(rental1);
     }
 
-
+    /**
+     * Marks a rental as 'returned'.
+     * Automatically sets the actualReturnDate if the equipment is returned after the deadline.
+     */
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/return/{id}")
@@ -98,12 +99,15 @@ public class RentalResource {
         return rentalMapper.toDTO(rental1);
     }
 
-
+    /**
+     * Creates a new Rental.
+     * Logic: maps the request to an entity, decrements the available count
+     * for each piece of equipment, and persists.
+     */
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createRental(RentalRequest rentalRequest) {
-        System.out.println(rentalRequest);
         RentalDTO dto = new RentalDTO(
                 null,
                 rentalRequest.personId,
@@ -119,81 +123,51 @@ public class RentalResource {
 
         Rental rental = rentalMapper.toEntity(dto);
 
-        // adjust available count
+        // Inventory Management: Reduce availability of equipment items
         for (Equipment equipment : rental.getEquipments()) {
             equipment.setAvailable(equipment.getAvailable() - 1);
         }
 
         Rental.persist(rental);
-
         return Response.status(Response.Status.CREATED).build();
     }
 
+    /**
+     * Deletes a rental record based on composite criteria (person and dates).
+     */
     @DELETE
     @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteRental(RentalRequest rentalRequest) {
-        Rental toDelete = Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
-                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
-
         Rental.delete(
                 "person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
                 rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate
         );
-
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("/rent")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateIsRented(RentalRequest rentalRequest) {
-        Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
-                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
-
-        myRental.isRented = true;
-
-        return Response.ok().build();
-
-    }
-    @PUT
-    @Path("/return")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateReturn(RentalRequest rentalRequest) {
-        Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
-                rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
-
-        if(myRental.isRented) {
-            myRental.isRented = false;
-            myRental.isReturned = true;
-            return Response.ok().build();
-
-        }else {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-
-    }
+    /**
+     * Updates specific status fields and notes based on a RentalUpdateRequest.
+     * Includes string-to-enum mapping for the rental State.
+     */
     @PUT
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(RentalUpdateRequest rentalRequest) {
-        Rental myRental= Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
+        // Finding the record based on business keys rather than ID
+        Rental myRental = Rental.find("person.id = ?1 and leaseDate = ?2 and returnDate = ?3",
                 rentalRequest.personId, rentalRequest.leaseDate, rentalRequest.returnDate).firstResult();
-        myRental.note = rentalRequest.note;
-        if(rentalRequest.state.equals("AUSSTEHEND")) {
-            myRental.state = State.AUSSTEHEND;
-        } else if (rentalRequest.state.equals("AUSGEBORGT")) {
-            myRental.state = State.AUSGEBORGT;
-        } else if (rentalRequest.state.equals("RESERVIERT")) {
-            myRental.state = State.RESERVIERT;
-        } else if (rentalRequest.state.equals("ZURÜCKGEGEBEN")) {
-            myRental.state = State.ZURÜCKGEGEBEN;
-        } else if (rentalRequest.state.equals("ÜBERZOGEN")) {
-            myRental.state = State.ÜBERZOGEN;
-        }else {
-            System.out.println(rentalRequest.note);
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    return Response.ok().build();
-    }
 
+        if (myRental == null) return Response.status(Response.Status.NOT_FOUND).build();
+
+        myRental.note = rentalRequest.note;
+
+        // Manual mapping of String to Enum for the State field
+        try {
+            myRental.state = State.valueOf(rentalRequest.state);
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid State").build();
+        }
+
+        return Response.ok().build();
+    }
 }

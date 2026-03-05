@@ -22,132 +22,131 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+/**
+ * Service responsible for bootstrapping the database with initial data from an Excel file.
+ */
 @ApplicationScoped
 public class ExcelReader {
+
     @Inject
     EntityManager em;
 
+    /**
+     * Triggered automatically when the Quarkus application starts.
+     * @param event The startup event context.
+     */
     void onStartUp(@Observes StartupEvent event){
         createTags();
         readExcel();
     }
 
+    /**
+     * Reads the Excel file 'Geraete_alle.xlsx', parses its sheets,
+     * and persists new Equipment entities to the database.
+     */
     @Transactional
     public void readExcel(){
-        System.out.println("readExcel");
+        System.out.println("Processing Excel Data Import...");
+
         try(FileInputStream file = new FileInputStream("data/Geraete_alle.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(file)) {
 
             int worksheetCount = workbook.getNumberOfSheets();
             for(int w = 0; w < worksheetCount; w++){
                 XSSFSheet sheet = workbook.getSheetAt(w);
+
+                // Identify column indices based on header names (Case-Insensitive)
                 Row headerRow = sheet.getRow(0);
                 int columnIndexSet = -1;
                 int columnIndexTyp = -1;
                 int columnIndexSeriennummer = -1;
 
                 for (Cell cell : headerRow) {
-                    if ("set".equalsIgnoreCase(cell.getStringCellValue().trim())) {
+                    String header = cell.getStringCellValue().trim();
+                    if ("set".equalsIgnoreCase(header)) {
                         columnIndexSet = cell.getColumnIndex();
                     }
-                    if("typ".equalsIgnoreCase(cell.getStringCellValue().trim())){
+                    if("typ".equalsIgnoreCase(header) || "beschreibung".equalsIgnoreCase(header)){
                         columnIndexTyp = cell.getColumnIndex();
                     }
-                    else if("beschreibung".equalsIgnoreCase(cell.getStringCellValue().trim())){
-                        columnIndexTyp = cell.getColumnIndex();
-                    }
-                    if("seriennummer".equalsIgnoreCase(cell.getStringCellValue().trim())){
+                    if("seriennummer".equalsIgnoreCase(header)){
                         columnIndexSeriennummer = cell.getColumnIndex();
                     }
                 }
-                if (columnIndexSet == -1) {
-                    throw new RuntimeException("Column 'set' not found");
-                }
-                if(columnIndexTyp == -1){
-                    throw new RuntimeException("Column 'typ' or 'beschreibung' not found");
-                }
+
+                // Basic validation: ensure the file has the required columns
+                if (columnIndexSet == -1) throw new RuntimeException("Column 'set' not found");
+                if (columnIndexTyp == -1) throw new RuntimeException("Column 'typ/beschreibung' not found");
+
                 DataFormatter formatter = new DataFormatter();
 
+                // Iterate through data rows (skipping header row 0)
                 for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                    String set = "";
-                    String typ = "";
-                    String seriennummer="";
                     Row row = sheet.getRow(i);
                     if (row == null) continue;
 
-                    Cell setCell = row.getCell(columnIndexSet);
-                    if (setCell == null) continue;
+                    // Extract cell values safely
+                    String set = getCellValue(row, columnIndexSet, formatter);
+                    String typ = getCellValue(row, columnIndexTyp, formatter);
+                    String seriennummer = (columnIndexSeriennummer != -1) ? getCellValue(row, columnIndexSeriennummer, formatter) : "";
 
-                    if(!formatter.formatCellValue(setCell).isEmpty()){
-                        set = formatter.formatCellValue(setCell);
-                    }
-
-                    Cell typCell = row.getCell(columnIndexTyp);
-                    if (typCell == null) continue;
-
-                    if(!formatter.formatCellValue(typCell).isEmpty()){
-                        typ = formatter.formatCellValue(typCell);
-                    }
-                    if(columnIndexSeriennummer != -1){
-                        Cell seriennummerCell = row.getCell(columnIndexSeriennummer);
-                        if (seriennummerCell == null) continue;
-
-                        if(!formatter.formatCellValue(seriennummerCell).isEmpty()){
-                            seriennummer = formatter.formatCellValue(seriennummerCell);
-                        }
-                    }
-                    if(!set.isEmpty()&&!set.isBlank()){
+                    // If a "set" name exists, create and persist the Equipment entity
+                    if(!set.isEmpty()){
                         Equipment eq = new Equipment();
                         eq.setName(set);
                         eq.setTitle(typ);
                         eq.setLabelNumber(seriennummer);
-                        eq.setAvailable(1);
-                        eq.setEquipmentType(setEquipmentType(set));
-                        //System.out.printf("%s %s\n",eq.getName(),eq.getEquipmentType().toString());
+                        eq.setAvailable(1); // Default to available on import
+                        eq.setEquipmentType(determineEquipmentType(set));
+
                         em.persist(eq);
                     }
                 }
             }
-        }catch (FileNotFoundException ex) {
-            throw new RuntimeException(ex);
         } catch (IOException ex) {
-            throw new RuntimeException(ex);
+            throw new RuntimeException("Failed to read Excel file", ex);
         }
     }
-    public EquipmentType setEquipmentType(String set){
+
+    /**
+     * Helper to extract string value from a cell using POI DataFormatter.
+     */
+    private String getCellValue(Row row, int index, DataFormatter formatter) {
+        Cell cell = row.getCell(index);
+        return (cell == null) ? "" : formatter.formatCellValue(cell).trim();
+    }
+
+    /**
+     * Logic to categorize equipment based on the naming prefix of the "set" string.
+     * @param set The set name/ID (e.g., "A10", "F20")
+     * @return The corresponding EquipmentType enum.
+     */
+    public EquipmentType determineEquipmentType(String set){
         String str = set.trim();
-        EquipmentType type = null;
-        if (str == null || str.isEmpty()) {
+        if (str.isEmpty()) return null;
 
+        if(str.startsWith("A")){
+            return EquipmentType.AUDIO;
         }
-        else if(str.startsWith("A")){
-            type = EquipmentType.AUDIO;
+        else if(str.matches("^(FZ|S|VZ|SS|VL|VO).*")){
+            return EquipmentType.ZUBEHÖR;
         }
-        else if(str.startsWith("FZ")||str.startsWith("S")||str.startsWith("VZ")||str.startsWith("SS")||str.startsWith("VL")||str.startsWith("VO")){
-            type = EquipmentType.ZUBEHÖR;
+        else if(str.matches("^(F|FS|VK|PVS).*")){
+            return EquipmentType.KAMERA;
+        }
 
-        }
-        else if(str.startsWith("F")||str.startsWith("FS")||str.startsWith("VK")||str.startsWith("PVS")){
-            type = EquipmentType.KAMERA;
-        }
-        else{
-            type = null;
-        }
-        return type;
+        return null;
     }
+
+    /**
+     * Populates the database with default Tags.
+     */
     @Transactional
     public void createTags(){
-        Tag audioTag = new Tag();
-        audioTag.setType(TagType.AUDIO);
-        Tag videoTag = new Tag();
-        videoTag.setType(TagType.VIDEO);
-        Tag fotoTag = new Tag();
-        fotoTag.setType(TagType.FOTO);
-        em.persist(audioTag);
-        em.persist(videoTag);
-        em.persist(fotoTag);
+        for (TagType type : List.of(TagType.AUDIO, TagType.VIDEO, TagType.FOTO)) {
+            Tag tag = new Tag();
+            tag.setType(type);
+            em.persist(tag);
+        }
     }
 }
-
-
-

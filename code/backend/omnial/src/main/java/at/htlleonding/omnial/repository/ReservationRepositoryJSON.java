@@ -18,142 +18,173 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * A JSON-based implementation of the Reservation Repository.
+ * Data is persisted directly to a local file instead of a relational database.
+ */
 @ApplicationScoped
 public class ReservationRepositoryJSON {
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
+    private List<Reservation> allReservations = new LinkedList<>();
 
-    List<Reservation> allReservations = new LinkedList<>();
-
-
+    /**
+     * Constructor: Configures Jackson to handle Java 8 LocalDateTime properly.
+     * Disables timestamps to ensure dates are saved in a human-readable ISO format.
+     */
     public ReservationRepositoryJSON() {
+        // Register modules for Java 8 Date/Time support
         objectMapper.registerModule(new JSR310Module());
         JavaTimeModule javaTimeModule = new JavaTimeModule();
+
+        // Ensure dates are written as Strings (ISO-8601) rather than numeric timestamps
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME));
+
+        // Define specific deserialization format
+        javaTimeModule.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE_TIME));
 
         objectMapper.registerModule(javaTimeModule);
 
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ISO_DATE));
-
+        // Load existing data into memory on initialization
         allReservations = getAllReservation();
-
-
     }
 
+    /**
+     * Reads the entire JSON file and converts it into a List of Reservations.
+     * @return List of current reservations.
+     */
     public List<Reservation> getAllReservation() {
-
         String jsonReservationsArray = getReservationsFromFile();
         List<Reservation> listReservations = new LinkedList<>();
 
         try {
-            listReservations = objectMapper.readValue(jsonReservationsArray, new TypeReference<List<Reservation>>() {});
+            // Use TypeReference to handle generic List type during deserialization
+            listReservations = objectMapper.readValue(jsonReservationsArray,
+                    new TypeReference<List<Reservation>>() {});
         }
         catch (IOException ex){
-            System.out.println("cant turn JSON to List");
+            System.err.println("Critical Error: Cannot parse JSON to Reservation List.");
         }
-
 
         return listReservations;
     }
 
     public Reservation getReservationById(int id) {
-        //return this.entityManager.
+        // Implementation pending: would typically return from allReservations list
         return null;
     }
 
+    /**
+     * Adds a new reservation, validates for time conflicts, and rewrites the JSON file.
+     * @throws IllegalArgumentException if the requested time slot is occupied.
+     */
     public void addReservation(Reservation reservation) {
         try {
             if(checkReservation(reservation)) {
                 allReservations.add(reservation);
             }
             else {
-                throw new IllegalArgumentException("Wrong Time");
+                throw new IllegalArgumentException("Requested time slot is already taken.");
             }
-            objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
+            // Save updated list back to the filesystem
+            saveToFile();
         }
         catch (IOException e){
-            System.out.println("Cant add to JSON File");
-
+            System.err.println("I/O Error: Could not update the JSON database.");
         }
     }
 
+    /**
+     * Removes a reservation by index and updates the file.
+     */
     public void deleteReservation(int id){
         try {
             Reservation reservation = allReservations.get(id);
-            if (reservation == null){
-                throw new IllegalArgumentException();
+            if (reservation != null){
+                allReservations.remove(reservation);
+                saveToFile();
             }
-            allReservations.remove(reservation);
-            objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
         }
         catch (IOException e){
-            System.out.println("Cant add to JSON File");
-
+            System.err.println("I/O Error: Could not delete entry from JSON.");
         }
     }
 
+    /**
+     * Updates an existing reservation entry in the list and file.
+     */
     public void updateReservation(int id, Reservation reservation){
         try {
             Reservation reservationOld = allReservations.get(id);
 
-            if (reservationOld == null){
-                throw new IllegalArgumentException();
+            if (reservationOld != null){
+                allReservations.remove(reservationOld);
+
+                // Update fields
+                reservationOld.setReservationDate(reservation.getReservationDate());
+                reservationOld.setPerson(reservation.getPerson());
+                reservationOld.setRoom(reservation.getRoom());
+                reservationOld.setStartTime(reservation.getStartTime());
+                reservationOld.setEndTime(reservation.getEndTime());
+
+                allReservations.add(reservationOld);
+                saveToFile();
             }
-            allReservations.remove(reservationOld);
-
-            reservationOld.setReservationDate(reservation.getReservationDate());
-            reservationOld.setEndTime(reservationOld.getEndTime());
-            reservationOld.setPerson(reservation.getPerson());
-            reservationOld.setRoom(reservation.getRoom());
-            reservationOld.setStartTime(reservation.getStartTime());
-
-            allReservations.add(reservationOld);
-
-            objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
         }
         catch (IOException e){
-            System.out.println("Cant add to JSON File");
-
+            System.err.println("I/O Error: Could not update JSON file.");
         }
     }
 
+    /**
+     * Utility method to read the raw string content of the JSON file.
+     */
     public String getReservationsFromFile(){
-        String reservationString = "";
         Path filepath = Paths.get("./data/reservations.json");
         try {
-            reservationString = Files.readString(filepath);
+            return Files.readString(filepath);
         }
         catch (Exception ex){
-            System.out.println("Error happened while reading reservations");
+            System.err.println("File Error: Could not find or read reservations.json");
+            return "[]"; // Return empty array as fallback
         }
-        return reservationString;
-
     }
 
-    public boolean checkReservation(Reservation reservation){
+    /**
+     * Helper to persist the current in-memory list back to disk.
+     */
+    private void saveToFile() throws IOException {
+        objectMapper.writeValue(Paths.get("./data/reservations.json").toFile(), allReservations);
+    }
 
+    /**
+     * Logic to prevent overlapping bookings.
+     * Compares the start/end times of the new reservation against all existing ones.
+     * @return true if the slot is free, false if a conflict exists.
+     */
+    public boolean checkReservation(Reservation reservation){
         for (Reservation currRes: allReservations) {
-            //checks if reservation is between another reservation
+            // Check if new start time is inside an existing window
             if(reservation.getStartTime().isAfter(currRes.getStartTime()) && reservation.getStartTime().isBefore(currRes.getEndTime())){
                 return false;
             }
+            // Check if new end time is inside an existing window
             else if (reservation.getEndTime().isAfter(currRes.getStartTime()) && reservation.getEndTime().isBefore(currRes.getEndTime())){
                 return false;
             }
-
+            // Check if a existing window is entirely swallowed by the new reservation
             else if(currRes.getStartTime().isAfter(reservation.getStartTime()) && currRes.getStartTime().isBefore(reservation.getEndTime())){
                 return false;
             }
             else if (currRes.getEndTime().isAfter(reservation.getStartTime()) && currRes.getEndTime().isBefore(reservation.getEndTime())){
                 return false;
             }
+            // Check for exact boundary matches
             else if(reservation.getEndTime().isEqual(currRes.getEndTime() )|| reservation.getStartTime().isEqual(currRes.getStartTime())){
                 return false;
             }
         }
         return true;
-
     }
-
 }

@@ -7,34 +7,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Entity representing a Person (e.g., student or teacher) in the system.
+ * Uses standard JPA annotations for database mapping.
+ */
 @Entity
+// Named queries for optimized and reusable database lookups
 @NamedQuery(name = Person.FIND_PERSON_BY_EMAIL, query = "SELECT p from Person p where p.email = :email")
 @NamedQuery(name = Person.FIND_PERSON_BY_UUID, query = "SELECT p from Person p where p.person_uuid = :uuid")
 @NamedQuery(name = Person.FIND_ALL_PERSONS, query = "SELECT p from Person p")
 public class Person {
 
+    // Constants for referring to named queries to prevent typos in the DAO/Repository layer
     public static final String FIND_ALL_PERSONS = "Person.finAll";
     public static final String FIND_PERSON_BY_EMAIL = "Person.findByEmail";
     public static final String FIND_PERSON_BY_UUID = "Person.findByUuid";
 
+    /**
+     * Primary Key with a Sequence Generator.
+     * Useful for databases like PostgreSQL to handle ID increments efficiently.
+     */
     @Id
     @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     private int id;
 
-    private String person_uuid;
+    private String person_uuid; // External unique identifier (e.g., from an Auth provider)
     private String surname;
     private String firstname;
-
     private String email;
+    private String grade; // Optional field for student class/grade
 
-    private String grade;
-
+    /**
+     * One-to-Many relationship with Rental.
+     * @JsonIgnoreProperties prevents infinite JSON loops when serializing
+     * (Person -> Rental -> Person -> ...) by ignoring the 'person' field in the Rental object.
+     */
     @OneToMany(mappedBy = "person")
     @JsonIgnoreProperties(value = {"person"})
     List<Rental> rentals;
 
-    /****/
+    // --- Getters and Setters ---
 
     public void setId(int id) {
         this.id = id;
@@ -95,23 +108,4 @@ public class Person {
     public void setGrade(String grade) {
         this.grade = grade;
     }
-
-//    public Person(String uuid, String surname, String firstname) {
-//        this(uuid, surname, firstname, "");
-//    }
-//
-//    public Person(String uuid, String surname, String firstname, String email) {
-//        this.person_uuid = uuid;
-//        this.surname = surname;
-//        this.firstname = firstname;
-//        this.email = email;
-//    }
-//
-//    public Person(String uuid, String surname, String firstname, String email, String grade) {
-//        this(uuid, surname, firstname, email);
-//        this.grade = grade;
-//    }
-//
-//    public Person() {
-//    }
 }
