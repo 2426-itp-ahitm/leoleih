@@ -31,8 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     NgIf,
     MatSelectModule,
     MatFormFieldModule,
-    FormsModule,
-    MatIcon
+    FormsModule
   ],
   animations: [
     trigger('detailExpand', [
