@@ -6,6 +6,7 @@ import {RoomItemComponent} from '../room-item/room-item.component';
 import {ReservationService} from '../reservation.service';
 import {UserService} from '../user.service';
 import {MatListItem} from '@angular/material/list';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -21,7 +22,7 @@ import {MatListItem} from '@angular/material/list';
 })
 export class StudentDashboardComponent implements OnInit {
   tableHeaders: string[] =  ["Img", "Name", "Typ", "Anzahl"]
-  tableEquipment: Equipment[] = [];
+  tableEquipment: { [rentalId: number]: (Equipment & { count: number })[] } = {};
   rentals: Rental[] = [];
   index: number = 0;
   httpService: HttpService = inject(HttpService);
@@ -32,19 +33,24 @@ export class StudentDashboardComponent implements OnInit {
 
 
   ngOnInit() {
-
     this.httpService.getRentalByUserId(this.userService.getUser()?.id!).subscribe(
       rentals => {
         rentals.forEach(rental => {
           this.rentals.push(rental);
-          rental.equipmentIds.forEach(eqId => {
-            this.httpService.getEquipmentById(eqId).subscribe(
-              equipment => {
-                  this.tableEquipment.push(equipment);
-              }
-            )
-          })
-        })
+          this.tableEquipment[rental.id] = [];
+
+          const requests = rental.equipmentIds.map(id => this.httpService.getEquipmentById(id));
+
+          rentals.forEach(rental => {
+            this.rentals.push(rental);
+            this.tableEquipment[rental.id] = [];
+
+            const requests = rental.equipmentIds.map(id => this.httpService.getEquipmentById(id));
+            forkJoin(requests).subscribe(equipmentList => {
+              this.tableEquipment[rental.id] = equipmentList.map(e => ({ ...e, count: 1 }));
+            });
+          });
+        });
       }
     )
 

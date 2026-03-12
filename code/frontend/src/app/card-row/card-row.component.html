@@ -1,6 +1,13 @@
 <div class="product-grid" *ngIf="filteredEquipment.length > 0">
   <mat-card class="product-card" style="background-color: white" *ngFor="let item of (equipmentService.searchTerm$ | async) === '' && (equipmentService.category$ | async) === 'Alle' ? (filteredEquipment | slice:0:rowCount*4) : filteredEquipment" [routerLink]="['/detail', item.id]">
-    <img mat-card-image  [src]="item.link" [alt]="item.name" class="product-img">
+    <img mat-card-image [src]="item.link" [alt]="item.name" class="product-img"
+         (error)="imgError[item.id] = true"
+         *ngIf="item.link && !imgError[item.id]">
+
+    <div class="product-img-placeholder" *ngIf="!item.link || imgError[item.id]">
+      <mat-icon>image_not_supported</mat-icon>
+    </div>
+
     <mat-card-header >
       <mat-card-title>{{item.name}}</mat-card-title>
       <mat-card-subtitle>{{item.equipmentType}}</mat-card-subtitle>

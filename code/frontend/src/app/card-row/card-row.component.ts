@@ -30,6 +30,7 @@ export class CardRowComponent implements OnInit {
   equipmentService: EquipmentService = inject(EquipmentService);
   equipment: Equipment[] = [];
   filteredEquipment: Equipment[] = [];
+  imgError: { [key: number]: boolean } = {};
 
   ngOnInit() {
     combineLatest([

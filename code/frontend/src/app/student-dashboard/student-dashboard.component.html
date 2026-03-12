@@ -189,7 +189,7 @@
 
                 <div
                   class="equipment-item"
-                  *ngFor="let eq of tableEquipment ">
+                  *ngFor="let eq of tableEquipment[rental.id]">
 
               <span class="equipment-name">
                 {{ eq.name }}
@@ -199,9 +199,7 @@
                 ({{ eq.equipmentType }})
               </span>
 
-                  <span class="equipment-count">
-                — {{ eq.itemCount }}x
-              </span>
+                  <!--<span class="equipment-count">— {{ eq.count }}x</span> muss in backend-->
 
                 </div>
 
