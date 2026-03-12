@@ -21,6 +21,7 @@ cd ../../../
 
 mvn -Dnet.bytebuddy.experimental=true -DskipTests=true clean package
 sudo mv ./target/leoleih-1.0-SNAPSHOT-runner.jar ./src/main/docker/
+cp -r ./data ./src/main/docker/data
 
 cd ../../frontend
 ng build

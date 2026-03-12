@@ -78,7 +78,6 @@ GET http://localhost:8080/api/equipment/list
 POST http://localhost:8080/api/rental/
 Content-Type: application/json
 
-
 {
   "person_id": 1,
   "leaseDate": "2023-12-14T08:50:00",
