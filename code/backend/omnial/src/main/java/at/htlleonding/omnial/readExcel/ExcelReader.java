@@ -37,7 +37,7 @@ public class ExcelReader {
      */
     void onStartUp(@Observes StartupEvent event){
         createTags();
-        //readExcel(); for prod, fix later TODO
+        readExcel();
     }
 
     /**
