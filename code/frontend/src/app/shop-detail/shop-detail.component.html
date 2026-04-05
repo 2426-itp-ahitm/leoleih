@@ -13,14 +13,14 @@
     </div>
 
     <div class="info-section">
-      <h1 class="product-title" style="color: white">{{ equipment?.name }}</h1>
+      <h1 class="product-title" style="color: white; font-family: 'Roboto', sans-serif">{{ equipment?.name }}</h1>
       <mat-card class="action-card">
         <mat-card-header>
           <mat-card-title style="color: white">Reservieren</mat-card-title>
         </mat-card-header>
         <mat-card-content>
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Zeitraum auswählen</mat-label>
+            <mat-label style="font-family: 'Roboto', sans-serif">Zeitraum auswählen</mat-label>
             <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
               <input matStartDate formControlName="start" placeholder="Startdatum">
               <input matEndDate formControlName="end" placeholder="Enddatum">
@@ -31,8 +31,8 @@
 
           <div class="status-info">
             <p style="color: white">Status:
-              <span class="status-available" *ngIf="equipment?.available !== 0">Verfügbar</span>
-              <span class="status-unavailable" *ngIf="equipment?.available === 0">Nicht Verfügbar</span>
+              <span class="status-available " style="font-family: 'Roboto', sans-serif" *ngIf="equipment?.available !== 0">Verfügbar</span>
+              <span class="status-unavailable" style="font-family: 'Roboto', sans-serif" *ngIf="equipment?.available === 0">Nicht Verfügbar</span>
             </p>
           </div>
 
@@ -50,7 +50,7 @@
   </div>
 
   <div class="recommendation-section">
-    <h2 style="color: white">Wurde oft zusammen entliehen:</h2>
+    <h2 style="color: white; font-family: 'Roboto', sans-serif" >Wurde oft zusammen entliehen:</h2>
     <app-card-row [rowCount]="1"></app-card-row>
   </div>
 </div>
